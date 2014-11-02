@@ -7,6 +7,7 @@ class PagesController < ApplicationController
     @stores = Store.all
     @brands = Brand.all
     @products = Product.all
+    @wishlist = current_user.wishlist if current_user
   end
   
   def inside

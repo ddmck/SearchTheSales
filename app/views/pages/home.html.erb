@@ -38,3 +38,17 @@
     <% end %>
   <% end %>
 </div>
+
+<% if current_user %>
+  <h4>Your wishlist</h4>
+  <div class="row">
+    <% @wishlist.each do |item| %>
+      <div class="col-md-3">
+        <img src="<%= item.image_url %>">
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <h4>Sign in to create your wishlist</h4>
+  <%= link_to "Sign up now", new_user_registration_path %>
+<% end %>
