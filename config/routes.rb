@@ -1,4 +1,6 @@
 Searchthesales::Application.routes.draw do
+  resources :brands
+
   resources :stores
 
   root "pages#home"    

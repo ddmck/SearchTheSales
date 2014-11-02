@@ -5,6 +5,7 @@ class PagesController < ApplicationController
 
   def home
     @stores = Store.all
+    @brands = Brand.all
   end
   
   def inside

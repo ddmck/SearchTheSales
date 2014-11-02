@@ -5,10 +5,22 @@
   </div>
 </div>
 
+<h4>Everything you could want from the stores you love</h4>
+
 <div class="row">
   <% @stores.each do |store| %>
   	<div class="col-md-3">
       <img src="<%= store.image_url %>">
+    </div>
+  <% end %>
+</div>
+
+<h4>All of your favourite brands</h4>
+
+<div class="row">
+  <% @brands.each do |brand| %>
+    <div class="col-md-3">
+      <img src="<%= brand.image_url %>">
     </div>
   <% end %>
 </div>
