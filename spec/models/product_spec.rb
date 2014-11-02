@@ -9,6 +9,11 @@ RSpec.describe Product, :type => :model do
                              url: "www.hof.com",
                              image_url: "www.img.com")}
 
+  let(:user) { User.create(username: "donaldmckendrick",
+                           email: "ddmckendrick@gmail.com",
+                           password: "password", 
+                           password_confirmation: "password")}
+
   subject(:product) { Product.new(name: "Jeans", 
                                   brand_id: brand.id, 
                                   store_id: store.id, 
@@ -16,6 +21,8 @@ RSpec.describe Product, :type => :model do
                                   image_url: "www.image.com", 
                                   description: "Really nice!", 
                                   gender: "male") }
+
+  
 
   it "should not be valid without a name" do
     product.name = nil
@@ -44,4 +51,9 @@ RSpec.describe Product, :type => :model do
   it "should return its store" do
     expect(product.store).to eq(store)
   end
+
+  it "should know who has wished for it" do
+    expect(product.wished_for_by).to be_empty
+  end
+
 end

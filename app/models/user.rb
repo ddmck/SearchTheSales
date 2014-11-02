@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   # Use friendly_id on Users
   extend FriendlyId
   friendly_id :friendify, use: :slugged
+  has_many :wishlist_items
+  has_many :products, through: :wishlist_items
   
   # necessary to override friendly_id reserved words
   def friendify
@@ -12,8 +14,8 @@ class User < ActiveRecord::Base
     end
   end
   
-# Relations
-has_many :posts
+  # Relations
+  has_many :posts
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -56,5 +58,9 @@ has_many :posts
   
   def self.users_count
     where("admin = ? AND locked = ?",false,false).count
+  end
+
+  def wishlist
+    products.to_a
   end
 end
