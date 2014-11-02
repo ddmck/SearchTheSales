@@ -1,4 +1,6 @@
 Searchthesales::Application.routes.draw do
+  resources :products
+
   resources :brands
 
   resources :stores

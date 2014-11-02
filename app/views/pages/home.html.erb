@@ -24,3 +24,13 @@
     </div>
   <% end %>
 </div>
+
+<h4>Just a small selection of the thousands of products we have</h4>
+
+<div class="row">
+  <% @products.each do |product| %>
+    <div class="col-md-3">
+      <img src="<%= product.image_url %>">
+    </div>
+  <% end %>
+</div>

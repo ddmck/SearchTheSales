@@ -9,4 +9,12 @@ development:
   host: localhost
   pool: 5
   port: 5432
+
+test:
+  adapter: postgresql
+  encoding: utf8
+  database: searchthesales_test
+  pool: 5
+  port: 5432
+  host: localhost
   
