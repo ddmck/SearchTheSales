@@ -19,9 +19,11 @@
 
 <div class="row">
   <% @brands.each do |brand| %>
-    <div class="col-md-3">
-      <img src="<%= brand.image_url %>">
-    </div>
+    <%= link_to brand_path(brand) do %>
+      <div class="col-md-3">
+        <img src="<%= brand.image_url %>">
+      </div>
+    <% end %>
   <% end %>
 </div>
 

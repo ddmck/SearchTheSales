@@ -17,3 +17,13 @@
 
 <%= link_to 'Edit', edit_brand_path(@brand) %> |
 <%= link_to 'Back', brands_path %>
+
+<h4>Products by <%= @brand.name %></h4>
+<div class="row">
+  <% @products.each do |product| %>
+    <div class="col-md-3">
+      <img src="<%= product.image_url %>"><br>
+      <p><%= product.name %></p>
+    </div>
+  <% end %>
+</div>
