@@ -31,8 +31,10 @@
 
 <div class="row">
   <% @products.each do |product| %>
-    <div class="col-md-3">
-      <img src="<%= product.image_url %>">
-    </div>
+    <%= link_to product_path(product) do %>
+      <div class="col-md-3">
+        <img src="<%= product.image_url %>">
+      </div>
+    <% end %>
   <% end %>
 </div>
