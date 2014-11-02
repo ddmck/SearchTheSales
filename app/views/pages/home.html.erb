@@ -1,2 +1,14 @@
-<% title("Home Page") %>
-<h1><i class="fa fa-home"></i> Home Page <small>views/pages/home.html.erb</small></h1>
+<div class="row">
+  <div class="col-sm-12">
+    <% title("Home Page") %>
+    <h1>Welcome to Search The Sales</h1>
+  </div>
+</div>
+
+<div class="row">
+  <% @stores.each do |store| %>
+  	<div class="col-md-3">
+      <img src="<%= store.image_url %>">
+    </div>
+  <% end %>
+</div>
