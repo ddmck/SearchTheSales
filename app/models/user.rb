@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   friendly_id :friendify, use: :slugged
   has_many :wishlist_items
   has_many :products, through: :wishlist_items
+  has_one :basket
+  after_create :create_basket
   
   # necessary to override friendly_id reserved words
   def friendify
@@ -20,7 +22,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+         :recoverable, :rememberable, :trackable, :validatable
          
   # Pagination
   paginates_per 100
@@ -63,4 +65,5 @@ class User < ActiveRecord::Base
   def wishlist
     products.to_a
   end
+
 end

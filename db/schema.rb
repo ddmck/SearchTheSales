@@ -11,10 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141102232211) do
+ActiveRecord::Schema.define(version: 20141102234219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "basket_items", force: true do |t|
+    t.integer  "product_id"
+    t.integer  "basket_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "basket_items", ["basket_id"], name: "index_basket_items_on_basket_id", using: :btree
+  add_index "basket_items", ["product_id"], name: "index_basket_items_on_product_id", using: :btree
 
   create_table "baskets", force: true do |t|
     t.integer  "user_id"
@@ -68,6 +78,8 @@ ActiveRecord::Schema.define(version: 20141102232211) do
     t.string   "gender"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "rrp",         precision: 10, scale: 2
+    t.decimal  "sale_price",  precision: 10, scale: 2
   end
 
   create_table "stores", force: true do |t|
