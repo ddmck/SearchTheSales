@@ -10,4 +10,8 @@ RSpec.describe User, :type => :model do
     expect(user.wishlist).to be_empty
   end
 
+  it "should have a basket at the start" do
+    expect(user.basket).to be_truthy
+  end
+
 end
