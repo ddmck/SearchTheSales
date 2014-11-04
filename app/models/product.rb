@@ -5,6 +5,7 @@ class Product < ActiveRecord::Base
   has_many :basket_items
   has_many :wishlist_items
   has_many :users, through: :wishlist_items
+  belongs_to :category
 
   def add_to_wishlist(user)
     WishlistItem.create(product_id: self.id, user_id: user.id)

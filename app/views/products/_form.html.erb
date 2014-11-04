@@ -32,6 +32,10 @@
     <%= f.number_field :store_id %>
   </div>
   <div class="field">
+    <%= f.label :category_id %><br>
+    <%= f.select :category_id, options_for_select(@categories.map { |cat| [cat.name, cat.id]}, @product.category_id) %>
+  </div>
+  <div class="field">
     <%= f.label :url %><br>
     <%= f.text_field :url %>
   </div>

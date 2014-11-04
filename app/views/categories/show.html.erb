@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+<h1><%= @category.name %></h1>
+<%= link_to 'Edit', edit_category_path(@category) %> |
+<%= link_to 'Back', categories_path %>
+
+<h4>Products</h4>
+<div class="row">
+  <% @category.products.each do |product| %>
+    <div class="col-md-3">
+      <img src="<%= product.image_url %>">
+    </div>
+  <% end %>
+</div>

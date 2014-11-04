@@ -11,7 +11,9 @@ RSpec.describe User, :type => :model do
   end
 
   it "should have a basket at the start" do
-    expect(user.basket).to be_truthy
+    user.save
+    puts "Basket: #{user.basket}"
+    expect(user.basket.products).to be_empty
   end
 
 end

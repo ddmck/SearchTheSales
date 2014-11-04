@@ -70,4 +70,8 @@ class User < ActiveRecord::Base
     basket.products
   end
 
+  def create_basket
+    super
+  end
+
 end
