@@ -8,6 +8,7 @@ class PagesController < ApplicationController
     @brands = Brand.all
     @products = Product.all
     @wishlist = current_user.wishlist if current_user
+    @basket = current_user.basket if current_user
   end
   
   def inside

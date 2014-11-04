@@ -66,4 +66,8 @@ class User < ActiveRecord::Base
     products.to_a
   end
 
+  def basket_items
+    basket.products
+  end
+
 end

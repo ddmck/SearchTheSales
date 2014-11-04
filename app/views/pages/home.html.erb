@@ -52,3 +52,20 @@
   <h4>Sign in to create your wishlist</h4>
   <%= link_to "Sign up now", new_user_registration_path %>
 <% end %>
+
+<% if current_user %>
+  <h4>Your Shopping Basket</h4>
+  <div class="row">
+    <% @basket.products.each do |item| %>
+      <div class="col-md-3">
+        <img src="<%= item.image_url %>"><br>
+        <p>Price: <%= item.sale_price %></p>
+
+      </div>
+    <% end %>
+  </div>
+  <h4>Total: <%= @basket.total_price %></h4>
+<% else %>
+  <h4>Sign in to add to your shopping basket</h4>
+  <%= link_to "Sign up now", new_user_registration_path %>
+<% end %>
