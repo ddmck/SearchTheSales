@@ -1,0 +1,25 @@
+<%= form_for(@color_tag) do |f| %>
+  <% if @color_tag.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@color_tag.errors.count, "error") %> prohibited this color_tag from being saved:</h2>
+
+      <ul>
+      <% @color_tag.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :color_id %><br>
+    <%= f.text_field :color_id %>
+  </div>
+  <div class="field">
+    <%= f.label :product_id %><br>
+    <%= f.text_field :product_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

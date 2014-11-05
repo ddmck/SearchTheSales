@@ -56,4 +56,12 @@ RSpec.describe Product, :type => :model do
     expect(product.wished_for_by).to be_empty
   end
 
+  it "should be able to return its colors" do
+    expect(product).to respond_to(:colors)
+  end
+
+  it "should have a factory" do 
+    prod = create(:product)
+  end
+
 end

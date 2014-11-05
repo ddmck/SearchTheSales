@@ -1,4 +1,8 @@
 Searchthesales::Application.routes.draw do
+  resources :color_tags
+
+  resources :colors
+
   resources :categories
 
   resources :products
