@@ -62,4 +62,24 @@ RSpec.describe Product, :type => :model do
     expect(product.colors).to include(color2)
   end
 
+  it "should be able to find its sub_categories" do
+    expect(product).to respond_to(:sub_categories)
+  end
+
+  it "should accept sub categories" do
+    sub_category = build(:sub_category)
+    product.sub_categories << sub_category
+    expect(product.sub_categories).to include(sub_category)
+  end
+
+  it "should accept many sub_categories" do
+    sub_category = build(:sub_category)
+    product.sub_categories << sub_category
+    expect(product.sub_categories).to include(sub_category)
+
+    sub_category2 = build(:sub_category, name: "Parka")
+    product.sub_categories << sub_category2
+    expect(product.sub_categories).to include(sub_category, sub_category2)
+  end
+
 end

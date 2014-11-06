@@ -18,6 +18,10 @@ FactoryGirl.define do
     image_url "http://levi.com/image.png"
   end
 
+  factory :category do
+    name "Jacket"
+  end
+
   factory :product do 
     name "Jeans"
     description "You will look awesome!"
@@ -30,5 +34,10 @@ FactoryGirl.define do
 
   factory :color do
     name "Red"
+  end
+
+  factory :sub_category do
+    name "Blazer"
+    category
   end
 end

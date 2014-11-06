@@ -1,5 +1,7 @@
 class Category < ActiveRecord::Base
   has_many :products
+  has_many :sub_categories
+  validates_uniqueness_of :name
 
   before_save :downcase_name
 
