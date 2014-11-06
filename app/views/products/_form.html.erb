@@ -29,7 +29,7 @@
   </div>
   <div class="field">
     <%= f.label :store_id %><br>
-    <%= f.number_field :store_id %>
+    <%= f.select :store_id, options_for_select(@stores.map { |store| [store.name, store.id]}, @product.store_id), prompt: "Please Select" %>
   </div>
   <div class="field">
     <%= f.label :category_id %><br>

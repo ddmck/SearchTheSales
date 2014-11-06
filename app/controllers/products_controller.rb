@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :get_collections, only: [:new, :edit]
 
   respond_to :html, :json
 
@@ -14,12 +15,10 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
-    @categories = Category.all
     respond_with(@product)
   end
 
   def edit
-    @categories = Category.all
   end
 
   def create
@@ -39,11 +38,17 @@ class ProductsController < ApplicationController
   end
 
   private
-    def set_product
-      @product = Product.find(params[:id])
-    end
+  
+  def set_product
+    @product = Product.find(params[:id])
+  end
 
-    def product_params
-      params.require(:product).permit(:name, :rrp, :sale_price, :brand_id, :store_id, :category_id, :url, :image_url, :description, :gender)
-    end
+  def get_collections
+    @categories = Category.all
+    @stores = Store.all
+  end
+
+  def product_params
+    params.require(:product).permit(:name, :rrp, :sale_price, :brand_id, :store_id, :category_id, :url, :image_url, :description, :gender)
+  end
 end
