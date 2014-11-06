@@ -18,4 +18,12 @@ RSpec.describe Color, :type => :model do
     color2 = create(:color, name: "Red")
     expect(color2).to_not be_valid
   end
+
+  it "should accept products" do
+    product = create(:product)
+    color.products << product
+    expect(color.products).to include(product)
+  end
+
+
 end

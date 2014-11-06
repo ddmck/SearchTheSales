@@ -1,6 +1,8 @@
 class ColorsController < ApplicationController
   before_action :set_color, only: [:show, :edit, :update, :destroy]
 
+  respond_to :html, :json
+
   def index
     @colors = Color.all
     respond_with(@colors)
