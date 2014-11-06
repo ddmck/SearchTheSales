@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Color, :type => :model do
-  subject(:color) {Color.new(name: "Black")}
+  subject(:color) { build(:color) }
 
   it "should be downcase after saving" do
-    name = "Red"
-    color.name = name
+    name = color.name
     color.save
     expect(color.name).to eq(name.downcase)
   end
@@ -16,7 +15,7 @@ RSpec.describe Color, :type => :model do
 
   it "should have a unique name" do
     color.save
-    color2 = Color.create(name: "Black")
+    color2 = create(:color, name: "Red")
     expect(color2).to_not be_valid
   end
 end

@@ -46,4 +46,20 @@ RSpec.describe Product, :type => :model do
     prod = create(:product)
   end
 
+  it "should accept a color" do
+    color = build(:color)
+    product.colors << color
+    expect(product.colors).to include(color)
+  end
+
+  it "should accept many colors" do 
+    color = build(:color)
+    product.colors << color
+    expect(product.colors).to include(color)
+    
+    color2 = build(:color, name: "Black")
+    product.colors << color2
+    expect(product.colors).to include(color2)
+  end
+
 end

@@ -5,6 +5,7 @@ class Product < ActiveRecord::Base
   has_many :basket_items
   has_many :wishlist_items
   has_many :users, through: :wishlist_items
+  has_many :color_tags
   has_many :colors, through: :color_tags
   belongs_to :category
 

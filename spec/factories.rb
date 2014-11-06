@@ -27,4 +27,8 @@ FactoryGirl.define do
     store
     brand
   end
+
+  factory :color do
+    name "Red"
+  end
 end
