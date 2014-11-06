@@ -38,7 +38,7 @@ class ProductsController < ApplicationController
   end
 
   private
-  
+
   def set_product
     @product = Product.find(params[:id])
   end
@@ -46,6 +46,7 @@ class ProductsController < ApplicationController
   def get_collections
     @categories = Category.all
     @stores = Store.all
+    @brands = Brand.all
   end
 
   def product_params
