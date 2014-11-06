@@ -29,6 +29,12 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
+group :development do
+  gem 'guard-rails'
+  gem 'guard-rspec', require: false
+  gem 'terminal-notifier-guard'
+end
+
 # PostgreSQL
 gem 'pg'
 
