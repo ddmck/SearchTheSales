@@ -47,9 +47,10 @@ class ProductsController < ApplicationController
     @categories = Category.all
     @stores = Store.all
     @brands = Brand.all
+    @colors = Color.all
   end
 
   def product_params
-    params.require(:product).permit(:name, :rrp, :sale_price, :brand_id, :store_id, :category_id, :url, :image_url, :description, :gender)
+    params.require(:product).permit(:name, :rrp, :sale_price, :brand_id, :store_id, :category_id, {color_ids: []}, :url, :image_url, :description, :gender)
   end
 end

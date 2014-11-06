@@ -35,6 +35,12 @@
     <%= f.label :category_id %><br>
     <%= f.select :category_id, options_for_select(@categories.map { |cat| [cat.name, cat.id]}, @product.category_id), prompt: "Please Select" %>
   </div>
+
+  <div class="field">
+    <%= f.label :color_ids %><br>
+    <%= f.select :color_ids, options_for_select(@colors.map { |color| [color.name, color.id]}, @product.color_ids), {prompt: "Please Select"}, {multiple: true} %>
+  </div>
+
   <div class="field">
     <%= f.label :url %><br>
     <%= f.text_field :url %>
