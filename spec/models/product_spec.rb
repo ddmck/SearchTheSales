@@ -1,28 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Product, :type => :model do
-  let(:brand) { Brand.create(name: "Levi", 
-                             feature_text: "So cool I wear them every day",
-                             image_url: "www.image.com" )}
-
-  let(:store) { Store.create(name: "House of Fraser", 
-                             url: "www.hof.com",
-                             image_url: "www.img.com")}
-
-  let(:user) { User.create(username: "donaldmckendrick",
-                           email: "ddmckendrick@gmail.com",
-                           password: "password", 
-                           password_confirmation: "password")}
-
-  subject(:product) { Product.new(name: "Jeans", 
-                                  brand_id: brand.id, 
-                                  store_id: store.id, 
-                                  url: "www.levi.com", 
-                                  image_url: "www.image.com", 
-                                  description: "Really nice!", 
-                                  gender: "male") }
-
-  
+  subject(:product) { create(:product) }
+  let(:brand) { product.brand }
+  let(:store) { product.store }
+  let(:user) { build(:user) }
 
   it "should not be valid without a name" do
     product.name = nil
