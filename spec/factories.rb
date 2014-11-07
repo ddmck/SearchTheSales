@@ -7,37 +7,43 @@ FactoryGirl.define do
   end
 
   factory :store do
-    name "MegaStore"
+    sequence(:name) { |n| "store#{n}" }
     url "http://megastore.com"
     image_url "http://megastore.com/image.png"
   end
 
   factory :brand do
-    name "Levi"
+    sequence(:name) { |n| "brand#{n}" }
     feature_text "Live in Levi's"
     image_url "http://levi.com/image.png"
   end
 
   factory :category do
-    name "Jacket"
+    sequence(:name) { |n| "category#{n}" }
   end
 
   factory :product do 
-    name "Jeans"
+    sequence(:name) { |n| "product#{n}" }
     description "You will look awesome!"
-    url "http://jeans.com"
+    sequence(:url, 9000) { |n| "http://www.url#{n}.com" }
     image_url "http://jeans.com/image.png"
     gender "male"
     store
     brand
+
+    # trait :with_sub_categories do
+    #   after(:create) do |product|
+    #     FactoryGirl.create_list(:sub_category, 1, product: product)
+    #   end
+    # end 
   end
 
   factory :color do
-    name "Red"
+    sequence(:name) { |n| "color#{n}" }
   end
 
   factory :sub_category do
-    name "Blazer"
+    sequence(:name) { |n| "subcat#{n}" }
     category
   end
 end

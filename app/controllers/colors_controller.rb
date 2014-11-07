@@ -37,11 +37,11 @@ class ColorsController < ApplicationController
   end
 
   private
-    def set_color
-      @color = Color.find(params[:id])
-    end
+  def set_color
+    @color = Color.find(params[:id])
+  end
 
-    def color_params
-      params.require(:color).permit(:name)
-    end
+  def color_params
+    params.require(:color).permit(:name)
+  end
 end

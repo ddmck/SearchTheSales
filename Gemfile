@@ -27,11 +27,14 @@ gem 'bootstrap-sass', '3.3.0.1'
 group :development, :test do
   gem 'figaro', '1.0.0'
   gem 'rspec-rails'
+  gem 'database_cleaner', git: 'git@github.com:bmabey/database_cleaner.git'
 end
 
 group :development do
   gem 'guard-rails'
   gem 'guard-rspec', require: false
+  gem 'guard-rubocop'
+  gem 'guard-livereload', require: false
   gem 'terminal-notifier-guard'
 end
 
