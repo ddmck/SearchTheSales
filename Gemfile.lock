@@ -198,6 +198,7 @@ GEM
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
     slop (3.6.0)
+    smarter_csv (1.0.19)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -253,6 +254,7 @@ DEPENDENCIES
   redcarpet (= 3.2.0)
   rspec-rails
   sass-rails (= 4.0.3)
+  smarter_csv
   terminal-notifier-guard
   turbolinks (= 2.5.1)
   uglifier (= 2.5.3)
