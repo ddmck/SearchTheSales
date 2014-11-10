@@ -39,12 +39,14 @@
     <%= f.label :sub_category_ids %><br>
     <%= f.select :sub_category_ids, options_for_select(@sub_categories.map { |sub_cat| [sub_cat.name, sub_cat.id]}, @product.sub_category_ids), {prompt: "Please Select"}, {multiple: true} %>
   </div>
-
   <div class="field">
     <%= f.label :color_ids %><br>
     <%= f.select :color_ids, options_for_select(@colors.map { |color| [color.name, color.id]}, @product.color_ids), {prompt: "Please Select"}, {multiple: true} %>
   </div>
-
+  <div class="field">
+    <%= f.label :trend_ids %><br>
+    <%= f.select :trend_ids, options_for_select(@trends.map { |trend| [trend.name, trend.id]}, @product.trend_ids), {prompt: "Please Select"}, {multiple: true} %>
+  </div>
   <div class="field">
     <%= f.label :url %><br>
     <%= f.text_field :url %>
