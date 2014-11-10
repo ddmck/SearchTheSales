@@ -4,7 +4,7 @@ class Basket < ActiveRecord::Base
   has_many :products, through: :basket_items
 
   def create_basket_item(product)
-    BasketItem.create(basket_id: self.id, product_id: product.id)
+    BasketItem.create(basket_id: id, product_id: product.id)
   end
 
   def total_price

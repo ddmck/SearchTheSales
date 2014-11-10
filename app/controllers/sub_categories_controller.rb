@@ -35,11 +35,12 @@ class SubCategoriesController < ApplicationController
   end
 
   private
-    def set_sub_category
-      @sub_category = SubCategory.find(params[:id])
-    end
 
-    def sub_category_params
-      params.require(:sub_category).permit(:name)
-    end
+  def set_sub_category
+    @sub_category = SubCategory.find(params[:id])
+  end
+
+  def sub_category_params
+    params.require(:sub_category).permit(:name)
+  end
 end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe User, :type => :model do
-  subject(:user) { create(:user)}
+RSpec.describe User, type: :model do
+  subject(:user) { create(:user) }
 
   it 'should have a unique username' do
     user1 = create(:user)
@@ -15,6 +15,6 @@ RSpec.describe User, :type => :model do
   it 'should have a basket at the start' do
     user.save
     expect(user).to respond_to(:basket)
-  end 
+  end
 
 end

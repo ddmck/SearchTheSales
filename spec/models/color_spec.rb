@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Color, :type => :model do
+RSpec.describe Color, type: :model do
   subject(:color) { build(:color) }
 
   it 'should be downcase after saving' do
@@ -18,6 +18,5 @@ RSpec.describe Color, :type => :model do
     color.products << product
     expect(color.products).to include(product)
   end
-
 
 end

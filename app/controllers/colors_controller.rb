@@ -37,6 +37,7 @@ class ColorsController < ApplicationController
   end
 
   private
+
   def set_color
     @color = Color.find(params[:id])
   end

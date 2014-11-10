@@ -10,9 +10,11 @@ class Product < ActiveRecord::Base
   has_many :colors, through: :color_tags
   has_many :sub_category_tags
   has_many :sub_categories, through: :sub_category_tags
+  has_many :trend_tags
+  has_many :trends, through: :trend_tags
 
   def add_to_wishlist(user)
-    WishlistItem.create(product_id: self.id, user_id: user.id)
+    WishlistItem.create(product_id: id, user_id: user.id)
   end
 
   def wished_for_by

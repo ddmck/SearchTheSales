@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Product, :type => :model do
+RSpec.describe Product, type: :model do
   subject(:product) { build(:product) }
   let(:brand) { product.brand }
   let(:store) { product.store }
@@ -48,11 +48,11 @@ RSpec.describe Product, :type => :model do
     expect(product.colors).to include(color)
   end
 
-  it 'should accept many colors' do 
+  it 'should accept many colors' do
     color = build(:color)
     product.colors << color
     expect(product.colors).to include(color)
-    
+
     color2 = build(:color, name: 'Black')
     product.colors << color2
     expect(product.colors).to include(color2)
@@ -76,6 +76,16 @@ RSpec.describe Product, :type => :model do
     sub_category2 = build(:sub_category)
     product.sub_categories << sub_category2
     expect(product.sub_categories).to include(sub_category, sub_category2)
+  end
+
+  it 'should respond to trends' do
+    expect(product).to respond_to(:trends)
+  end 
+
+  it 'should accept trends' do
+    trend = build(:trend)
+    product.trends << trend
+    expect(product.trends).to include(trend)
   end
 
 end

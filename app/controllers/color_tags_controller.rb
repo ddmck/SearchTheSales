@@ -35,11 +35,12 @@ class ColorTagsController < ApplicationController
   end
 
   private
-    def set_color_tag
-      @color_tag = ColorTag.find(params[:id])
-    end
 
-    def color_tag_params
-      params.require(:color_tag).permit(:color_id, :product_id)
-    end
+  def set_color_tag
+    @color_tag = ColorTag.find(params[:id])
+  end
+
+  def color_tag_params
+    params.require(:color_tag).permit(:color_id, :product_id)
+  end
 end

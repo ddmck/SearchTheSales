@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe SubCategory, :type => :model do
+RSpec.describe SubCategory, type: :model do
   subject(:sub_category) { build(:sub_category) }
 
   it 'should have a downcase name after saving' do
@@ -8,7 +8,7 @@ RSpec.describe SubCategory, :type => :model do
 
     sub_category.save
 
-    expect(sub_category.name).to eq(name.downcase) 
+    expect(sub_category.name).to eq(name.downcase)
   end
 
   it 'should be able to find its products' do
@@ -18,7 +18,7 @@ RSpec.describe SubCategory, :type => :model do
   it 'should be able to save products on its self' do
     product = build(:product)
     sub_category.products << product
-    expect(sub_category.products).to include(product) 
+    expect(sub_category.products).to include(product)
   end
 
   it 'should have a parent category' do
