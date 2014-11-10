@@ -8,7 +8,7 @@ class ProductImport
     puts brand.id
     category = set_category(data[:category])
     puts category.id
-    sub_categories = set_sub_categories(data[:sub_categories])
+    sub_categories = set_sub_categories(data[:sub_categories], category)
 
     colors = set_colors(data[:colors])
 
@@ -23,7 +23,8 @@ class ProductImport
                                 url: data[:url],
                                 image_url: data[:image_url],
                                 rrp: data[:rrp],
-                                sale_price: data[:sale_price]
+                                sale_price: data[:sale_price],
+                                gender: data[:gender]
                                 )
     else
       product.update_attributes( store_id: store.id,
@@ -34,7 +35,8 @@ class ProductImport
                                 url: data[:url],
                                 image_url: data[:image_url],
                                 rrp: data[:rrp],
-                                sale_price: data[:sale_price]
+                                sale_price: data[:sale_price],
+                                gender: data[:gender]
                                 )
     end
 
@@ -76,13 +78,14 @@ class ProductImport
 
   def self.set_category(category_data)
     category = Category.find_by_name(category_data)
-    unless category == nil 
+    puts category
+    if category == nil 
       category = Category.create(name: category_data)
     end
     category
   end
 
-  def self.set_sub_categories(sub_category_data)
+  def self.set_sub_categories(sub_category_data, category)
     sub_category_data.map do |sub_cat|
       sub_category = SubCategory.find_by_name(sub_cat)
       if sub_category == nil
@@ -94,10 +97,10 @@ class ProductImport
   end
 
   def self.set_colors(color_data)
-    color_data.map do |color|
-      color = Color.find_by_name(color)
+    color_data.map do |c|
+      color = Color.find_by_name(c)
       if color == nil
-        color = Color.create(name: color)
+        color = Color.create(name: c)
       end
       color
     end
