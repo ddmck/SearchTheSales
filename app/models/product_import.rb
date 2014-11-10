@@ -21,7 +21,10 @@ class ProductImport
                                 name: data[:name],
                                 description: data[:description],
                                 url: data[:url],
-                                image_url: data[:image_url])
+                                image_url: data[:image_url],
+                                rrp: data[:rrp],
+                                sale_price: data[:sale_price]
+                                )
     else
       product.update_attributes( store_id: store.id,
                                 brand_id: brand.id,
@@ -29,7 +32,10 @@ class ProductImport
                                 name: data[:name],
                                 description: data[:description],
                                 url: data[:url],
-                                image_url: data[:image_url])
+                                image_url: data[:image_url],
+                                rrp: data[:rrp],
+                                sale_price: data[:sale_price]
+                                )
     end
 
     new_sub_cats = sub_categories - product.sub_categories
