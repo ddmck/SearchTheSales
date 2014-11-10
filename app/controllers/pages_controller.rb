@@ -4,9 +4,9 @@ class PagesController < ApplicationController
   ]
 
   def home
-    @stores = Store.all
-    @brands = Brand.all
-    @products = Product.all
+    @stores = Store.first(4)
+    @brands = Brand.first(4)
+    @products = Product.first(4)
     @wishlist = current_user.wishlist if current_user
     @basket = current_user.basket if current_user
   end
