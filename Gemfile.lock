@@ -227,6 +227,9 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    unicorn-rails (2.2.0)
+      rack
+      unicorn
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
@@ -262,5 +265,5 @@ DEPENDENCIES
   terminal-notifier-guard
   turbolinks (= 2.5.1)
   uglifier (= 2.5.3)
-  unicorn
+  unicorn-rails
   will_paginate (~> 3.0)

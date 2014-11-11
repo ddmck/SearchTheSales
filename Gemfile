@@ -53,9 +53,9 @@ group :production do
 end
 
 # Unicorn: http://unicorn.bogomips.org
-group :production do
-  gem 'unicorn'
-end
+
+gem 'unicorn-rails'
+
 
 group :test do
   gem 'factory_girl_rails'
