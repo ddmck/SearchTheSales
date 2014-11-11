@@ -1,10 +1,8 @@
 class CSVParser
-  
+
   def self.import(file)
-    start_time = Time.now
-    SmarterCSV.process(file, {chunk_size: 2 }) do |chunk|
-      chunk.each do |row|
-        puts row
+    SmarterCSV.process(file, {chunk_size: 100 }) do |chunk|
+      chunk.map! do |row|
         data = {
           store: row[:merchant_name].to_s,
           brand: row[:brand].to_s,
@@ -19,13 +17,10 @@ class CSVParser
           sale_price: row[:display_price],
           gender: row[:gender]
         }
-        ProductImport.import(data)
+        data
       end
+      Resque.enqueue(ProductImporter, chunk)
     end
-    end_time = Time.now
-
-    puts "Time taken: #{end_time - start_time}"
   end
-
 
 end

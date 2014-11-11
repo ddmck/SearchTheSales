@@ -20,9 +20,6 @@ gem 'friendly_id', '5.0.4'
 # Font-awesome: https://github.com/FortAwesome/font-awesome-sass
 gem 'font-awesome-sass', '4.2.2'
 
-# Bootstrap 3: https://github.com/twbs/bootstrap-sass
-gem 'bootstrap-sass', '3.3.0.1'
-
 # Figaro: https://github.com/laserlemon/figaro
 group :development, :test do
   gem 'figaro', '1.0.0'
@@ -36,6 +33,7 @@ group :development do
   gem 'guard-rubocop'
   gem 'guard-livereload', require: false
   gem 'terminal-notifier-guard'
+  gem 'guard-resque', :path => "../guard-resque"
 end
 
 # PostgreSQL
@@ -64,4 +62,6 @@ end
 gem 'smarter_csv'
 
 gem 'will_paginate', '~> 3.0'
-gem 'bootstrap-will_paginate'
+
+#for import delays
+gem 'resque'

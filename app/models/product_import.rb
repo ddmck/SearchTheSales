@@ -1,42 +1,42 @@
 class ProductImport
 
+  def self.import_chunk(chunk)
+    chunk.each do |data|
+      self.import(data)
+    end
+  end
+
   def self.import(data={})
+    store = self.set_store(data["store"])
+    brand = set_brand(data["brand"])
+    category = set_category(data["category"])
+    sub_categories = set_sub_categories(data["sub_categories"], category)
+    colors = set_colors(data["colors"])
+    product = Product.find_by_name(data["name"])
 
-    store = self.set_store(data[:store])
-    puts store.attributes
-    brand = set_brand(data[:brand])
-    puts brand.id
-    category = set_category(data[:category])
-    puts category.id
-    sub_categories = set_sub_categories(data[:sub_categories], category)
-
-    colors = set_colors(data[:colors])
-
-    product = Product.find_by_name(data[:name])
-    puts "Before If"
     if product == nil
       product = Product.create( store_id: store.id,
                                 brand_id: brand.id,
                                 category_id: category.id,
-                                name: data[:name],
-                                description: data[:description],
-                                url: data[:url],
-                                image_url: data[:image_url],
-                                rrp: data[:rrp],
-                                sale_price: data[:sale_price],
-                                gender: data[:gender]
+                                name: data["name"],
+                                description: data[:"description"],
+                                url: data["url"],
+                                image_url: data["image_url"],
+                                rrp: data["rrp"],
+                                sale_price: data["sale_price"],
+                                gender: data["gender"]
                                 )
     else
       product.update_attributes( store_id: store.id,
                                 brand_id: brand.id,
                                 category_id: category.id,
-                                name: data[:name],
-                                description: data[:description],
-                                url: data[:url],
-                                image_url: data[:image_url],
-                                rrp: data[:rrp],
-                                sale_price: data[:sale_price],
-                                gender: data[:gender]
+                                name: data["name"],
+                                description: data[:"description"],
+                                url: data["url"],
+                                image_url: data["image_url"],
+                                rrp: data["rrp"],
+                                sale_price: data["sale_price"],
+                                gender: data["gender"]
                                 )
     end
 
@@ -55,7 +55,6 @@ class ProductImport
   end
 
   def self.set_store(store_data)
-    puts store_data
     store = Store.find_by_name(store_data.try(:downcase))
     if store == nil 
       store = Store.new(name: store_data, 
@@ -78,15 +77,15 @@ class ProductImport
 
   def self.set_category(category_data)
     category = Category.find_by_name(category_data.try(:downcase))
-    puts category
-    if category == nil 
-      category = Category.create(name: category_data.try(:downcase))
+    if category == nil
+      category = Category.new(name: category_data.try(:downcase))
+      category.save
     end
     category
   end
 
   def self.set_sub_categories(sub_category_data, category)
-    sub_category_data.map do |sub_cat|
+    sub_category_data.map! do |sub_cat|
       sub_category = SubCategory.find_by_name(sub_cat.try(:downcase))
       if sub_category == nil
         sub_category = SubCategory.create(name: sub_cat.try(:downcase),

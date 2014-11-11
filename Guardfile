@@ -15,6 +15,19 @@ end
 #  * zeus: 'zeus rspec' (requires the server to be started separetly)
 #  * 'just' rspec: 'rspec'
 
+### Guard::Resque
+#  available options:
+#  - :task (defaults to 'resque:work' if :count is 1; 'resque:workers', otherwise)
+#  - :verbose / :vverbose (set them to anything but false to activate their respective modes)
+#  - :trace
+#  - :queue (defaults to "*")
+#  - :count (defaults to 1)
+#  - :environment (corresponds to RAILS_ENV for the Resque worker)
+guard 'resque', :environment => 'development', count: 3 do
+  watch(%r{^app/(.+)\.rb$})
+  watch(%r{^lib/(.+)\.rb$})
+end
+
 guard :rubocop do
   watch(%r{.+\.rb$})
   watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.dirname(m[0]) }
@@ -50,3 +63,4 @@ guard 'livereload' do
   # Rails Assets Pipeline
   watch(%r{(app|vendor)(/assets/\w+/(.+\.(css|js|html|png|jpg))).*}) { |m| "/assets/#{m[3]}" }
 end
+
