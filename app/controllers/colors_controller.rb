@@ -4,7 +4,7 @@ class ColorsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @colors = Color.paginate(:page => params[:page], :per_page => 50)
+    @colors = Color.paginate(page: params[:page], per_page: 50)
     respond_with(@colors)
   end
 

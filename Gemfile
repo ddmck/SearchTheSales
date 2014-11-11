@@ -33,7 +33,7 @@ group :development do
   gem 'guard-rubocop'
   gem 'guard-livereload', require: false
   gem 'terminal-notifier-guard'
-  gem 'guard-resque', :path => "../guard-resque"
+  gem 'guard-resque', path: '../guard-resque'
 end
 
 # PostgreSQL
@@ -54,7 +54,6 @@ end
 
 gem 'unicorn-rails'
 
-
 group :test do
   gem 'factory_girl_rails'
 end
@@ -63,5 +62,5 @@ gem 'smarter_csv'
 
 gem 'will_paginate', '~> 3.0'
 
-#for import delays
+# for import delays
 gem 'resque'

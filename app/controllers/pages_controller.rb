@@ -15,7 +15,7 @@ class PagesController < ApplicationController
   end
 
   def posts
-    @posts = Post.paginate(:page => params[:page], :per_page => 50)
+    @posts = Post.paginate(page: params[:page], per_page: 50)
   end
 
   def show_post

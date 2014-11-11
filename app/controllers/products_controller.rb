@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @products = Product.paginate(:page => params[:page], :per_page => 50)
+    @products = Product.paginate(page: params[:page], per_page: 50)
     respond_with(@products)
   end
 

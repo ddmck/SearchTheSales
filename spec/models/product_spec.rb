@@ -80,7 +80,7 @@ RSpec.describe Product, type: :model do
 
   it 'should respond to trends' do
     expect(product).to respond_to(:trends)
-  end 
+  end
 
   it 'should accept trends' do
     trend = build(:trend)

@@ -1,14 +1,13 @@
 class CSVParser
-
   def self.import(file)
-    SmarterCSV.process(file, {chunk_size: 100 }) do |chunk|
+    SmarterCSV.process(file, chunk_size: 100) do |chunk|
       chunk.map! do |row|
         data = {
           store: row[:merchant_name].to_s,
           brand: row[:brand].to_s,
           category: row[:category],
-          sub_categories: (row[:subcategory].try(:split,',') || []).map! {|e| e.strip},
-          colors: (row[:colour].try(:split,',') || []).map! {|e| e.strip},
+          sub_categories: (row[:subcategory].try(:split, ',') || []).map!(&:strip),
+          colors: (row[:colour].try(:split, ',') || []).map!(&:strip),
           name: row[:name],
           description: row[:description],
           url: row[:deep_link],
@@ -22,5 +21,4 @@ class CSVParser
       Resque.enqueue(ProductImporter, chunk)
     end
   end
-
 end
