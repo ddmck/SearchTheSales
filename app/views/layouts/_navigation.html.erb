@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -7,12 +7,24 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <%= link_to 'Home', root_path, class: 'navbar-brand' %>
+      <%= link_to 'StoreLuv', root_path, class: 'navbar-brand' %>
     </div>
     <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-right navbar-nav">
         <%= render 'layouts/navigation_links' %>
       </ul>
     </div>
   </div>
 </nav>
+<div class="navbar navbar-default brand">
+  <div class="container">
+    <div class="navbar-header">
+      <ul class="nav navbar-nav">
+        <li><%= link_to "Trending", '#' %></li>
+        <li><%= link_to "Mens", '#' %></li>
+        <li><%= link_to "Womens", '#' %></li>
+        <li><%= link_to "Sale", '#' %></li>
+      </ul>
+    </div>
+  </div>
+</div>
