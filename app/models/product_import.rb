@@ -56,7 +56,7 @@ class ProductImport
 
   def self.set_store(store_data)
     puts store_data
-    store = Store.find_by_name(store_data)
+    store = Store.find_by_name(store_data.try(:downcase))
     if store == nil 
       store = Store.new(name: store_data, 
                          url: '#', 
@@ -67,9 +67,9 @@ class ProductImport
   end
 
   def self.set_brand(brand_data)
-    brand = Brand.find_by_name(brand_data)
+    brand = Brand.find_by_name(brand_data.try(:downcase))
     if brand == nil
-      brand =  Brand.new(name: brand_data,  
+      brand = Brand.new(name: brand_data.try(:downcase),  
                             image_url: '#')
       brand.save
     end
@@ -77,19 +77,19 @@ class ProductImport
   end
 
   def self.set_category(category_data)
-    category = Category.find_by_name(category_data)
+    category = Category.find_by_name(category_data.try(:downcase))
     puts category
     if category == nil 
-      category = Category.create(name: category_data)
+      category = Category.create(name: category_data.try(:downcase))
     end
     category
   end
 
   def self.set_sub_categories(sub_category_data, category)
     sub_category_data.map do |sub_cat|
-      sub_category = SubCategory.find_by_name(sub_cat)
+      sub_category = SubCategory.find_by_name(sub_cat.try(:downcase))
       if sub_category == nil
-        sub_category = SubCategory.create(name: sub_cat,
+        sub_category = SubCategory.create(name: sub_cat.try(:downcase),
                          category_id: category.id)
       end
       sub_category
@@ -98,9 +98,9 @@ class ProductImport
 
   def self.set_colors(color_data)
     color_data.map do |c|
-      color = Color.find_by_name(c)
+      color = Color.find_by_name(c.try(:downcase))
       if color == nil
-        color = Color.create(name: c)
+        color = Color.create(name: c.try(:downcase))
       end
       color
     end
