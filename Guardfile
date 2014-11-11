@@ -23,10 +23,10 @@ end
 #  - :queue (defaults to "*")
 #  - :count (defaults to 1)
 #  - :environment (corresponds to RAILS_ENV for the Resque worker)
-guard 'resque', environment: 'development', count: 3 do
-  watch(%r{^app/(.+)\.rb$})
-  watch(%r{^lib/(.+)\.rb$})
-end
+#guard 'resque', environment: 'development', count: 3 do
+#  watch(%r{^app/(.+)\.rb$})
+#  watch(%r{^lib/(.+)\.rb$})
+#end
 
 guard :rubocop do
   watch(%r{.+\.rb$})
