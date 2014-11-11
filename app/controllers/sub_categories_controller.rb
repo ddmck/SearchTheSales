@@ -1,6 +1,8 @@
 class SubCategoriesController < ApplicationController
   before_action :set_sub_category, only: [:show, :edit, :update, :destroy]
 
+  respond_to :html, :json
+
   def index
     @sub_categories = SubCategory.all
     respond_with(@sub_categories)

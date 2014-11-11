@@ -62,3 +62,6 @@ group :test do
 end
 
 gem 'smarter_csv'
+
+gem 'will_paginate', '~> 3.0'
+gem 'bootstrap-will_paginate'
