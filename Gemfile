@@ -52,6 +52,8 @@ end
 
 gem 'foundation-rails'
 
+gem 'angularjs-rails'
+
 # Unicorn: http://unicorn.bogomips.org
 
 gem 'unicorn-rails'
