@@ -81,6 +81,9 @@ GEM
     font-awesome-sass (4.2.2)
       sass (~> 3.2)
     formatador (0.2.5)
+    foundation-rails (5.4.5.0)
+      railties (>= 3.1.0)
+      sass (>= 3.2.0)
     friendly_id (5.0.4)
       activerecord (>= 4.0.0)
     guard (2.8.2)
@@ -266,6 +269,7 @@ DEPENDENCIES
   factory_girl_rails
   figaro (= 1.0.0)
   font-awesome-sass (= 4.2.2)
+  foundation-rails
   friendly_id (= 5.0.4)
   guard-livereload
   guard-rails

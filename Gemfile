@@ -50,6 +50,8 @@ group :production do
   gem 'rails_12factor'
 end
 
+gem 'foundation-rails'
+
 # Unicorn: http://unicorn.bogomips.org
 
 gem 'unicorn-rails'

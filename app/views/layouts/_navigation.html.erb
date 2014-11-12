@@ -1,5 +1,32 @@
-<nav class="navbar navbar-inverse">
-  <div class="container">
+<div class="contain-to-grid">
+  <nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+      <li class="name">
+        <h1><a href="#">StoreLuv</a></h1>
+      </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+    </ul>
+
+    <section class="top-bar-section">
+      <!-- Right Nav Section -->
+      <ul class="right">
+        <%= render 'layouts/navigation_links' %>
+      </ul>
+    </section>
+  </nav>
+</div>
+
+<dl class="sub-nav">
+  <div class="row">
+  <dd class="active"><a href="#">Trending</a></dd>
+  <dd><a href="#">Mens</a></dd>
+  <dd><a href="#">Womens</a></dd>
+  <dd><a href="#">Sale</a></dd>
+  </div>
+</dl>
+
+<!-- <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="sr-only">Toggle navigation</span>
@@ -26,5 +53,4 @@
         <li><%= link_to "Sale", '#' %></li>
       </ul>
     </div>
-  </div>
-</div>
+  </div> -->
