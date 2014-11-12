@@ -30,3 +30,5 @@ doc/
 .secret
 mini.csv
 storeluvdata.csv
+frontend/bower_components
+frontend/node_modules
