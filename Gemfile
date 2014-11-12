@@ -6,8 +6,6 @@ gem 'rails', '4.1.7'
 gem 'sass-rails', '4.0.3'
 gem 'uglifier', '2.5.3'
 gem 'coffee-rails', '4.0.1'
-gem 'jquery-rails', '3.1.2'
-gem 'turbolinks', '2.5.1'
 gem 'jbuilder', '2.2.4'
 gem 'bcrypt', '3.1.9'
 
@@ -56,7 +54,9 @@ gem 'angularjs-rails'
 
 # Unicorn: http://unicorn.bogomips.org
 
-gem 'unicorn-rails'
+group :production do
+  gem 'unicorn'
+end
 
 group :test do
   gem 'factory_girl_rails'
