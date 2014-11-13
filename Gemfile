@@ -68,3 +68,6 @@ gem 'will_paginate', '~> 3.0'
 
 # for import delays
 gem 'resque'
+
+# For cross origin requests
+gem 'rack-cors', :require => 'rack/cors'
