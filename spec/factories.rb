@@ -27,7 +27,7 @@ FactoryGirl.define do
     description 'You will look awesome!'
     sequence(:url, 9000) { |n| "http://www.url#{n}.com" }
     image_url 'http://jeans.com/image.png'
-    gender 'male'
+    gender
     store
     brand
 
@@ -49,6 +49,10 @@ FactoryGirl.define do
 
   factory :trend do
     sequence(:name) { |n| "trend#{n}" }
+  end
+
+  factory :gender do
+    sequence(:name) { |_n| 'gender' }
   end
 
 end

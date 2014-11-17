@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141116111510) do
+ActiveRecord::Schema.define(version: 20141117120112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,12 @@ ActiveRecord::Schema.define(version: 20141116111510) do
   add_index "friendly_id_slugs", ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id", using: :btree
   add_index "friendly_id_slugs", ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
 
+  create_table "genders", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "posts", force: true do |t|
     t.string   "title"
     t.text     "content_md"
@@ -97,16 +103,17 @@ ActiveRecord::Schema.define(version: 20141116111510) do
     t.text     "url"
     t.string   "image_url"
     t.text     "description"
-    t.string   "gender"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.decimal  "rrp",         precision: 10, scale: 2
     t.decimal  "sale_price",  precision: 10, scale: 2
     t.integer  "category_id"
+    t.integer  "gender_id"
   end
 
   add_index "products", ["brand_id", "store_id"], name: "index_products_on_brand_id_and_store_id", using: :btree
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
+  add_index "products", ["gender_id"], name: "index_products_on_gender_id", using: :btree
 
   create_table "stores", force: true do |t|
     t.string   "name"

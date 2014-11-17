@@ -3,6 +3,7 @@ class Product < ActiveRecord::Base
   belongs_to :brand
   belongs_to :store
   belongs_to :category
+  belongs_to :gender
   has_many :basket_items
   has_many :wishlist_items
   has_many :users, through: :wishlist_items

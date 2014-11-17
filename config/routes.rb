@@ -1,4 +1,6 @@
 Searchthesales::Application.routes.draw do
+  resources :genders
+
   resources :trends
 
   resources :sub_categories

@@ -88,4 +88,8 @@ RSpec.describe Product, type: :model do
     expect(product.trends).to include(trend)
   end
 
+  it "should respond to gender" do
+    expect(product).to respond_to(:gender)
+  end
+
 end
