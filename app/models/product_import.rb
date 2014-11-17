@@ -24,7 +24,7 @@ class ProductImport
                                rrp: data['rrp'],
                                sale_price: data['sale_price'],
                                gender: data['gender']
-                                )
+                              )
     else
       product.update_attributes(store_id: store.id,
                                 brand_id: brand.id,

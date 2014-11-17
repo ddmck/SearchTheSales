@@ -70,4 +70,4 @@ gem 'will_paginate', '~> 3.0'
 gem 'resque'
 
 # For cross origin requests
-gem 'rack-cors', :require => 'rack/cors'
+gem 'rack-cors', require: 'rack/cors'
