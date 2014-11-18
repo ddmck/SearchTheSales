@@ -5,7 +5,15 @@ class ProductsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @products = Product.paginate(page: params[:page], per_page: 52)
+    if params["gender"]
+      @gender = Gender.find_by_name(params["gender"])
+      @products = @gender.products.paginate(page: params[:page], per_page: 104)
+    elsif params[:category]
+      @category = Category.find_by_name(params[:category])
+      @products = @category.products.paginate(page: params[:page], per_page: 104)
+    else  
+      @products = Product.paginate(page: params[:page], per_page: 104)
+    end
     respond_with(@products)
   end
 

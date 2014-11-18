@@ -8,7 +8,7 @@ class CSVParser
           category: row[:category],
           sub_categories: (row[:subcategory].try(:split, ',') || []).map!(&:strip),
           colors: (row[:colour].try(:split, ',') || []).map!(&:strip),
-          name: row[:name],
+          reference_name: row[:name],
           description: row[:description],
           url: row[:deep_link],
           image_url: row[:image_url],

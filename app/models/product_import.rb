@@ -11,31 +11,35 @@ class ProductImport
     category = set_category(data['category'])
     sub_categories = set_sub_categories(data['sub_categories'], category)
     colors = set_colors(data['colors'])
-    product = Product.find_by_name(data['name'])
+    product = Product.find_by_name(data['reference_name'])
+    gender = set_gender(data['gender'])
+    display_name = set_display_name(brand, data['reference_name'])
 
     if product.nil?
       product = Product.create(store_id: store.id,
                                brand_id: brand.id,
                                category_id: category.id,
-                               name: data['name'],
+                               name: display_name,
+                               reference_name: data['reference_name'],
                                description: data[:"description"],
                                url: data['url'],
                                image_url: data['image_url'],
                                rrp: data['rrp'],
                                sale_price: data['sale_price'],
-                               gender: data['gender']
+                               gender_id: gender.id
                               )
     else
       product.update_attributes(store_id: store.id,
                                 brand_id: brand.id,
                                 category_id: category.id,
-                                name: data['name'],
+                                name: display_name,
+                                reference_name: data['reference_name'],
                                 description: data[:"description"],
                                 url: data['url'],
                                 image_url: data['image_url'],
                                 rrp: data['rrp'],
                                 sale_price: data['sale_price'],
-                                gender: data['gender']
+                                gender_id: gender.id
                                 )
     end
 
@@ -100,5 +104,21 @@ class ProductImport
       end
       color
     end
+  end
+
+  def self.set_gender(gender_data)
+    genders = { male: ["m", "M"], female: ["f", "F"]}
+    if genders[:male].include?(gender_data)
+      gender = "male"
+    elsif genders[:female].include?(gender_data)
+      gender = "female"
+    else 
+      gender = "unisex"
+    end
+    Gender.find_by_name(gender)
+  end
+
+  def self.set_display_name(brand, product_name)
+    product_name.downcase.remove(brand.name.downcase)
   end
 end
