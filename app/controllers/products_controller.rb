@@ -7,9 +7,13 @@ class ProductsController < ApplicationController
   def index
     if params["gender"]
       @gender = Gender.find_by_name(params["gender"])
-      @products = @gender.products.paginate(page: params[:page], per_page: 104)
+      if params[:category]
+        @products = Product.where(category_id: params[:category], gender_id: @gender.id).paginate(page: params[:page], per_page: 104)
+      else
+        @products = @gender.products.paginate(page: params[:page], per_page: 104)
+      end
     elsif params[:category]
-      @category = Category.find_by_name(params[:category])
+      @category = Category.find(params[:category])
       @products = @category.products.paginate(page: params[:page], per_page: 104)
     else  
       @products = Product.paginate(page: params[:page], per_page: 104)
