@@ -8,16 +8,20 @@ class ProductsController < ApplicationController
     if params["gender"]
       @gender = Gender.find_by_name(params["gender"])
       if params[:category]
-        @products = Product.where(category_id: params[:category], gender_id: @gender.id).paginate(page: params[:page], per_page: 104)
+        @products = Product.where(category_id: params[:category], gender_id: @gender.id)
       else
-        @products = @gender.products.paginate(page: params[:page], per_page: 104)
+        @products = @gender.products
       end
     elsif params[:category]
       @category = Category.find(params[:category])
-      @products = @category.products.paginate(page: params[:page], per_page: 104)
+      @products = @category.products
     else  
-      @products = Product.paginate(page: params[:page], per_page: 104)
+      @products = Product.all
     end
+    if params[:search_string]
+      @products = @products.basic_search(name: params[:search_string])
+    end
+    @products = @products.paginate(page: params[:page], per_page: 104)
     respond_with(@products)
   end
 

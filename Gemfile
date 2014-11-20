@@ -71,3 +71,6 @@ gem 'resque'
 
 # For cross origin requests
 gem 'rack-cors', require: 'rack/cors'
+
+# For search
+gem 'textacular', '~> 3.0'
