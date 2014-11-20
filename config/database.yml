@@ -17,4 +17,15 @@ test:
   pool: 5
   port: 5432
   host: localhost
+
+production:
+  adapter: postgresql
+  encoding: utf8
+  Host: 172.17.42.1
+  database: storeluv_production
+  Port: 49155
+  User: 'root'
+  Password: 'G7MVKtvQraeJg6RY'
+  Database: 'db'
+  Url: 'postgres://root:G7MVKtvQraeJg6RY@172.17.42.1:49155/db' 
   
