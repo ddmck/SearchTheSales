@@ -1,71 +1,71 @@
 <div class="contain-to-grid">
-      <nav class="top-bar" data-topbar role="navigation">
-        <ul class="title-area">
-          <li class="name">
-            <a href="#"><img src="assets/storeluv-logo.png"></a>
-          </li>
-           <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-          <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
-        </ul>
+  <nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+      <li class="name">
+        <a href="#"><img src=<%= asset_path "assets/storeluv-logo.png" %>></a>
+      </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+    </ul>
 
-        <section class="top-bar-section">
-          <!-- Right Nav Section -->
-          <ul class="right">
-            <li><a href="">Sign in</a></li>
-          </ul>
-        </section>
-      </nav>
-    </div>
-    <div class="sub-nav-container" ng-controller="SubNavController as SubNavCtlr">
-      <dl class="sub-nav">
-        <div class="row">
-        <dd ng-class="{active: tab === nil}" ng-click="SubNavCtlr.setGender(null); tab = nil"><a>Trending</a></dd>
-        <dd ng-class="{active: tab === 1}" ng-click="SubNavCtlr.setGender('mens'); tab = 1"><a>Mens</a></dd>
-        <dd ng-class="{active: tab === 2}" ng-click="SubNavCtlr.setGender('womens'); tab = 2"><a>Womens</a></dd>
-        <!-- <dd><a href="#">Sale</a></dd> -->
-        </div>
-      </dl>
-    </div>
-
-    <div class="category-container row" ng-controller="CategoryController as CategoryCtrl">
-      <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-6">
-        <li ng-repeat="category in CategoryCtrl.categories.list()">
-          <a ng-click="CategoryCtrl.setCategory(category.id)" class="label">{{category.name}}</a>
-        </li>
+    <section class="top-bar-section">
+      <!-- Right Nav Section -->
+      <ul class="right">
+        <li><a href="">Sign in</a></li>
       </ul>
+    </section>
+  </nav>
+</div>
+<div class="sub-nav-container" ng-controller="SubNavController as SubNavCtlr">
+  <dl class="sub-nav">
+    <div class="row">
+    <dd ng-class="{active: tab === nil}" ng-click="SubNavCtlr.setGender(null); tab = nil"><a>Trending</a></dd>
+    <dd ng-class="{active: tab === 1}" ng-click="SubNavCtlr.setGender('mens'); tab = 1"><a>Mens</a></dd>
+    <dd ng-class="{active: tab === 2}" ng-click="SubNavCtlr.setGender('womens'); tab = 2"><a>Womens</a></dd>
+    <!-- <dd><a href="#">Sale</a></dd> -->
     </div>
+  </dl>
+</div>
 
-    <div class="search-container" ng-controller="SearchController as SearchCtrl">
-      <form ng-submit="SearchCtrl.updateSearch(searchString)">
-        <div class="large-12 columns">
-          <div class="row collapse">
-            <div class="small-10 columns">
-              <input type="search" ng-model="searchString" ng-change="SearchCtrl.findCat(searchString)">
-            </div>
-            <div class="small-2 columns">
-              <input class="button postfix" type="submit">
-            </div>
-          </div>
+<div class="category-container row" ng-controller="CategoryController as CategoryCtrl">
+  <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-6">
+    <li ng-repeat="category in CategoryCtrl.categories.list()">
+      <a ng-click="CategoryCtrl.setCategory(category.id)" class="label">{{category.name}}</a>
+    </li>
+  </ul>
+</div>
+
+<div class="search-container" ng-controller="SearchController as SearchCtrl">
+  <form ng-submit="SearchCtrl.updateSearch(searchString)">
+    <div class="large-12 columns">
+      <div class="row collapse">
+        <div class="small-10 columns">
+          <input type="search" ng-model="searchString" ng-change="SearchCtrl.findCat(searchString)">
+        </div>
+        <div class="small-2 columns">
+          <input class="button postfix" type="submit">
+        </div>
+      </div>
+    </div>
+    
+    
+  </form>
+</div>
+
+<div class="row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="3" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
+  <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
+    <li ng-repeat="product in products.products.getProducts() track by $index" >
+      <div ng-style="{'background-image':'url('+ product.image_url +')'}" class="product-container">
+        <!-- <img ng-src="{{product.image_url}}"/> -->
+        <a class="button buy-button" ng-click="products.openLink(product)">Buy</a> 
+        <div class="product-description">
+
+          <p class="product-brand">{{ product.brand_name }}</p>
+          <p class="product-name">{{ product.name }}</p>
+          <p class="product-price">{{ product.sale_price | currency : '£' }}</p>
         </div>
         
-        
-      </form>
-    </div>
-
-    <div class="row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="3" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
-      <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
-        <li ng-repeat="product in products.products.getProducts() track by $index" >
-          <div ng-style="{'background-image':'url('+ product.image_url +')'}" class="product-container">
-            <!-- <img ng-src="{{product.image_url}}"/> -->
-            <a class="button buy-button" ng-click="products.openLink(product)">Buy</a> 
-            <div class="product-description">
-
-              <p class="product-brand">{{ product.brand_name }}</p>
-              <p class="product-name">{{ product.name }}</p>
-              <p class="product-price">{{ product.sale_price | currency : '£' }}</p>
-            </div>
-            
-          </div>
-        </li>
-      </ul>
-    </div>
+      </div>
+    </li>
+  </ul>
+</div>
