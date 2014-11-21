@@ -1,70 +1,71 @@
-<!-- <div class="row">
-  <div class="col-sm-12">
-    <% title("Home Page") %>
-    <h1>Welcome to Search The Sales</h1>
-  </div>
-</div>
+<div class="contain-to-grid">
+      <nav class="top-bar" data-topbar role="navigation">
+        <ul class="title-area">
+          <li class="name">
+            <a href="#"><img src="assets/storeluv-logo.png"></a>
+          </li>
+           <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+          <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+        </ul>
 
-<h4>Everything you could want from the stores you love</h4>
-
-<div class="row">
-  <% @stores.each do |store| %>
-  	<div class="col-md-3">
-      <img src="<%= store.image_url %>">
+        <section class="top-bar-section">
+          <!-- Right Nav Section -->
+          <ul class="right">
+            <li><a href="">Sign in</a></li>
+          </ul>
+        </section>
+      </nav>
     </div>
-  <% end %>
-</div>
+    <div class="sub-nav-container" ng-controller="SubNavController as SubNavCtlr">
+      <dl class="sub-nav">
+        <div class="row">
+        <dd ng-class="{active: tab === nil}" ng-click="SubNavCtlr.setGender(null); tab = nil"><a>Trending</a></dd>
+        <dd ng-class="{active: tab === 1}" ng-click="SubNavCtlr.setGender('mens'); tab = 1"><a>Mens</a></dd>
+        <dd ng-class="{active: tab === 2}" ng-click="SubNavCtlr.setGender('womens'); tab = 2"><a>Womens</a></dd>
+        <!-- <dd><a href="#">Sale</a></dd> -->
+        </div>
+      </dl>
+    </div>
 
-<h4>All of your favourite brands</h4>
+    <div class="category-container row" ng-controller="CategoryController as CategoryCtrl">
+      <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-6">
+        <li ng-repeat="category in CategoryCtrl.categories.list()">
+          <a ng-click="CategoryCtrl.setCategory(category.id)" class="label">{{category.name}}</a>
+        </li>
+      </ul>
+    </div>
 
-<div class="row">
-  <% @brands.each do |brand| %>
-    <%= link_to brand_path(brand) do %>
-      <div class="col-md-3">
-        <img src="<%= brand.image_url %>">
-      </div>
-    <% end %>
-  <% end %>
-</div>
+    <div class="search-container" ng-controller="SearchController as SearchCtrl">
+      <form ng-submit="SearchCtrl.updateSearch(searchString)">
+        <div class="large-12 columns">
+          <div class="row collapse">
+            <div class="small-10 columns">
+              <input type="search" ng-model="searchString" ng-change="SearchCtrl.findCat(searchString)">
+            </div>
+            <div class="small-2 columns">
+              <input class="button postfix" type="submit">
+            </div>
+          </div>
+        </div>
+        
+        
+      </form>
+    </div>
 
-<h4>Just a small selection of the thousands of products we have</h4>
+    <div class="row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="3" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
+      <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
+        <li ng-repeat="product in products.products.getProducts() track by $index" >
+          <div ng-style="{'background-image':'url('+ product.image_url +')'}" class="product-container">
+            <!-- <img ng-src="{{product.image_url}}"/> -->
+            <a class="button buy-button" ng-click="products.openLink(product)">Buy</a> 
+            <div class="product-description">
 
-<div class="row">
-  <% @products.first(4).each do |product| %>
-    <%= link_to product_path(product) do %>
-      <div class="col-md-3">
-        <img src="<%= product.image_url %>">
-      </div>
-    <% end %>
-  <% end %>
-</div>
-
-<% if current_user %>
-  <h4>Your wishlist</h4>
-  <div class="row">
-    <% @wishlist.each do |item| %>
-      <div class="col-md-3">
-        <img src="<%= item.image_url %>">
-      </div>
-    <% end %>
-  </div>
-<% else %>
-  <h4>Sign in to create your wishlist</h4>
-  <%= link_to "Sign up now", new_user_registration_path %>
-<% end %>
-
-<% if current_user %>
-  <h4>Your Shopping Basket</h4>
-  <div class="row">
-    <% @basket.products.each do |item| %>
-      <div class="col-md-3">
-        <img src="<%= item.image_url %>"><br>
-        <p>Price: <%= item.sale_price %></p>
-      </div>
-    <% end %>
-  </div>
-  <h4>Total: <%= @basket.total_price %></h4>
-<% else %>
-  <h4>Sign in to add to your shopping basket</h4>
-  <%= link_to "Sign up now", new_user_registration_path %>
-<% end %> -->
+              <p class="product-brand">{{ product.brand_name }}</p>
+              <p class="product-name">{{ product.name }}</p>
+              <p class="product-price">{{ product.sale_price | currency : '£' }}</p>
+            </div>
+            
+          </div>
+        </li>
+      </ul>
+    </div>
