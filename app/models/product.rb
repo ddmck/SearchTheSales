@@ -25,4 +25,12 @@ class Product < ActiveRecord::Base
   def add_to_basket(user)
     user.basket.create_basket_item(self)
   end
+
+  def brand_name
+    brand.name
+  end 
+
+  def display_price
+    sale_price || rrp
+  end
 end

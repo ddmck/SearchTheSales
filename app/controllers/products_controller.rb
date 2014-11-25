@@ -21,7 +21,7 @@ class ProductsController < ApplicationController
     if params[:search_string]
       @products = @products.basic_search(name: params[:search_string])
     end
-    @products = @products.paginate(page: params[:page], per_page: 104)
+    @products = @products.paginate(page: params[:page], per_page: 52)
     respond_with(@products)
   end
 

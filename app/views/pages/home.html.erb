@@ -48,19 +48,32 @@
 </div>
 
 <div class="row products-row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="3" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
+  <div class="no-results" ng-show="products.products.getProducts().length === 0 && products.products.currentlySearching() === false">
+    <h1><i class="fa fa-frown-o"></i></h1>
+    <h4>No products matching "{{products.filters.searchString}}"!</h4>
+  </div>
   <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
     <li ng-repeat="product in products.products.getProducts() track by $index" >
       <div ng-style="{'background-image':'url('+ product.image_url +')'}" class="product-container">
         <!-- <img ng-src="{{product.image_url}}"/> -->
         <a class="button buy-button" ng-click="products.openLink(product)">Buy</a> 
         <div class="product-description">
-
           <p class="product-brand">{{ product.brand_name }}</p>
-          <p class="product-name">{{ product.name }}</p>
-          <p class="product-price">{{ product.sale_price | currency : '£' }}</p>
+          <p class="product-name" ng-bind-html="product.name"></p>
+          <p class="product-price">{{ product.display_price | currency : '£' }}</p>
         </div>
         
       </div>
     </li>
   </ul>
+  <div class="load" ng-show="products.products.currentlySearching()">
+    <h4>
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle-o-notch fa-spin fa-stack-2x"></i>
+        <i class="fa fa-circle-o-notch fa-spin fa-stack-1x"></i>
+      </span>
+    </h4>
+    <h4>Grabbing the best products</h4>
+  </div>
+ 
 </div>
