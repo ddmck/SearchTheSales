@@ -74,3 +74,7 @@ gem 'rack-cors', require: 'rack/cors'
 
 # For search
 gem 'textacular', '~> 3.0'
+
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+gem 'bonsai-elasticsearch-rails'

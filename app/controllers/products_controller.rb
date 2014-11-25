@@ -19,9 +19,13 @@ class ProductsController < ApplicationController
       @products = Product.all
     end
     if params[:search_string]
-      @products = @products.basic_search(name: params[:search_string])
+      @products = Product.__elasticsearch__.search(params[:search_string]).page(params[:page]).records
+      if params[:category]
+        @products = @products.where(category_id: params[:category])
+      end
+    else
+      @products = @products.paginate(page: params[:page])
     end
-    @products = @products.paginate(page: params[:page], per_page: 52)
     respond_with(@products)
   end
 
