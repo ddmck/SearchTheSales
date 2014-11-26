@@ -38,7 +38,7 @@
     <li ng-controller="CategoryController as CategoryCtrl">
       <select ng-model="catId" ng-change="CategoryCtrl.setCategory(catId)">
         <option value="">Categories</option>
-        <option ng-repeat="category in CategoryCtrl.categories.list()" value="{{category.id}}">
+        <option ng-repeat="category in CategoryCtrl.categories.list()" value={{category.id}} ng-selected="CategoryCtrl.filters.getFilters().category === category.id">
           {{category.name}}
         </option>
       </select>
@@ -52,7 +52,7 @@
 <div class="row products-row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
   <div class="no-results" ng-show="products.products.getProducts().length === 0 && products.products.currentlySearching() === false">
     <h1><i class="fa fa-frown-o"></i></h1>
-    <h4>No products matching "{{products.filters.searchString}}"!</h4>
+    <h4>No products matching "{{products.filters.getFilters().searchString}}"!</h4>
   </div>
   <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
     <li ng-repeat="product in products.products.getProducts() track by $index" >
