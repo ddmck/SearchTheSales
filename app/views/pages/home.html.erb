@@ -9,40 +9,44 @@
     </ul>
   </nav>
 </div>
-<div class="sub-nav-container" ng-controller="SubNavController as SubNavCtlr">
-  <dl class="sub-nav">
-    <div class="row">
-      <dd ng-class="{active: tab === nil}" ng-click="SubNavCtlr.setGender(null); tab = nil"><a>Trending</a></dd>
-      <dd ng-class="{active: tab === 1}" ng-click="SubNavCtlr.setGender('mens'); tab = 1"><a>Mens</a></dd>
-      <dd ng-class="{active: tab === 2}" ng-click="SubNavCtlr.setGender('womens'); tab = 2"><a>Womens</a></dd>
-      <!-- <dd><a href="#">Sale</a></dd> -->
-      <dd class="category-select">
-        <div class="category-container" ng-controller="CategoryController as CategoryCtrl">
-          <select ng-model="catId" ng-change="CategoryCtrl.setCategory(catId)">
-            <option value="">Categories</option>
-            <option ng-repeat="category in CategoryCtrl.categories.list()" value="{{category.id}}">
-              {{category.name}}
-            </option>
-          </select>
-        </div>
-      </dd>
-    </div>
-  </dl>
-</div>
-
-<div class="search-container" ng-controller="SearchController as SearchCtrl">
-  <form ng-submit="SearchCtrl.updateSearch(searchString)">
-    <div class="large-12 columns">
-      <div class="row collapse">
-        <div class="small-10 columns">
-          <input type="search" ng-model="searchString" ng-change="SearchCtrl.findCat(searchString)">
-        </div>
-        <div class="small-2 columns">
-          <input class="button postfix" type="submit" value="Search">
+<div class="sub-nav-container" ng-controller="SearchController as SearchCtrl" >
+  <div class="row">
+    <form ng-submit="SearchCtrl.updateSearch(searchString)">
+      <div class="large-12 columns">
+        <div class="row collapse">
+          <div class="small-10 columns">
+            <input type="search" placeholder="Find something you will luv..." ng-model="searchString" ng-change="SearchCtrl.findCat(searchString)">
+          </div>
+          <div class="small-2 columns">
+            <input class="button postfix" type="submit" value="Search">
+          </div>
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
+</div>
+
+<div class="filter-container row">
+  <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+    <li ng-controller="GenderController as GenderCtrl">
+      <select ng-model="genderId" ng-change="GenderCtrl.setGender(genderId)">
+        <option value="">Genders</option>
+        <option value="mens">Mens</option>
+        <option value="womens">Womens</option>
+      </select> 
+    </li>
+    <li ng-controller="CategoryController as CategoryCtrl">
+      <select ng-model="catId" ng-change="CategoryCtrl.setCategory(catId)">
+        <option value="">Categories</option>
+        <option ng-repeat="category in CategoryCtrl.categories.list()" value="{{category.id}}">
+          {{category.name}}
+        </option>
+      </select>
+    </li>
+  </ul>
+  
+    
+  
 </div>
 
 <div class="row products-row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
