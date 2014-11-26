@@ -5,25 +5,26 @@ class ProductsController < ApplicationController
   respond_to :html, :json
 
   def index
-    if params["gender"]
-      @gender = Gender.find_by_name(params["gender"])
-      if params[:category]
-        @products = Product.where(category_id: params[:category], gender_id: @gender.id)
-      else
-        @products = @gender.products
-      end
-    elsif params[:category]
-      @category = Category.find(params[:category])
-      @products = @category.products
-    else  
-      @products = Product.all
-    end
     if params[:search_string]
-      @products = Product.__elasticsearch__.search(params[:search_string]).page(params[:page]).records
-      if params[:category]
-        @products = @products.where(category_id: params[:category])
-      end
+      @products = Product.__elasticsearch__.search(query: { 
+                                                    query_string: {
+                                                      query: build_search_string(params)
+                                                    }}, size: 200).page(params[:page]).records
     else
+      if params["gender"]
+        @gender = Gender.find_by_name(params["gender"])
+        if params[:category]
+          @products = Product.where(category_id: params[:category], gender_id: @gender.id)
+        else
+          @products = @gender.products
+        end
+      elsif params[:category]
+        @category = Category.find(params[:category])
+        @products = @category.products
+      else  
+        @products = Product.all
+        
+      end
       @products = @products.paginate(page: params[:page])
     end
     respond_with(@products)
@@ -73,6 +74,28 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :rrp, :sale_price, :brand_id, :store_id, :category_id, { sub_category_ids: [] }, { color_ids: [] }, { trend_ids: [] }, :url, :image_url, :description, :gender)
+    params.require(:product).permit(:name, 
+                                    :rrp, 
+                                    :sale_price, 
+                                    :brand_id, 
+                                    :store_id, 
+                                    :category_id, 
+                                    { sub_category_ids: [] }, 
+                                    { color_ids: [] }, 
+                                    { trend_ids: [] }, 
+                                    :url, 
+                                    :image_url, 
+                                    :description, 
+                                    :gender)
+  end
+
+  def build_search_string(params)
+    string = params[:search_string]
+    string += " AND category_id: #{params[:category]}" if params[:category]
+    if params[:gender]
+      @gender = Gender.find_by_name(params[:gender])
+      string += " AND gender_id: #{@gender.id}"
+    end
+    string
   end
 end
