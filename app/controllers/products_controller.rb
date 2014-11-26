@@ -8,6 +8,7 @@ class ProductsController < ApplicationController
     if params[:search_string]
       @products = Product.__elasticsearch__.search(query: { 
                                                     query_string: {
+                                                      default_field: "reference_name",
                                                       query: build_search_string(params)
                                                     }}, size: 200).page(params[:page]).records
     else
@@ -90,7 +91,7 @@ class ProductsController < ApplicationController
   end
 
   def build_search_string(params)
-    string = params[:search_string].singularize
+    string = params[:search_string].downcase.singularize.remove(Category.find(params[:category]).name.singularize)
     string += " AND category_id: #{params[:category]}" if params[:category]
     if params[:gender]
       @gender = Gender.find_by_name(params[:gender])
