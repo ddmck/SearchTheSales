@@ -45,7 +45,7 @@
   </form>
 </div>
 
-<div class="row products-row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="3" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
+<div class="row products-row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
   <div class="no-results" ng-show="products.products.getProducts().length === 0 && products.products.currentlySearching() === false">
     <h1><i class="fa fa-frown-o"></i></h1>
     <h4>No products matching "{{products.filters.searchString}}"!</h4>
