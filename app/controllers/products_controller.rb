@@ -90,7 +90,7 @@ class ProductsController < ApplicationController
   end
 
   def build_search_string(params)
-    string = params[:search_string]
+    string = params[:search_string].singularize
     string += " AND category_id: #{params[:category]}" if params[:category]
     if params[:gender]
       @gender = Gender.find_by_name(params[:gender])
