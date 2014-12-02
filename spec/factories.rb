@@ -55,4 +55,9 @@ FactoryGirl.define do
     sequence(:name) { |_n| 'gender' }
   end
 
+  factory :data_feed do
+    feed_url 'http://datafeedurl.com/file.csv'
+    store
+  end
+
 end

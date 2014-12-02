@@ -1,0 +1,1 @@
+json.extract! @data_feed, :id, :feed_url, :store_id, :name_column, :description_column, :rrp_colomn, :sale_price_column, :link_column, :image_url_coloum, :brand_column, :size_column, :color_column, :created_at, :updated_at

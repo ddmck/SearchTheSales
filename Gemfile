@@ -78,3 +78,9 @@ gem 'textacular', '~> 3.0'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'bonsai-elasticsearch-rails'
+
+#for grabbing datafeeds
+gem 'httparty'
+
+#for unzipping files
+gem 'rubyzip'

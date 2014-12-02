@@ -1,0 +1,47 @@
+<div class="row">
+  <h1>Listing data_feeds</h1>
+
+  <table role="grid" >
+    <thead>
+      <tr>
+        <!-- <th>Feed url</th> -->
+        <th>Store</th>
+        <th>Name column</th>
+        <th>Description column</th>
+        <th>Rrp column</th>
+        <th>Sale price column</th>
+        <th>Link column</th>
+        <th>Image url column</th>
+        <th>Brand column</th>
+        <th>Size column</th>
+        <th>Color column</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @data_feeds.each do |data_feed| %>
+        <tr>
+          <!-- <td width="100px"><%= data_feed.feed_url %></td> -->
+          <td><%= data_feed.store.name %></td>
+          <td><%= data_feed.name_column %></td>
+          <td><%= data_feed.description_column %></td>
+          <td><%= data_feed.rrp_column %></td>
+          <td><%= data_feed.sale_price_column %></td>
+          <td><%= data_feed.link_column %></td>
+          <td><%= data_feed.image_url_column %></td>
+          <td><%= data_feed.brand_column %></td>
+          <td><%= data_feed.size_column %></td>
+          <td><%= data_feed.color_column %></td>
+          <td><%= link_to 'Show', data_feed %></td>
+          <td><%= link_to 'Edit', edit_data_feed_path(data_feed) %></td>
+          <td><%= link_to 'Destroy', data_feed, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <br>
+
+  <%= link_to 'New Data feed', new_data_feed_path %>
+</div>

@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Feed url:</strong>
+  <%= @data_feed.feed_url %>
+</p>
+
+<p>
+  <strong>Store:</strong>
+  <%= @data_feed.store %>
+</p>
+
+<p>
+  <strong>Name column:</strong>
+  <%= @data_feed.name_column %>
+</p>
+
+<p>
+  <strong>Description column:</strong>
+  <%= @data_feed.description_column %>
+</p>
+
+<p>
+  <strong>Rrp column:</strong>
+  <%= @data_feed.rrp_column %>
+</p>
+
+<p>
+  <strong>Sale price column:</strong>
+  <%= @data_feed.sale_price_column %>
+</p>
+
+<p>
+  <strong>Link column:</strong>
+  <%= @data_feed.link_column %>
+</p>
+
+<p>
+  <strong>Image url column:</strong>
+  <%= @data_feed.image_url_column %>
+</p>
+
+<p>
+  <strong>Brand column:</strong>
+  <%= @data_feed.brand_column %>
+</p>
+
+<p>
+  <strong>Size column:</strong>
+  <%= @data_feed.size_column %>
+</p>
+
+<p>
+  <strong>Color column:</strong>
+  <%= @data_feed.color_column %>
+</p>
+
+<%= link_to 'Edit', edit_data_feed_path(@data_feed) %> |
+<%= link_to 'Back', data_feeds_path %>
