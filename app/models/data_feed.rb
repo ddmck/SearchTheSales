@@ -79,8 +79,8 @@ class DataFeed < ActiveRecord::Base
       product.image_url = item[:image_url]
       product.gender = set_gender(product)
       product.category = set_category(product)
-      product.sub_categories = set_sub_category(product) if product.category
-      product.colors = set_colors(item)
+      product.sub_categories << set_sub_category(product) if product.category
+      product.colors << set_colors(item)
       product.save
     end
   end
