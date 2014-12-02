@@ -32,7 +32,6 @@ class DataFeed < ActiveRecord::Base
 
   def process_file
     paths = unzipped_file_path
-    puts paths
     paths.each do |path|
       SmarterCSV.process(path,  chunk_size: 100, 
                                               key_mapping: { 
@@ -47,6 +46,8 @@ class DataFeed < ActiveRecord::Base
         process_chunk(chunk)
       end
     end
+    self.last_run_time = Time.now
+    self.save
   end
 
   def process_chunk(chunk)
