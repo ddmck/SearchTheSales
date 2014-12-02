@@ -202,10 +202,10 @@ class DataFeed < ActiveRecord::Base
   end
 
   def set_reference_name(reference_name, brand)
-    if !reference_name.downcase.include?(brand.name.downcase)
-      brand.name.downcase + " " + reference_name.downcase.gsub("`", "'")
-    else 
+    if reference_name.downcase.include?(brand.name.downcase)
       reference_name.downcase.gsub("`", "'")
+    else 
+      brand.name.downcase + " " + reference_name.downcase.gsub("`", "'")
     end
   end
 
