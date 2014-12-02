@@ -34,15 +34,15 @@ class DataFeed < ActiveRecord::Base
     paths = unzipped_file_path
     paths.each do |path|
       SmarterCSV.process(path,  chunk_size: 100, 
-                                              key_mapping: { 
-                                                name_column.to_sym => :reference_name, 
-                                                brand_column.to_sym => :brand,
-                                                rrp_column.to_sym => :rrp,
-                                                sale_price_column.to_sym => :sale_price,
-                                                description_column.to_sym => :description,
-                                                image_url_column.to_sym => :image_url,
-                                                link_column.to_sym => :url
-                                              }) do |chunk|
+                                key_mapping: { 
+                                  name_column.to_sym => :reference_name, 
+                                  brand_column.to_sym => :brand,
+                                  rrp_column.to_sym => :rrp,
+                                  sale_price_column.to_sym => :sale_price,
+                                  description_column.to_sym => :description,
+                                  image_url_column.to_sym => :image_url,
+                                  link_column.to_sym => :url
+                                }) do |chunk|
         process_chunk(chunk)
       end
     end
