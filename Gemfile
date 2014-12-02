@@ -32,10 +32,15 @@ group :development do
   gem 'guard-livereload', require: false
   gem 'terminal-notifier-guard'
   gem 'guard-resque', path: '../guard-resque'
+  gem 'guard-delayed'
 end
 
 # PostgreSQL
 gem 'pg'
+
+# Delayed_Jobs for Rails 3.0.0+
+gem 'delayed_job_active_record'
+gem 'scheduled_job'
 
 # Devise: https://github.com/plataformatec/devise
 gem 'devise', '3.4.1'

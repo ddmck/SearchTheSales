@@ -58,6 +58,12 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    daemons (1.1.9)
+    delayed_job (4.0.4)
+      activesupport (>= 3.0, < 4.2)
+    delayed_job_active_record (4.0.2)
+      activerecord (>= 3.0, < 4.2)
+      delayed_job (>= 3.0, < 4.1)
     devise (3.4.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -109,6 +115,10 @@ GEM
       lumberjack (~> 1.0)
       pry (>= 0.9.12)
       thor (>= 0.18.1)
+    guard-delayed (0.2.1)
+      daemons
+      delayed_job
+      guard (> 0.3)
     guard-livereload (2.3.1)
       em-websocket (~> 0.5)
       guard (~> 2.0)
@@ -239,6 +249,9 @@ GEM
       sass (~> 3.2.0)
       sprockets (~> 2.8, <= 2.11.0)
       sprockets-rails (~> 2.0)
+    scheduled_job (0.0.5)
+      delayed_job (< 4.1)
+      delayed_job_active_record (< 4.1)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -286,6 +299,7 @@ DEPENDENCIES
   bonsai-elasticsearch-rails
   coffee-rails (= 4.0.1)
   database_cleaner!
+  delayed_job_active_record
   devise (= 3.4.1)
   elasticsearch-model
   elasticsearch-rails
@@ -294,6 +308,7 @@ DEPENDENCIES
   font-awesome-sass (= 4.2.2)
   foundation-rails
   friendly_id (= 5.0.4)
+  guard-delayed
   guard-livereload
   guard-rails
   guard-resque!
@@ -311,6 +326,7 @@ DEPENDENCIES
   rspec-rails
   rubyzip
   sass-rails (= 4.0.3)
+  scheduled_job
   smarter_csv
   terminal-notifier-guard
   textacular (~> 3.0)
