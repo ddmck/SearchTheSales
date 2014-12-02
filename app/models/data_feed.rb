@@ -49,6 +49,7 @@ class DataFeed < ActiveRecord::Base
     self.last_run_time = Time.now
     self.save
   end
+  handle_asynchronously :process_file
 
   def process_chunk(chunk)
     chunk.each do |item|
