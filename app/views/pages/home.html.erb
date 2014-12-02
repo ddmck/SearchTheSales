@@ -43,17 +43,28 @@
         </option>
       </select>
     </li>
+
+    <li ng-controller="SubCategoryController as SubCategoryCtrl">
+
+      <select ng-model="subCatId" ng-change="SubCategoryCtrl.setSubCat(subCatId)" ng-show="SubCategoryCtrl.filters.getFilters().category">
+        <option value="">Sub Category</option>
+        <option ng-repeat="subCat in SubCategoryCtrl.subCategories.list()" value={{subCat.id}} ng-selected="SubCategoryCtrl.filters.getFilters().subCategory === subCat.id" ng-show="subCat.category_id === SubCategoryCtrl.filters.getFilters().category">
+          {{ subCat.name }}
+        </option>
+      </select>
+    </li>
   </ul>
-  
-    
-  
+
 </div>
+
+
 
 <div class="row products-row" ng-controller="ProductsController as products" infinite-scroll="products.nextPage(products.products)" infinite-scroll-distance="1" infinite-scroll-immediate-check='{{ products.scrollActive }}'>
   <div class="no-results" ng-show="products.products.getProducts().length === 0 && products.products.currentlySearching() === false">
     <h1><i class="fa fa-frown-o"></i></h1>
     <h4>No products matching "{{products.filters.getFilters().searchString}}"!</h4>
   </div>
+
   <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
     <li ng-repeat="product in products.products.getProducts() track by $index" >
       <div ng-style="{'background-image':'url('+ product.image_url +')'}" class="product-container">
