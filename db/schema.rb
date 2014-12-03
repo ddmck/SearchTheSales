@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203104247) do
+ActiveRecord::Schema.define(version: 20141203154248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,16 +142,18 @@ ActiveRecord::Schema.define(version: 20141203104247) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "rrp",            precision: 10, scale: 2
-    t.decimal  "sale_price",     precision: 10, scale: 2
+    t.decimal  "rrp",             precision: 10, scale: 2
+    t.decimal  "sale_price",      precision: 10, scale: 2
     t.integer  "category_id"
     t.integer  "gender_id"
     t.string   "reference_name"
+    t.integer  "sub_category_id"
   end
 
   add_index "products", ["brand_id", "store_id"], name: "index_products_on_brand_id_and_store_id", using: :btree
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
   add_index "products", ["gender_id"], name: "index_products_on_gender_id", using: :btree
+  add_index "products", ["sub_category_id"], name: "index_products_on_sub_category_id", using: :btree
 
   create_table "stores", force: true do |t|
     t.string   "name"
@@ -170,16 +172,6 @@ ActiveRecord::Schema.define(version: 20141203104247) do
   end
 
   add_index "sub_categories", ["category_id"], name: "index_sub_categories_on_category_id", using: :btree
-
-  create_table "sub_category_tags", force: true do |t|
-    t.integer  "sub_category_id"
-    t.integer  "product_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sub_category_tags", ["product_id"], name: "index_sub_category_tags_on_product_id", using: :btree
-  add_index "sub_category_tags", ["sub_category_id"], name: "index_sub_category_tags_on_sub_category_id", using: :btree
 
   create_table "trend_tags", force: true do |t|
     t.integer  "product_id"

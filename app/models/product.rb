@@ -6,14 +6,14 @@ class Product < ActiveRecord::Base
   belongs_to :brand
   belongs_to :store
   belongs_to :category
+  belongs_to :sub_category
   belongs_to :gender
   has_many :basket_items
   has_many :wishlist_items
   has_many :users, through: :wishlist_items
   has_many :color_tags
   has_many :colors, through: :color_tags
-  has_many :sub_category_tags
-  has_many :sub_categories, through: :sub_category_tags
+  
   has_many :trend_tags
   has_many :trends, through: :trend_tags
 
