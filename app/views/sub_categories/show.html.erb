@@ -1,9 +1,17 @@
-<p id="notice"><%= notice %></p>
+<div class="row">  
+  <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @sub_category.name %>
-</p>
+  <p>
+    <strong>Name:</strong>
+    <%= @sub_category.name %>
+  </p>
 
-<%= link_to 'Edit', edit_sub_category_path(@sub_category) %> |
-<%= link_to 'Back', sub_categories_path %>
+  <%= link_to 'Edit', edit_sub_category_path(@sub_category) %> |
+  <%= link_to 'Back', sub_categories_path %>
+
+  <ul>
+    <% @sub_category.products.each do |product| %>
+      <li><%= product.name %> <%= link_to "link", product.url %> </li>
+    <% end %>
+  </ul>
+</div>

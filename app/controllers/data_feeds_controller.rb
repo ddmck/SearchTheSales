@@ -39,11 +39,23 @@ class DataFeedsController < ApplicationController
   end
 
   private
-    def set_data_feed
-      @data_feed = DataFeed.find(params[:id])
-    end
+  def set_data_feed
+    @data_feed = DataFeed.find(params[:id])
+  end
 
-    def data_feed_params
-      params.require(:data_feed).permit(:feed_url, :store_id, :name_column, :description_column, :rrp_column, :sale_price_column, :link_column, :image_url_column, :brand_column, :size_column, :color_column)
-    end
+  def data_feed_params
+    params.require(:data_feed).permit(:feed_url, 
+                                      :store_id, 
+                                      :name_column, 
+                                      :description_column, 
+                                      :rrp_column, 
+                                      :sale_price_column, 
+                                      :link_column, 
+                                      :image_url_column, 
+                                      :brand_column, 
+                                      :size_column, 
+                                      :color_column, 
+                                      :gender_column, 
+                                      :category_column)
+  end
 end
