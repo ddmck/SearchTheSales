@@ -8,7 +8,7 @@ class DataFeedImport
   end
 
   def self.time_to_recur(run_at)
-    run_at + 30.seconds
+    run_at + 24.hours
   end
 
 end
