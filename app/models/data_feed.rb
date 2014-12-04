@@ -31,18 +31,21 @@ class DataFeed < ActiveRecord::Base
   end
 
   def process_file
+    key_hash = {} 
+    key_hash[name_column.to_sym] = :reference_name if name_column 
+    key_hash[brand_column.to_sym] = :brand if brand_column
+    key_hash[rrp_column.to_sym] = :rrp if rrp_column
+    key_hash[sale_price_column.to_sym] = :sale_price if sale_price_column
+    key_hash[description_column.to_sym] = :description if description_column
+    key_hash[image_url_column.to_sym] = :image_url if image_url_column
+    key_hash[link_column.to_sym] = :url if link_column
+    key_hash[gender_column.to_sym] = :gender if gender_column
+    key_hash[category_column.to_sym] = :category if category_column
+    puts "key hash #{key_hash}"
     paths = unzipped_file_path
     paths.each do |path|
       SmarterCSV.process(path,  chunk_size: 100, 
-                                key_mapping: { 
-                                  name_column.to_sym => :reference_name, 
-                                  brand_column.to_sym => :brand,
-                                  rrp_column.to_sym => :rrp,
-                                  sale_price_column.to_sym => :sale_price,
-                                  description_column.to_sym => :description,
-                                  image_url_column.to_sym => :image_url,
-                                  link_column.to_sym => :url
-                                }) do |chunk|
+                                key_mapping: key_hash) do |chunk|
         process_chunk(chunk)
       end
     end
@@ -77,10 +80,10 @@ class DataFeed < ActiveRecord::Base
       product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
       product.url = item[:url]
       product.image_url = item[:image_url]
-      product.gender = set_gender(product)
-      product.category = set_category(product)
-      product.sub_categories << set_sub_category(product) if product.category
-      product.colors << set_colors(item)
+      product.gender = set_gender(item)
+      product.category = set_category(item, product)
+      product.sub_category = set_sub_category(product) if product.category
+      product.colors = set_colors(item)
       product.save
     end
   end
@@ -105,16 +108,36 @@ class DataFeed < ActiveRecord::Base
     brand
   end
 
-  def set_category(product)
+  def set_category(item, product)
     categories = Category.all
     cat = nil
     sub_categories = SubCategory.all
       
-    categories.each do |category|
-      if product.name.downcase.include?(category.name) || 
-         product.name.downcase.include?(category.name.singularize)
-        cat = category
-      end 
+    if item[:category]
+      categories.each do |category|
+        if item[:category].downcase.include?(category.name) || 
+           item[:category].downcase.include?(category.name.singularize)
+          cat = category
+        end 
+      end
+    end
+
+    if cat.nil? && item[:category]
+      sub_categories.each do |sub_category|
+        if item[:category].downcase.include?(sub_category.name) || 
+           item[:category].downcase.include?(sub_category.name.singularize)
+          cat = category
+        end 
+      end
+    end
+    
+    if cat == nil 
+      categories.each do |category|
+        if product.name.downcase.include?(category.name) || 
+           product.name.downcase.include?(category.name.singularize)
+          cat = category
+        end 
+      end
     end
 
     if cat == nil 
@@ -126,44 +149,44 @@ class DataFeed < ActiveRecord::Base
       end
     end
 
-    if cat == nil && product.description
-      categories.each do |category|
-        if product.description.downcase.remove(product.brand.name).include?(category.name) ||
-           product.description.downcase.remove(product.brand.name).include?(category.name.singularize)
-          cat = category
-        end
-      end
-    end
+    # if cat == nil && product.description
+    #   categories.each do |category|
+    #     if product.description.downcase.remove(product.brand.name).include?(category.name) ||
+    #        product.description.downcase.remove(product.brand.name).include?(category.name.singularize)
+    #       cat = category
+    #     end
+    #   end
+    # end
 
-    if cat == nil && product.description
-      sub_categories.each do |sub_category|
-        if product.description.downcase.remove(product.brand.name).include?(sub_category.name) ||
-           product.description.downcase.remove(product.brand.name).include?(sub_category.name.singularize)
-          cat = sub_category.category
-        end 
-      end
-    end
+    # if cat == nil && product.description
+    #   sub_categories.each do |sub_category|
+    #     if product.description.downcase.remove(product.brand.name).include?(sub_category.name) ||
+    #        product.description.downcase.remove(product.brand.name).include?(sub_category.name.singularize)
+    #       cat = sub_category.category
+    #     end 
+    #   end
+    # end
     cat
   end
 
   def set_sub_category(product)
-    sub_cats = []
+    sub_cat = nil
     name = sanitize_string(product.name).downcase.split(" ")
     description = sanitize_string(product.description).downcase.remove(product.brand.name).split(" ") if product.description
     sub_categories = product.category.sub_categories
     sub_categories.each do |sub_category|
       if name.include?(sub_category.name) || 
          name.include?(sub_category.name.singularize)
-        sub_cats << sub_category
+        sub_cat = sub_category
       end 
-      if product.description
+      if sub_cat.nil? && product.description
         if description.include?(sub_category.name) ||
            description.include?(sub_category.name.singularize)
-          sub_cats << sub_category
+          sub_cat = sub_category
         end
       end 
     end
-    sub_cats
+    sub_cat
   end
 
   def set_colors(item)
@@ -210,10 +233,13 @@ class DataFeed < ActiveRecord::Base
     end
   end
 
-  def set_gender(product)
-    gender = detect_gender(product.name)
-    if gender.nil? && product.description
-      gender = detect_gender(product.description)
+  def set_gender(item)
+    gender = detect_gender(item[:gender]) if item[:gender]
+    if gender.nil? && item[:reference_name]
+      gender = detect_gender(item[:reference_name])
+    end
+    if gender.nil? && item[:description]
+      gender = detect_gender(item[:description])
     end
     if gender
       return Gender.find_by_name(gender)
@@ -226,17 +252,19 @@ class DataFeed < ActiveRecord::Base
     mens_matches = ["mens", "men's", "male", "males", "male's", "boys", "boy's"]
     womens_matches = ["womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
     unisex_matches = ["unisex", "uni-sex"]
+    gender_match = nil
     sanitize_string(string.downcase).split(" ").each do |word|
-      if mens_matches.include?(word)
-        return "male"
-      elsif womens_matches.include?(word)
-        return "female"
-      elsif unisex_matches.include?(word)
-        return "unisex"
-      else
-        return nil
+      unless gender_match
+        if mens_matches.include?(word)
+          gender_match = "male"
+        elsif womens_matches.include?(word)
+          gender_match = "female"
+        elsif unisex_matches.include?(word)
+          gender_match = "unisex"
+        end
       end
     end
+    gender_match
   end
 
   def detect_valid_url(string)
