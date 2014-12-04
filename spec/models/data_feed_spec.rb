@@ -45,5 +45,8 @@ RSpec.describe DataFeed, :type => :model do
     expect(data_feed.detect_gender("unisex fleece black")).to eq("unisex")
     expect(data_feed.detect_gender("uni-sex fleece black")).to eq("unisex")
     expect(data_feed.detect_gender("men's fleece plain, black")).to eq("male")
+    expect(data_feed.detect_gender("Women > Dresses")).to eq("female")
+    expect(data_feed.detect_gender("Men > Tops & T-Shirts > Men's T-Shirts")).to eq("male")
+    expect(data_feed.detect_gender("Men > Tops & T-Shirts")).to eq("male")
   end
 end

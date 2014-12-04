@@ -235,6 +235,9 @@ class DataFeed < ActiveRecord::Base
 
   def set_gender(item)
     gender = detect_gender(item[:gender]) if item[:gender]
+    if gender.nil? && item[:category]
+      gender = detect_gender(item[:category])
+    end
     if gender.nil? && item[:reference_name]
       gender = detect_gender(item[:reference_name])
     end
@@ -249,8 +252,8 @@ class DataFeed < ActiveRecord::Base
   end
 
   def detect_gender(string)
-    mens_matches = ["mens", "men's", "male", "males", "male's", "boys", "boy's"]
-    womens_matches = ["womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
+    mens_matches = ["men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
+    womens_matches = ["women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
     unisex_matches = ["unisex", "uni-sex"]
     gender_match = nil
     sanitize_string(string.downcase).split(" ").each do |word|
