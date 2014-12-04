@@ -16,12 +16,18 @@ class ProductsController < ApplicationController
         @gender = Gender.find_by_name(params["gender"])
         if params[:category]
           @products = Product.where(category_id: params[:category], gender_id: @gender.id)
+          if params[:sub_category]
+            @products = @products.where(sub_category_id: params[:sub_category])
+          end
         else
           @products = @gender.products
         end
       elsif params[:category]
         @category = Category.find(params[:category])
         @products = @category.products
+        if params[:sub_category]
+          @products = @products.where(sub_category_id: params[:sub_category])
+        end
       else  
         @products = Product.all
         
@@ -97,6 +103,7 @@ class ProductsController < ApplicationController
       string = params[:search_string].downcase.singularize 
     end
     string += " AND category_id: #{params[:category]}" if params[:category]
+    string += " AND sub_category_id: #{params[:sub_category]}" if params[:sub_category]
     if params[:gender]
       @gender = Gender.find_by_name(params[:gender])
       string += " AND gender_id: #{@gender.id}"
