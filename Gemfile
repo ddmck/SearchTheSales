@@ -31,8 +31,6 @@ group :development do
   gem 'guard-rubocop'
   gem 'guard-livereload', require: false
   gem 'terminal-notifier-guard'
-  gem 'guard-resque', path: '../guard-resque'
-  gem 'guard-delayed'
 end
 
 # PostgreSQL
@@ -59,9 +57,7 @@ gem 'angularjs-rails'
 
 # Unicorn: http://unicorn.bogomips.org
 
-group :production do
-  gem 'unicorn'
-end
+gem 'unicorn'
 
 group :test do
   gem 'factory_girl_rails'
