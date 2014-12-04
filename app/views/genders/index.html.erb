@@ -11,7 +11,7 @@
   <tbody>
     <% @genders.each do |gender| %>
       <tr>
-        <td><%= gender.name %></td>
+        <td><%= gender.name %> (<%= gender.products.length %> Products)</td>
         <td><%= link_to 'Show', gender %></td>
         <td><%= link_to 'Edit', edit_gender_path(gender) %></td>
         <td><%= link_to 'Destroy', gender, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -19,6 +19,8 @@
     <% end %>
   </tbody>
 </table>
+
+<p>Products without a gender: <%= Product.where(gender_id: nil).length %></p>
 
 <br>
 
