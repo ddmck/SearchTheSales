@@ -2,6 +2,18 @@ require 'elasticsearch/model'
 
 class Product < ActiveRecord::Base
   include Elasticsearch::Model
+  after_commit on: [:create] do
+    index_document
+  end
+
+  after_commit on: [:update] do
+    update_document
+  end
+
+  after_commit on: [:destroy] do
+    delete_document
+  end
+
   validates_presence_of :name, :brand_id, :store_id, :url
   belongs_to :brand
   belongs_to :store
@@ -36,4 +48,22 @@ class Product < ActiveRecord::Base
   def display_price
     sale_price || rrp
   end
+
+  def index_document
+    __elasticsearch__.index_document
+  end
+
+  handle_asynchronously :index_document
+
+  def update_document
+    __elasticsearch__.update_document
+  end
+
+  handle_asynchronously :update_document
+
+  def delete_document
+    __elasticsearch__.delete_document
+  end
+
+  handle_asynchronously :delete_document
 end
