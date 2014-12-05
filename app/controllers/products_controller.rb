@@ -107,9 +107,8 @@ class ProductsController < ApplicationController
     string += ' AND sub_category_id: ' + params[:sub_category]  if params[:sub_category]
     if params[:gender]
       @gender = Gender.find_by_name(params[:gender])
-      string += ' AND gender_id: ' + @gender.id
+      string += " AND gender_id: #{@gender.id}"
     end
-    puts string
     string
   end
 end
