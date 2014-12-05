@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
 
   def index
     if params[:search_string]
-      @products = Product.__elasticsearch__.search(query: { 
+      @products = Product.__elasticsearch__.search(query: {
                                                     query_string: {
                                                       default_field: "reference_name",
                                                       query: build_search_string(params)
@@ -97,17 +97,19 @@ class ProductsController < ApplicationController
   end
 
   def build_search_string(params)
-    string = params[:search_string].downcase.singularize
+    string = params[:search_string].downcase
     string = string.remove(Category.find(params[:category]).name.singularize) if params[:category]
     if string.strip == ""
-      string = params[:search_string].downcase.singularize 
+      string = params[:search_string].downcase
     end
-    string += " AND category_id: #{params[:category]}" if params[:category]
-    string += " AND sub_category_id: #{params[:sub_category]}" if params[:sub_category]
+    string += ' OR ' + params[:search_string].downcase + '~' 
+    string += ' AND category_id: ' + params[:category] if params[:category]
+    string += ' AND sub_category_id: ' + params[:sub_category]  if params[:sub_category]
     if params[:gender]
       @gender = Gender.find_by_name(params[:gender])
-      string += " AND gender_id: #{@gender.id}"
+      string += ' AND gender_id: ' + @gender.id
     end
+    puts string
     string
   end
 end
