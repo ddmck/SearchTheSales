@@ -126,7 +126,7 @@ class DataFeed < ActiveRecord::Base
       sub_categories.each do |sub_category|
         if item[:category].downcase.include?(sub_category.name) || 
            item[:category].downcase.include?(sub_category.name.singularize)
-          cat = category
+          cat = sub_category.category
         end 
       end
     end
