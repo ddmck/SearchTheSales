@@ -85,3 +85,6 @@ gem 'httparty'
 
 #for unzipping files
 gem 'rubyzip'
+
+# for scaling workers
+gem "hirefire-resource"

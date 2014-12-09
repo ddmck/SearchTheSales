@@ -121,6 +121,7 @@ GEM
       rubocop (~> 0.20)
     hashie (3.3.1)
     hike (1.2.3)
+    hirefire-resource (0.3.4)
     hitimes (1.2.2)
     http_parser.rb (0.6.0)
     httparty (0.13.3)
@@ -300,6 +301,7 @@ DEPENDENCIES
   guard-rails
   guard-rspec
   guard-rubocop
+  hirefire-resource
   httparty
   jbuilder (= 2.2.4)
   kaminari (= 0.16.1)
