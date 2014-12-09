@@ -41,7 +41,6 @@ class DataFeed < ActiveRecord::Base
     key_hash[link_column.to_sym] = :url if link_column
     key_hash[gender_column.to_sym] = :gender if gender_column
     key_hash[category_column.to_sym] = :category if category_column
-    puts "key hash #{key_hash}"
     paths = unzipped_file_path
     paths.each do |path|
       SmarterCSV.process(path,  chunk_size: 100, 
@@ -69,21 +68,20 @@ class DataFeed < ActiveRecord::Base
       product = Product.find_by_url(item[:url])
       if product.nil?
         product = Product.new
+        product.brand = set_brand(item[:brand])
+        product.store = set_store
+        product.reference_name = set_reference_name(item[:reference_name], product.brand)
+        product.name = set_name(product)
+        product.description = item[:description]
+        product.url = item[:url]
+        product.image_url = item[:image_url]
+        product.gender = set_gender(item)
+        product.category = set_category(item, product)
+        product.sub_category = set_sub_category(product) if product.category
+        product.colors = set_colors(item)
       end
-
-      product.brand = set_brand(item[:brand])
-      product.store = set_store
-      product.reference_name = set_reference_name(item[:reference_name], product.brand)
-      product.name = set_name(product)
-      product.description = item[:description]
       product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
       product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
-      product.url = item[:url]
-      product.image_url = item[:image_url]
-      product.gender = set_gender(item)
-      product.category = set_category(item, product)
-      product.sub_category = set_sub_category(product) if product.category
-      product.colors = set_colors(item)
       product.save
     end
   end
