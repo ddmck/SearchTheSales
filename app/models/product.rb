@@ -54,17 +54,17 @@ class Product < ActiveRecord::Base
     __elasticsearch__.index_document
   end
 
-  handle_asynchronously :index_document
+  handle_asynchronously :index_document, :queue => 'indexes'
 
   def update_document
     __elasticsearch__.update_document
   end
 
-  handle_asynchronously :update_document
+  handle_asynchronously :update_document, :queue => 'indexes'
 
   def delete_document
     __elasticsearch__.delete_document
   end
 
-  handle_asynchronously :delete_document
+  handle_asynchronously :delete_document, :queue => 'indexes'
 end

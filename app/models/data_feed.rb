@@ -51,7 +51,7 @@ class DataFeed < ActiveRecord::Base
     self.last_run_time = Time.now
     self.save
   end
-  handle_asynchronously :process_file
+  handle_asynchronously :process_file, :queue => 'data_feeds'
 
   def process_chunk(chunk)
     chunk.each do |item|
@@ -75,11 +75,11 @@ class DataFeed < ActiveRecord::Base
         product.description = item[:description]
         product.url = item[:url]
         product.image_url = item[:image_url]
-        product.gender = set_gender(item)
-        product.category = set_category(item, product)
-        product.sub_category = set_sub_category(product) if product.category
         product.colors = set_colors(item)
       end
+      product.gender = set_gender(item)
+      product.category = set_category(item, product)
+      product.sub_category = set_sub_category(product) if product.category
       product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
       product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
       product.save
@@ -250,8 +250,8 @@ class DataFeed < ActiveRecord::Base
   end
 
   def detect_gender(string)
-    mens_matches = ["men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
-    womens_matches = ["women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
+    mens_matches = ["m", "men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
+    womens_matches = ["f", "women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
     unisex_matches = ["unisex", "uni-sex"]
     gender_match = nil
     sanitize_string(string.downcase).split(" ").each do |word|
