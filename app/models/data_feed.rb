@@ -208,7 +208,7 @@ class DataFeed < ActiveRecord::Base
   end
 
   def sanitize_string(string)
-    string.gsub(/[^\p{Alnum}\p{Space}]/u, '')
+    string.to_s.gsub(/[^\p{Alnum}\p{Space}]/u, '')
   end
 
   def sanitize_price(price)
@@ -254,7 +254,7 @@ class DataFeed < ActiveRecord::Base
     womens_matches = ["f", "women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
     unisex_matches = ["unisex", "uni-sex"]
     gender_match = nil
-    sanitize_string(string.downcase).split(" ").each do |word|
+    sanitize_string(string).downcase.split(" ").each do |word|
       unless gender_match
         if mens_matches.include?(word)
           gender_match = "male"

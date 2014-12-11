@@ -17,6 +17,11 @@ RSpec.describe DataFeed, :type => :model do
     expect(data_feed.sanitize_string("slip-on")).to eq("slipon")
     expect(data_feed.sanitize_string("slip-on jeans")).to eq("slipon jeans")
     expect(data_feed.sanitize_string("jean's")).to eq("jeans")
+    expect(data_feed.sanitize_string(142867).class).to eq(String)
+    expect(data_feed.sanitize_string(0.0).class).to eq(String)
+    expect(data_feed.sanitize_string(10000000.00).class).to eq(String)
+    expect(data_feed.sanitize_string([1,2,3]).class).to eq(String)
+    expect(data_feed.sanitize_string({hash: "hash"}).class).to eq(String)
   end
 
   it "should be able to clean up prices" do
@@ -26,6 +31,7 @@ RSpec.describe DataFeed, :type => :model do
     expect(data_feed.sanitize_price("£12")).to eq(12.00)
     expect(data_feed.sanitize_price("£1 234.56")).to eq(1234.56)
     expect(data_feed.sanitize_price(12)).to eq(12.00)
+    expect(data_feed.sanitize_price(134.99)).to eq(134.99)
   end
 
   it "should be able to detect gender" do
