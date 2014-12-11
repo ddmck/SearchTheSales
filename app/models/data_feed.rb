@@ -99,9 +99,9 @@ class DataFeed < ActiveRecord::Base
   end
 
   def set_brand(identifier)
-    brand = Brand.find_by_name(identifier.downcase)
+    brand = Brand.find_by_name(identifier.to_s.downcase)
     if brand.nil?
-      brand = Brand.create(name: identifier.downcase, image_url: "#");
+      brand = Brand.create(name: identifier.to_s.downcase, image_url: "#");
     end
     brand
   end
