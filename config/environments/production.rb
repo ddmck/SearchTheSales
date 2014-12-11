@@ -92,4 +92,7 @@ Searchthesales::Application.configure do
     user_name: ENV['SMTP_USER'],
     password: ENV['SMTP_PWD']
   }
+
+  # Prerender token
+  config.middleware.use Rack::Prerender, prerender_token: 'QzygORRAGv9QXmh0DNb6'
 end

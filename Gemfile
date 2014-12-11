@@ -88,3 +88,6 @@ gem 'rubyzip'
 
 # for scaling workers
 gem "hirefire-resource"
+
+# for prerender of dynamic pages
+gem 'prerender_rails'
