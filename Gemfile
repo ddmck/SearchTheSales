@@ -26,11 +26,13 @@ group :development, :test do
 end
 
 group :development do
+  gem 'foreman'
   gem 'guard-rails'
   gem 'guard-rspec', require: false
   gem 'guard-rubocop'
   gem 'guard-livereload', require: false
   gem 'terminal-notifier-guard'
+  gem 'guard-foreman'
 end
 
 # PostgreSQL
