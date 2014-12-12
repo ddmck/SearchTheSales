@@ -60,4 +60,16 @@ FactoryGirl.define do
     store
   end
 
+  factory :feature do
+    sequence(:title) { |n| "title#{n}"}
+    copy 'The copy goes here'
+    brand
+    category
+    sub_category
+    search_string 'paul smith jeans'
+    gender
+    store
+    image_url 'http://http://jeans.com/image.png'
+  end
+
 end
