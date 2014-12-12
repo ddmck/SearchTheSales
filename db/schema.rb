@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203154248) do
+ActiveRecord::Schema.define(version: 20141212105307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,26 @@ ActiveRecord::Schema.define(version: 20141203154248) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "features", force: true do |t|
+    t.string   "title"
+    t.text     "copy"
+    t.integer  "brand_id"
+    t.integer  "category_id"
+    t.integer  "sub_category_id"
+    t.string   "search_string"
+    t.integer  "gender_id"
+    t.integer  "store_id"
+    t.string   "image_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "features", ["brand_id"], name: "index_features_on_brand_id", using: :btree
+  add_index "features", ["category_id"], name: "index_features_on_category_id", using: :btree
+  add_index "features", ["gender_id"], name: "index_features_on_gender_id", using: :btree
+  add_index "features", ["store_id"], name: "index_features_on_store_id", using: :btree
+  add_index "features", ["sub_category_id"], name: "index_features_on_sub_category_id", using: :btree
 
   create_table "friendly_id_slugs", force: true do |t|
     t.string   "slug",                      null: false

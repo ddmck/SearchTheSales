@@ -1,4 +1,6 @@
 Searchthesales::Application.routes.draw do
+  resources :features
+
   resources :data_feeds
 
   resources :genders
