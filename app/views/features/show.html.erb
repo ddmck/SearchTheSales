@@ -23,7 +23,7 @@
 
 <% if @feature.feature_links.any? %>
   <div class="row">
-    <ul class="button-group even-4">
+    <ul class="button-group even-<%= @feature.feature_links.first(4).length %>">
       <% @feature.feature_links.first(4).each do |fl| %>
         <li>
           <%= link_to fl.name.titleize, fl.link_url, class: "button primary" %>
