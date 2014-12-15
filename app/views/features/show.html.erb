@@ -1,49 +1,60 @@
-<p id="notice"><%= notice %></p>
+<div class="contain-to-grid">
+  <nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+      <li class="name">
+        <a href="/"><img src=<%= asset_path "assets/storeluv-logo.png" %>></a>
+      </li>
+       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+      <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+    </ul>
+  </nav>
+</div>
 
-<p>
-  <strong>Title:</strong>
-  <%= @feature.title %>
-</p>
+<div class="feature-hero row">
+  <div class="feature-transparency">
+    <div class="feature-copy-card">
+      <h1 class="feature-title"><%= @feature.title %></h1> 
+      <h3 class="feature-copy"><%= @feature.copy %></h3>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Copy:</strong>
-  <%= @feature.copy %>
-</p>
+<div class="row products-row">
+<ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
+<% @products.each do |product| %>
+  <li>
+    <div class="product-container" style='<%= "background-image: url(#{product.image_url})" %>'>
+      <%= link_to "Buy", product.url, target: "_blank", class: "button buy-button" %>
+      <div class="product-description">
+        <p class="product-brand"> <%= product.brand.name %> </p>
+        <p class="product-name"> <%= product.name %> </p>
+        <p class="product-price"> £<%= number_with_precision(product.display_price, precision: 2) %> </p>
+      </div>
+      
+    </div>
+</li>
+<% end %>
+</ul>
 
-<p>
-  <strong>Brand:</strong>
-  <%= @feature.brand %>
-</p>
+</div>
 
-<p>
-  <strong>Category:</strong>
-  <%= @feature.category %>
-</p>
-
-<p>
-  <strong>Sub category:</strong>
-  <%= @feature.sub_category %>
-</p>
-
-<p>
-  <strong>Search string:</strong>
-  <%= @feature.search_string %>
-</p>
-
-<p>
-  <strong>Gender:</strong>
-  <%= @feature.gender %>
-</p>
-
-<p>
-  <strong>Store:</strong>
-  <%= @feature.store %>
-</p>
-
-<p>
-  <strong>Image url:</strong>
-  <%= @feature.image_url %>
-</p>
-
-<%= link_to 'Edit', edit_feature_path(@feature) %> |
-<%= link_to 'Back', features_path %>
+<div class="row call-to-action">
+  <div class="call-to-action-container">
+    <h2 class="call-to-action-header">Search millions of products</h2>
+    <h3 class="call-to-action-copy">All your favourite brands and stores</h3>
+    <form action="http://localhost:3000/" method="GET">
+      <div class="row">
+    <div class="large-12 columns">
+      <div class="row collapse">
+        <div class="small-10 columns">
+          <input type="text" name="searchString" placeholder="search for what you've been dreaming of"/>
+        </div>
+        <div class="small-2 columns">
+          <input type="submit" class="button postfix"/> 
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</form>
+</div>

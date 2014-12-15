@@ -21,15 +21,19 @@
   </div>
   <div class="field">
     <%= f.label :brand_id %><br>
-    <%= f.text_field :brand_id %>
+    <%= f.select :brand_id, options_for_select(@brands.map { |brand| [brand.name, brand.id]}, @feature.brand_id), prompt: "Please Select" %>
+  </div>
+  <div class="field">
+    <%= f.label :store_id %><br>
+    <%= f.select :store_id, options_for_select(@stores.map { |store| [store.name, store.id]}, @feature.store_id), prompt: "Please Select" %>
   </div>
   <div class="field">
     <%= f.label :category_id %><br>
-    <%= f.text_field :category_id %>
+    <%= f.select :category_id, options_for_select(@categories.map { |cat| [cat.name, cat.id]}, @feature.category_id), prompt: "Please Select" %>
   </div>
   <div class="field">
     <%= f.label :sub_category_id %><br>
-    <%= f.text_field :sub_category_id %>
+    <%= f.select :sub_category_id, options_for_select(@sub_categories.map { |sub_cat| [sub_cat.name, sub_cat.id]}, @feature.sub_category_id), {prompt: "Please Select"} %>
   </div>
   <div class="field">
     <%= f.label :search_string %><br>
@@ -38,10 +42,6 @@
   <div class="field">
     <%= f.label :gender_id %><br>
     <%= f.text_field :gender_id %>
-  </div>
-  <div class="field">
-    <%= f.label :store_id %><br>
-    <%= f.text_field :store_id %>
   </div>
   <div class="field">
     <%= f.label :image_url %><br>
