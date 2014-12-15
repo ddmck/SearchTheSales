@@ -10,11 +10,13 @@
   </nav>
 </div>
 
-<div class="feature-hero row">
+<div class="feature-hero">
   <div class="feature-transparency">
-    <div class="feature-copy-card">
-      <h1 class="feature-title"><%= @feature.title %></h1> 
-      <h3 class="feature-copy"><%= @feature.copy %></h3>
+    <div class="row">
+      <div class="feature-copy-card">
+        <h1 class="feature-title"><%= @feature.title %></h1> 
+        <h3 class="feature-copy"><%= @feature.copy %></h3>
+      </div>
     </div>
   </div>
 </div>
@@ -38,23 +40,25 @@
 
 </div>
 
-<div class="row call-to-action">
-  <div class="call-to-action-container">
-    <h2 class="call-to-action-header">Search millions of products</h2>
-    <h3 class="call-to-action-copy">All your favourite brands and stores</h3>
-    <form action="/" method="GET">
-      <div class="row">
-    <div class="large-12 columns">
-      <div class="row collapse">
-        <div class="small-10 columns">
-          <input type="text" name="searchString" placeholder="search for what you've been dreaming of"/>
+<div class="call-to-action">
+  <div class="call-to-action-transparency">
+    <div class="call-to-action-card row">
+      <h2 class="call-to-action-header">Search millions of products</h2>
+      <h3 class="call-to-action-copy">All your favourite brands and stores</h3>
+      <form action="/" method="GET">
+        <div class="row">
+          <div class="large-12 columns">
+            <div class="row collapse">
+              <div class="small-10 columns">
+                <input type="text" name="searchString" placeholder="search for what you've been dreaming of"/>
+              </div>
+              <div class="small-2 columns">
+                <input type="submit" class="button postfix"/> 
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="small-2 columns">
-          <input type="submit" class="button postfix"/> 
-        </div>
-      </div>
+      </form>
     </div>
   </div>
-  </div>
-</form>
 </div>
