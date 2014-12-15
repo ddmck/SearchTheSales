@@ -37,4 +37,9 @@ RSpec.describe Feature, :type => :model do
 
     expect(feature.build_where_statement).to eq(desired_hash.stringify_keys)
   end
+
+  it "should be able to prepare its search string" do
+    desired_string = "~ AND brand_id: #{feature.brand_id} AND category_id: #{feature.category_id} AND sub_category_id: #{feature.sub_category_id} AND gender_id: #{feature.gender_id} AND store_id: #{feature.store_id}"
+    expect(feature.build_search_string).to include(desired_string)
+  end
 end

@@ -102,7 +102,7 @@ class ProductsController < ApplicationController
     if string.strip == ""
       string = params[:search_string].downcase
     end
-    string += ' OR ' + params[:search_string].downcase + '~' 
+    string += ' OR ' + string.downcase + '~' 
     string += ' AND category_id: ' + params[:category] if params[:category]
     string += ' AND sub_category_id: ' + params[:sub_category]  if params[:sub_category]
     if params[:gender]

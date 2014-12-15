@@ -10,7 +10,8 @@ class FeaturesController < ApplicationController
   end
 
   def show
-    @products = Product.where(@feature.build_where_statement).first(52)
+    puts @feature.build_search_string
+    @products = @feature.products
     respond_with(@feature)
   end
 
