@@ -93,3 +93,6 @@ gem "hirefire-resource"
 
 # for prerender of dynamic pages
 gem 'prerender_rails'
+
+# For analytics
+gem 'newrelic_rpm'
