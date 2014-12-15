@@ -1,41 +1,29 @@
-<h1>Listing features</h1>
+<div class="row">
+  <h1>Listing features</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Copy</th>
-      <th>Brand</th>
-      <th>Category</th>
-      <th>Sub category</th>
-      <th>Search string</th>
-      <th>Gender</th>
-      <th>Store</th>
-      <th>Image url</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <%= link_to 'New Feature', new_feature_path %>
 
-  <tbody>
+  <ul>
     <% @features.each do |feature| %>
-      <tr>
-        <td><%= feature.title %></td>
-        <td><%= feature.copy %></td>
-        <td><%= feature.brand %></td>
-        <td><%= feature.category %></td>
-        <td><%= feature.sub_category %></td>
-        <td><%= feature.search_string %></td>
-        <td><%= feature.gender %></td>
-        <td><%= feature.store %></td>
-        <td><%= feature.image_url %></td>
-        <td><%= link_to 'Show', feature %></td>
-        <td><%= link_to 'Edit', edit_feature_path(feature) %></td>
-        <td><%= link_to 'Destroy', feature, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <li>
+        <%= feature.title %>, 
+        <%= feature.copy %>, 
+        <%= link_to 'Show', feature %>, 
+        <%= link_to 'Edit', edit_feature_path(feature) %>, 
+        <%= link_to 'Destroy', feature, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <ul>
+          <% feature.feature_links.each do |fl| %>
+            <li>
+              <%= fl.name %>, 
+              <%= fl.link_url %>,
+              <%= link_to "edit", edit_feature_feature_link_path(feature, fl) %>
+
+            </li>
+          <% end %>
+          <li><%= link_to "new feature link", new_feature_feature_link_path(feature) %></li>
+        </ul>
+      </li>
+
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Feature', new_feature_path %>
+  </ul>
+</div>

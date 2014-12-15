@@ -21,6 +21,16 @@
   </div>
 </div>
 
+<div class="row">
+  <ul class="button-group even-4">
+    <% @feature.feature_links.first(4).each do |fl| %>
+      <li>
+        <%= link_to fl.name.titleize, fl.link_url, class: "button primary" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
 <div class="row products-row">
 <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
 <% @products.each do |product| %>
