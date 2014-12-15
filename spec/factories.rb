@@ -72,4 +72,10 @@ FactoryGirl.define do
     image_url 'http://http://jeans.com/image.png'
   end
 
+  factory :feature_link do
+    name "shop mens"
+    link_url "http://localhost:3000/?gender=male"
+    feature
+  end
+
 end

@@ -4,6 +4,7 @@ class Feature < ActiveRecord::Base
   belongs_to :sub_category
   belongs_to :gender
   belongs_to :store
+  has_many :feature_links
   validates_presence_of :title
   validates_presence_of :copy
 

@@ -14,7 +14,6 @@ RSpec.describe Feature, :type => :model do
   end
 
   it "should be able to prepare its products where hash" do
-    puts feature.attributes
     desired_hash = {
       brand_id: feature.brand.id,
       store_id: feature.store.id,
