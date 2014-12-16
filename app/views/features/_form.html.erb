@@ -47,15 +47,6 @@
     <%= f.label :image_url %><br>
     <%= f.text_field :image_url %>
   </div>
-  <div class="field">
-    <h1> Hi!!!!</h1>
-    <% @feature.feature_links.all do |feature| %>
-      <%= f.fields_for :feature_links, feature do |fl| -%>
-        <%= fl.label :name %>
-        <%= fl.text_field :name %>
-      <% end %>
-    <% end %>
-  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

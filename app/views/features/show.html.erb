@@ -15,23 +15,23 @@
     <div class="row">
       <div class="feature-copy-card">
         <h1 class="feature-title"><%= @feature.title %></h1> 
-        <h3 class="feature-copy"><%= @feature.copy %></h3>
+        <h4 class="feature-copy"><%= @feature.copy %><%= @feature.copy %> <%= @feature.copy %><%= @feature.copy %></h4>
+        <% if @feature.feature_links.any? %>
+        <ul class="no-bullet">
+          <% @feature.feature_links.first(4).each do |fl| %>
+            <li>
+              <h5><%= link_to fl.name.titleize + " >", fl.link_url %></h5>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
       </div>
+      
     </div>
   </div>
 </div>
 
-<% if @feature.feature_links.any? %>
-  <div class="row">
-    <ul class="button-group even-<%= @feature.feature_links.first(4).length %>">
-      <% @feature.feature_links.first(4).each do |fl| %>
-        <li>
-          <%= link_to fl.name.titleize, fl.link_url, class: "button primary" %>
-        </li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
+
 
 <div class="row products-row">
 <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
