@@ -38,7 +38,7 @@
 <% @products.each do |product| %>
   <li>
     <div class="product-container" style='<%= "background-image: url(#{product.image_url})" %>'>
-      <%= link_to "Buy", product.url, target: "_blank", class: "button buy-button" %>
+      <%= link_to "Buy", buy_product_path(product), target: "_blank", class: "button buy-button" %>
       <div class="product-description">
         <p class="product-brand"> <%= product.brand.name %> </p>
         <p class="product-name"> <%= product.name %> </p>

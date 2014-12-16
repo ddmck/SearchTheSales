@@ -19,7 +19,11 @@ Searchthesales::Application.routes.draw do
 
   resources :categories
 
-  resources :products
+  resources :products do
+    member do
+      get 'buy'
+    end
+  end
 
   resources :brands
 

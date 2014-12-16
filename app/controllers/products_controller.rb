@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy]
   before_action :get_collections, only: [:new, :edit]
 
   respond_to :html, :json
@@ -63,6 +63,10 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     respond_with(@product)
+  end
+
+  def buy
+    redirect_to(@product.url)
   end
 
   private
