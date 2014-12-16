@@ -43,7 +43,8 @@ gem 'delayed_job_active_record'
 gem 'scheduled_job'
 
 # Devise: https://github.com/plataformatec/devise
-gem 'devise', '3.4.1'
+gem 'omniauth'
+gem 'devise_token_auth'
 
 # Redcarpet: https://github.com/vmg/redcarpet
 gem 'redcarpet', '3.2.0'

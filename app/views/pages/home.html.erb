@@ -4,9 +4,11 @@
       <li class="name">
         <a href="/"><img src=<%= asset_path "assets/storeluv-logo.png" %>></a>
       </li>
+
        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
       <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
     </ul>
+    <%= render "authentication" %>
   </nav>
 </div>
 <div class="sub-nav-container" ng-controller="SearchController as SearchCtrl" >

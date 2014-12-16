@@ -4,6 +4,11 @@ class PagesController < ApplicationController
   ]
 
   def home
+    if current_user
+      puts "Current user is: #{current_user.username}" 
+    else
+      puts "No user!"
+    end
     @stores = Store.first(4)
     @brands = Brand.first(4)
     @products = Product.first(4)
