@@ -28,14 +28,14 @@ class Feature < ActiveRecord::Base
   end
 
   def products
-    if search_string
+    if search_string.empty?
+      Product.where(build_where_statement).first(52)
+    else
       Product.__elasticsearch__.search(query: {
                                                 query_string: {
                                                   default_field: "reference_name",
                                                   query: build_search_string
                                                 }}, size: 52).page(1).records
-    else
-      Product.where(build_where_statement).first(52)
     end
   end
 end
