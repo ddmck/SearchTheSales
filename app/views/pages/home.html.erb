@@ -8,7 +8,12 @@
        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
       <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
     </ul>
-    <%= render "authentication" %>
+    <section class="top-bar-section">
+      <ul class="right">
+        <li ng-show="!user.id"><a ng-href="/sign_in">Sign in</a></li> 
+        <li ng-show="user.id"><a ng-click='signOut()'>Sign out</a></li>
+      </ul>
+    </section>
   </nav>
 </div>
 <div class="sub-nav-container" ng-controller="SearchController as SearchCtrl" >
@@ -58,6 +63,8 @@
   </ul>
 
 </div>
+
+<%= render "authentication" %>
 
 
 

@@ -1,5 +1,10 @@
 Searchthesales::Application.routes.draw do
-  
+  scope '/api' do 
+    mount_devise_token_auth_for 'User', at: '/auth' 
+    resources :groups, except: [:new, :edit]
+    post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token" 
+  end
+
   
   resources :features do
     resources :feature_links
@@ -37,7 +42,6 @@ Searchthesales::Application.routes.draw do
 
   get 'posts', to: 'pages#posts', as: 'posts'
   get 'posts/:id', to: 'pages#show_post', as: 'post'
-  devise_for :users
 
   namespace :admin do
     root 'base#index'

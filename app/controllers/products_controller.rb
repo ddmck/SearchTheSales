@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :buy]
   before_action :get_collections, only: [:new, :edit]
-
+  # before_action :authenticate_current_user
   respond_to :html, :json
 
   def index

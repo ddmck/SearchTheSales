@@ -20,20 +20,13 @@ module Searchthesales
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.middleware.insert_before 'ActionDispatch::Static', 'Rack::Cors', logger: (-> { Rails.logger }) do
+    config.middleware.use Rack::Cors do
       allow do
         origins '*'
-
-        resource '/cors',
-                 headers: :any,
-                 methods: [:post],
-                 credentials: true,
-                 max_age: 0
-
         resource '*',
-                 headers: :any,
-                 methods: [:get, :post, :delete, :put, :options, :head],
-                 max_age: 0
+          :headers => :any,
+          :expose  => ['access-token', 'expiry', 'token-type', 'uid', 'client'],
+          :methods => [:get, :post, :options, :delete, :put]
       end
     end
 
