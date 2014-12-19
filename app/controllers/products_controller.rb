@@ -1,7 +1,8 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy, :wish]
   before_action :get_collections, only: [:new, :edit]
-  # before_action :authenticate_current_user
+  skip_before_filter :verify_authenticity_token
+  # before_action :authenticate_current_user, only: [:wish]
   respond_to :html, :json
 
   def index
@@ -67,6 +68,11 @@ class ProductsController < ApplicationController
 
   def buy
     redirect_to(@product.url)
+  end
+
+  def wish
+    @product.add_to_wishlist(get_current_user)
+    respond_with(@product, status: 200)
   end
 
   private

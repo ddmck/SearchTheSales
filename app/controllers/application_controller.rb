@@ -58,9 +58,9 @@ class ApplicationController < ActionController::Base
 
   # Only permits admin users
   def require_admin!
-    authenticate_user!
+    authenticate_current_user
 
-    if current_user && !current_user.admin?
+    if get_current_user && !get_current_user.admin?
       redirect_to root_path
     end
   end

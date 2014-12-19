@@ -4,8 +4,8 @@ class PagesController < ApplicationController
   ]
 
   def home
-    if current_user
-      puts "Current user is: #{current_user.username}" 
+    if get_current_user
+      puts "Current user is: #{get_current_user.id}" 
     else
       puts "No user!"
     end

@@ -1,7 +1,6 @@
 Searchthesales::Application.routes.draw do
   scope '/api' do 
-    mount_devise_token_auth_for 'User', at: '/auth' 
-    resources :groups, except: [:new, :edit]
+    mount_devise_token_auth_for 'User', at: '/auth'
     post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token" 
   end
 
@@ -27,6 +26,7 @@ Searchthesales::Application.routes.draw do
   resources :products do
     member do
       get 'buy'
+      post 'wish'
     end
   end
 

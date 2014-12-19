@@ -1,6 +1,8 @@
 class FeaturesController < ApplicationController
   before_action :set_feature, only: [:show, :edit, :update, :destroy]
   before_action :get_collections, only: [:new, :edit]
+  before_action :require_admin!, only: [:new, :edit, :update, :destroy]
+  skip_before_filter :verify_authenticity_token
 
   respond_to :html
 

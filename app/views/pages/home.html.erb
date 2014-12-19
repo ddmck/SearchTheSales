@@ -10,8 +10,7 @@
     </ul>
     <section class="top-bar-section">
       <ul class="right">
-        <li ng-show="!user.id"><a ng-href="/sign_in">Sign in</a></li> 
-        <li ng-show="user.id"><a ng-click='signOut()'>Sign out</a></li>
+        <%= render "authentication" %>
       </ul>
     </section>
   </nav>
@@ -64,7 +63,7 @@
 
 </div>
 
-<%= render "authentication" %>
+
 
 
 
@@ -79,6 +78,7 @@
       <div ng-style="{'background-image':'url('+ product.image_url +')'}" class="product-container">
         <!-- <img ng-src="{{product.image_url}}"/> -->
         <a class="button buy-button" ng-click="products.openLink(product)">Buy</a> 
+        <a class="button wish-button" ng-click="products.wishFor(product)">Wish</a> 
         <div class="product-description">
           <p class="product-brand">{{ product.brand_name }}</p>
           <p class="product-name" ng-bind-html="product.name"></p>

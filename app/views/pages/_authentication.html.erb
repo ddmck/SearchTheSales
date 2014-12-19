@@ -1,38 +1,55 @@
-<div class="row" ng-controller="UserSessionsController">
-  <div class="alert alert-danger" role="alert" ng-show="error">
-    {{error}} 
+<li ng-show="!user.id">
+  <a data-reveal-id="signInModal">Sign in</a>
+
+  <div id="signInModal" class="reveal-modal" ng-controller="UserSessionsController" data-reveal>
+    <h2>Sign in to your StoreLuv account</h2>
+    <p>Need to register for an account? <a data-reveal-id="signUpModal">Sign up now!</a></p>
+      
+    
+    <div class="alert alert-danger" role="alert" ng-show="error">
+      {{error}} 
+    </div>
+
+    <form ng-submit="submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
+      <div class="form-group"> 
+        <label for="email">Email</label> 
+        <input type="email" name="email" id="email" ng-model="loginForm.email" required="required" class="form-control"> 
+      </div> 
+      <div class="form-group"> 
+        <label for="password">Password</label> 
+        <input type="password" name="password" id="password" ng-model="loginForm.password" required="required" class="form-control"> 
+      </div> 
+      <button type="submit" class="btn btn-primary btn-lg">Sign in</button> 
+    </form>
+    <a class="close-reveal-modal">&#215;</a>
   </div>
 
-  <form ng-submit="submitLogin(loginForm)" role="form" ng-init="loginForm = {}">
-    <div class="form-group"> 
-      <label for="email">Email</label> 
-      <input type="email" name="email" id="email" ng-model="loginForm.email" required="required" class="form-control"> 
-    </div> 
-    <div class="form-group"> 
-      <label for="password">Password</label> 
-      <input type="password" name="password" id="password" ng-model="loginForm.password" required="required" class="form-control"> 
-    </div> 
-    <button type="submit" class="btn btn-primary btn-lg">Sign in</button> 
-  </form>
-</div>  
+  <div id="signUpModal" class="reveal-modal" ng-controller="UserRegistrationsController" data-reveal>
+    <h2>Sign up to your StoreLuv account</h2>
 
-<div class="row" ng-controller="UserRegistrationsController">
-  <form ng-submit="submitRegistration(registrationForm)" role="form" ng-init="registrationForm = {}">
-    <div class="form-group">
-      <label>email</label>
-      <input type="email" name="email" ng-model="registrationForm.email" required="required" class="form-control"/>
+    <div class="alert alert-danger" role="alert" ng-show="error">
+      {{error}} 
     </div>
+    <form ng-submit="submitRegistration(registrationForm)" role="form" ng-init="registrationForm = {}">
+      <div class="form-group">
+        <label>email</label>
+        <input type="email" name="email" ng-model="registrationForm.email" required="required" class="form-control"/>
+      </div>
 
-    <div class="form-group">
-      <label>password</label>
-      <input type="password" name="password" ng-model="registrationForm.password" required="required" class="form-control"/>
-    </div>
+      <div class="form-group">
+        <label>password</label>
+        <input type="password" name="password" ng-model="registrationForm.password" required="required" class="form-control"/>
+      </div>
 
-    <div class="form-group">
-      <label>password confirmation</label>
-      <input type="password" name="password_confirmation" ng-model="registrationForm.password_confirmation" required="required" class="form-control"/>
-    </div>
+      <div class="form-group">
+        <label>password confirmation</label>
+        <input type="password" name="password_confirmation" ng-model="registrationForm.password_confirmation" required="required" class="form-control"/>
+      </div>
 
-    <button type="submit" class="btn btn-primary btn-lg">Register</button>
-  </form>
-</div>
+      <button type="submit" class="btn btn-primary btn-lg">Register</button>
+    </form>
+    <a class="close-reveal-modal">&#215;</a>
+  </div>
+</li>
+
+<li ng-show="user.id"><a ng-click='signOut()'>Sign out</a></li>

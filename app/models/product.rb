@@ -31,6 +31,9 @@ class Product < ActiveRecord::Base
   has_many :trends, through: :trend_tags
 
   def add_to_wishlist(user)
+    puts "User: #{user}"
+    puts "Id: #{id}"
+    puts "self: #{self}"
     WishlistItem.create(product_id: id, user_id: user.id)
   end
 
