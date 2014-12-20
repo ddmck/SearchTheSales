@@ -39,7 +39,7 @@
   <li>
     <div class="product-container">
       <div class="feature-product-image-container">
-        <%= image_tag product.image_url, class: "feature-product-image" %>
+        <%= image_tag product.image_url, class: "feature-product-image", alt: "#{product.name} by #{product.brand.name}" %>
       </div>
       
       <%= link_to "Buy", buy_product_path(product), target: "_blank", class: "button buy-button" %>
