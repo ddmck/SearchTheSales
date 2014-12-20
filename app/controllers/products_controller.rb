@@ -107,10 +107,13 @@ class ProductsController < ApplicationController
   end
 
   def build_search_string(params)
-    string = params[:search_string].downcase
-    string = string.remove(Category.find(params[:category]).name.singularize) if params[:category]
+    string = params[:search_string].downcase.strip
+    if params[:category]
+      curr_category = Category.find(params[:category])
+      string = string.remove(curr_category.name).remove(curr_category.name.singularize).strip 
+    end
     if string.strip == ""
-      string = params[:search_string].downcase
+      string = params[:search_string].downcase.strip
     end
     string += ' OR ' + string.downcase + '~' 
     string += ' AND category_id: ' + params[:category] if params[:category]
