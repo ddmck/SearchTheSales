@@ -2,7 +2,9 @@
   <nav class="top-bar" data-topbar role="navigation">
     <ul class="title-area">
       <li class="name">
-        <a href="/"><img src=<%= asset_path "assets/storeluv-logo.png" %>></a>
+        <%= link_to root_path, class: "home-button" do %>
+          <img src=<%= asset_path "assets/storeluv-logo.png" %>>
+        <% end %>
       </li>
        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
       <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
@@ -159,6 +161,10 @@
       if (!$("#sign-in-li").hasClass("ng-hide")) {
         $('#signUpModal').foundation('reveal', 'open');
       }
+    });
+
+    $('.home-button').click(function(){
+      location.href = location.origin
     });
   });
 </script>
