@@ -7,6 +7,8 @@ class Feature < ActiveRecord::Base
   has_many :feature_links
   validates_presence_of :title
   validates_presence_of :copy
+  extend FriendlyId
+  friendly_id :title, use: :slugged
 
   def build_where_statement
     important_keys = ["brand_id", "store_id", "category_id", "sub_category_id", "gender_id"]

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141219103619) do
+ActiveRecord::Schema.define(version: 20141221215402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,11 +123,13 @@ ActiveRecord::Schema.define(version: 20141219103619) do
     t.string   "image_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "slug"
   end
 
   add_index "features", ["brand_id"], name: "index_features_on_brand_id", using: :btree
   add_index "features", ["category_id"], name: "index_features_on_category_id", using: :btree
   add_index "features", ["gender_id"], name: "index_features_on_gender_id", using: :btree
+  add_index "features", ["slug"], name: "index_features_on_slug", unique: true, using: :btree
   add_index "features", ["store_id"], name: "index_features_on_store_id", using: :btree
   add_index "features", ["sub_category_id"], name: "index_features_on_sub_category_id", using: :btree
 

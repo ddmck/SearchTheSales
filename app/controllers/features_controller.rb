@@ -43,7 +43,7 @@ class FeaturesController < ApplicationController
 
   private
   def set_feature
-    @feature = Feature.find(params[:id])
+    @feature = Feature.friendly.find(params[:id])
   end
 
   def feature_params
