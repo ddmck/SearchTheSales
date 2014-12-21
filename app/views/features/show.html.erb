@@ -6,11 +6,21 @@
           <img src=<%= asset_path "assets/storeluv-logo.png" %>>
         <% end %>
       </li>
+
        <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
       <li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
     </ul>
     <section class="top-bar-section">
       <ul class="right">
+         <li class="divider"></li>
+        <li>
+          <a href="http://www.storeluv.com/?gender=male">Mens</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a href="http://www.storeluv.com/?gender=female">Womens</a>
+        </li>
+        <li class="divider"></li>
         <li id="sign-in-li" ng-show="!user.id">
           <a data-reveal-id="signInModal">Sign in</a>
         </li>
@@ -66,31 +76,28 @@
         </div>
 
         <li id="sign-out-li" ng-show="user.id"><a ng-click='signOut()'>Sign out</a></li>
-
-
+        <li class="divider"></li>
       </ul>
     </section>
   </nav>
 </div>
 
 <div class="feature-hero">
-  <div class="feature-transparency">
-    <div class="row">
-      <div class="feature-copy-card">
-        <h1 class="feature-title"><%= @feature.title %></h1> 
-        <h4 class="feature-copy"><%= @feature.copy %></h4>
-        <% if @feature.feature_links.any? %>
-        <ul class="no-bullet">
-          <% @feature.feature_links.first(4).each do |fl| %>
-            <li>
-              <h5><%= link_to fl.name.titleize + " >", fl.link_url %></h5>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
-      </div>
-      
+  <div class="row">
+    <div class="feature-copy-card">
+      <h1 class="feature-title"><%= @feature.title %></h1> 
+      <h5 class="feature-copy"><%= @feature.copy %></h5>
+      <% if @feature.feature_links.any? %>
+      <ul class="inline-list">
+        <% @feature.feature_links.first(4).each do |fl| %>
+          <li>
+            <h6><%= link_to fl.name.titleize, fl.link_url %></h6>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
     </div>
+    
   </div>
 </div>
 
@@ -133,10 +140,19 @@
 </div>
 
 <div class="call-to-action">
-  <div class="call-to-action-transparency">
-    <div class="call-to-action-card row">
+  <div class="row">
+    <div class="small-12 large-6 columns">
       <h2 class="call-to-action-header">Search millions of products</h2>
-      <h3 class="call-to-action-copy">All your favourite brands and stores</h3>
+      <h4 class="call-to-action-copy">All your favourite brands and stores</h4>
+      <ul class="inline-list">
+        <li>
+          <a href="http://www.storeluv.com/?gender=male"><strong>Mens</strong></a>
+        </li>
+        
+        <li>
+          <a href="http://www.storeluv.com/?gender=female"><strong>Womens</strong></a>
+        </li>
+      </ul>
       <form action="/" method="GET">
         <div class="row">
           <div class="large-12 columns">
@@ -151,6 +167,13 @@
           </div>
         </div>
       </form>
+    </div>
+    <div class="small-12 large-6 columns text-right">
+      <h2 class="call-to-action-header">About StoreLuv</h2>
+      <p>StoreLuv is the new way to shop for fashion. Add products from all the top shops online into one basket, and checkout in one place. Search through millions of amazing products, and find items that are just for you. Save your favourite items to wish lists which you can share with your friends and family.</p>
+      <p>Got a question? <a href="mailto:info@searchthesales.com">Get in touch!</a></p>
+    </div>
+    <div class="small-12 large-3 columns">
     </div>
   </div>
 </div>
