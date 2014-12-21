@@ -12,7 +12,7 @@ class FeaturesController < ApplicationController
   end
 
   def show
-    puts @feature.build_search_string
+    @features = Feature.last(10)
     @products = @feature.products
     respond_with(@feature)
   end

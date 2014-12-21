@@ -2,7 +2,7 @@
   <nav class="top-bar" data-topbar role="navigation">
     <ul class="title-area">
       <li class="name">
-        <%= link_to root_path, class: "home-button" do %>
+        <%= link_to root_path, class: "home-button", target: "_self" do %>
           <img src=<%= asset_path "assets/storeluv-logo.png" %>>
         <% end %>
       </li>
@@ -14,11 +14,22 @@
       <ul class="right">
          <li class="divider"></li>
         <li>
-          <a href="http://www.storeluv.com/?gender=male">Mens</a>
+          <a href="http://www.storeluv.com/?gender=male" target="_self">Mens</a>
         </li>
         <li class="divider"></li>
         <li>
-          <a href="http://www.storeluv.com/?gender=female">Womens</a>
+          <a href="http://www.storeluv.com/?gender=female" target="_self">Womens</a>
+        </li>
+        <li class="divider"></li>
+        <li class="has-dropdown">
+          <a href="#">Features</a>
+          <ul class="dropdown">
+            <% @features.each do |f| %>
+              <li class="<%= 'active' if f.id === @feature.id %>">
+                <%= link_to f.title, feature_path(f), target: "_self" %>
+              </li>
+            <% end %>
+          </ul>
         </li>
         <li class="divider"></li>
         <li id="sign-in-li" ng-show="!user.id">
@@ -91,7 +102,7 @@
       <ul class="inline-list">
         <% @feature.feature_links.first(4).each do |fl| %>
           <li>
-            <h6><%= link_to fl.name.titleize, fl.link_url %></h6>
+            <h6><%= link_to fl.name.titleize, fl.link_url, target: "_self" %></h6>
           </li>
         <% end %>
       </ul>
@@ -146,11 +157,11 @@
       <h4 class="call-to-action-copy">All your favourite brands and stores</h4>
       <ul class="inline-list">
         <li>
-          <a href="http://www.storeluv.com/?gender=male"><strong>Mens</strong></a>
+          <a href="http://www.storeluv.com/?gender=male" target="_self"><strong>Mens</strong></a>
         </li>
         
         <li>
-          <a href="http://www.storeluv.com/?gender=female"><strong>Womens</strong></a>
+          <a href="http://www.storeluv.com/?gender=female" target="_self"><strong>Womens</strong></a>
         </li>
       </ul>
       <form action="/" method="GET">
@@ -184,10 +195,6 @@
       if (!$("#sign-in-li").hasClass("ng-hide")) {
         $('#signUpModal').foundation('reveal', 'open');
       }
-    });
-
-    $('.home-button').click(function(){
-      location.href = location.origin
     });
   });
 </script>
