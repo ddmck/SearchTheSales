@@ -27,6 +27,20 @@ class Feature < ActiveRecord::Base
     string
   end
 
+  def build_query_string
+    hash = build_where_statement
+    hash.delete("brand_id") if brand_id
+    hash.delete("store_id") if store_id
+    hash["gender_id"] = gender.name if gender_id
+    hash["search_string"] = search_string if search_string != ""
+    new_hash = {}
+    hash.each do |k, v|
+      key = k.remove("_id").camelize(:lower)
+      new_hash[key] = v
+    end
+    "?" + new_hash.to_query
+  end
+
   def products
     if search_string.empty?
       Product.where(build_where_statement).first(52)

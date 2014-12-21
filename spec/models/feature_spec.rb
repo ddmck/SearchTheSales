@@ -42,4 +42,10 @@ RSpec.describe Feature, :type => :model do
     desired_string = "~ AND brand_id: #{feature.brand_id} AND category_id: #{feature.category_id} AND sub_category_id: #{feature.sub_category_id} AND gender_id: #{feature.gender_id} AND store_id: #{feature.store_id}"
     expect(feature.build_search_string).to include(desired_string)
   end
+
+  it "should be able to build its query string" do
+    wanted_string = "?category=#{feature.category_id}&gender=#{feature.gender.name}&searchString=#{feature.search_string.gsub(" ", "+")}&subCategory=#{feature.sub_category_id}"
+    puts wanted_string
+    expect(feature.build_query_string).to eq(wanted_string)
+  end
 end
