@@ -1,26 +1,26 @@
 <div class="row">
   <h1>Listing features</h1>
 
-  <%= link_to 'New Feature', new_feature_path %>
+  <%= link_to 'New Feature', new_feature_path, target: "_self" %>
 
   <ul>
     <% @features.each do |feature| %>
       <li>
         <%= feature.title %>, 
         <%= feature.copy %>, 
-        <%= link_to 'Show', feature %>, 
-        <%= link_to 'Edit', edit_feature_path(feature) %>, 
+        <%= link_to 'Show', feature, target: "_self" %>, 
+        <%= link_to 'Edit', edit_feature_path(feature), target: "_self" %>, 
         <%= link_to 'Destroy', feature, method: :delete, data: { confirm: 'Are you sure?' } %>
         <ul>
           <% feature.feature_links.each do |fl| %>
             <li>
               <%= fl.name %>, 
               <%= fl.link_url %>,
-              <%= link_to "edit", edit_feature_feature_link_path(feature, fl) %>
+              <%= link_to "edit", edit_feature_feature_link_path(feature, fl), target: "_self" %>
 
             </li>
           <% end %>
-          <li><%= link_to "new feature link", new_feature_feature_link_path(feature) %></li>
+          <li><%= link_to "new feature link", new_feature_feature_link_path(feature), target: "_self" %></li>
         </ul>
       </li>
 
