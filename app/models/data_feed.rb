@@ -41,6 +41,7 @@ class DataFeed < ActiveRecord::Base
     key_hash[link_column.to_sym] = :url if link_column
     key_hash[gender_column.to_sym] = :gender if gender_column
     key_hash[category_column.to_sym] = :category if category_column
+    key_hash[size_column.to_sym] = :size if size_column
     paths = unzipped_file_path
     paths.each do |path|
       SmarterCSV.process(path,  chunk_size: 100, 
@@ -82,6 +83,7 @@ class DataFeed < ActiveRecord::Base
       product.sub_category = set_sub_category(product) if product.category
       product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
       product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
+      product.size = item[:size].to_s if item[:size]
       product.save
     end
   end
@@ -113,8 +115,8 @@ class DataFeed < ActiveRecord::Base
       
     if item[:category]
       categories.each do |category|
-        if item[:category].downcase.include?(category.name) || 
-           item[:category].downcase.include?(category.name.singularize)
+        if sanitize_string(item[:category]).downcase.include?(category.name) || 
+           sanitize_string(item[:category]).downcase.include?(category.name.singularize)
           cat = category
         end 
       end
@@ -122,8 +124,8 @@ class DataFeed < ActiveRecord::Base
 
     if cat.nil? && item[:category]
       sub_categories.each do |sub_category|
-        if item[:category].downcase.include?(sub_category.name) || 
-           item[:category].downcase.include?(sub_category.name.singularize)
+        if sanitize_string(item[:category]).downcase.include?(sub_category.name) || 
+           sanitize_string(item[:category]).downcase.include?(sub_category.name.singularize)
           cat = sub_category.category
         end 
       end
