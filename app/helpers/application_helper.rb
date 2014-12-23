@@ -23,5 +23,19 @@ module ApplicationHelper
     end
   end
 
+  def link_to(*args, &block)
+    if block_given?
+      unless args.second && args.second.has_key?(:target)
+        args = [(args.first || {}), (args.second || {}).merge(:target => '_self')]
+      end
+      super(args.first, args.second, block)
+    else
+      unless args.third && args.third.has_key?(:target)
+        args = [(args.first || {}), (args.second || {}), (args.third || {}).merge(:target => '_self')]
+      end
+      super(args.first, args.second, args.third)
+    end
+    
+  end
 
 end
