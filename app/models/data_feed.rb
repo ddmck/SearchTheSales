@@ -77,14 +77,14 @@ class DataFeed < ActiveRecord::Base
         product.url = item[:url]
         product.image_url = item[:image_url]
         product.colors = set_colors(item)
+        product.gender = set_gender(item)
+        product.category = set_category(item, product)
+        product.sub_category = set_sub_category(product) if product.category
       end
-      product.gender = set_gender(item)
-      product.category = set_category(item, product)
-      product.sub_category = set_sub_category(product) if product.category
       product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
       product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
       product.size = item[:size].to_s if item[:size]
-      product.save
+      product.save if product.changed?
     end
   end
 
