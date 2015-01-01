@@ -14,9 +14,10 @@
 
   <body>
     <%= yield %>
+    <script type="text/javascript" src=<%= asset_path "min/packaged-app.min.js" %>></script>
+    <script type="text/javascript">
+      $(document).foundation();
+    </script>
   </body>
-  <script type="text/javascript" src=<%= asset_path "min/packaged-app.min.js" %>></script>
-  <script type="text/javascript">
-    $(document).foundation();
-  </script>
+  
 </html>
