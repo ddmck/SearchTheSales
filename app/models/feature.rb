@@ -45,13 +45,17 @@ class Feature < ActiveRecord::Base
 
   def products
     if search_string.empty?
-      Product.where(build_where_statement).first(52)
+      Product.where(build_where_statement).first(100)
     else
-      Product.__elasticsearch__.search(query: {
+      found_products = Product.__elasticsearch__.search(query: {
                                                 query_string: {
                                                   default_field: "reference_name",
                                                   query: build_search_string
-                                                }}, size: 52).page(1).records
+                                                }}, size: 25)
+      array = found_products.page(1).records
+      array += found_products.page(2).records
+      array += found_products.page(3).records
+      array += found_products.page(4).records
     end
   end
 end

@@ -13,8 +13,15 @@
   </head>
 
   <body>
+
     <%= yield %>
-    <script type="text/javascript" src=<%= asset_path "min/packaged-app.min.js" %>></script>
+
+    <% if Rails.env.production? %>
+      <script type="text/javascript" src=<%= asset_path "min/packaged-app.min.js" %>></script>
+    <% else %>
+      <script type="text/javascript" src=<%= asset_path "js/lib.js" %>></script>
+      <script type="text/javascript" src=<%= asset_path "js/app.js" %>></script>
+    <% end %>
     <script type="text/javascript">
       $(document).foundation();
     </script>
