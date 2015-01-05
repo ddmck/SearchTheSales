@@ -126,9 +126,9 @@
         </div>
         
         <%= link_to "Buy", buy_product_path(product), target: "_blank", class: "button buy-button feature-buy-button" %>
-        <a data-reveal-id="modal<%= product.id %>" class="button feature-info-button">Info</a>
+        <!-- <a data-reveal-id="modal<%= product.id %>" class="button feature-info-button">Info</a> -->
 
-        <div id="modal<%= product.id %>" class="reveal-modal medium" data-reveal>
+        <!-- <div id="modal<%= product.id %>" class="reveal-modal medium" data-reveal>
           <%= link_to buy_product_path(product), target: "_blank" do %>
             <h2><%= product.name.titleize %></h2>
           <% end %>
@@ -139,7 +139,7 @@
           <p><%= product.name.titleize %> by <%= product.brand.name.titleize %> <br> <%# product.description %></p>
            
           <a class="close-reveal-modal">&#215;</a>
-        </div>
+        </div> -->
         <div class="product-description">
           <p class="product-brand"> <%= product.brand.name %> </p>
           <p class="product-name"> <%= product.name %> </p>
