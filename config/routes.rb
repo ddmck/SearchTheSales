@@ -8,6 +8,8 @@ Searchthesales::Application.routes.draw do
   resources :features do
     resources :feature_links
   end
+
+  resources :wishlist_items
   
   resources :data_feeds
 

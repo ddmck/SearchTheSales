@@ -120,19 +120,34 @@
   <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4" >
   <% @products.each do |product| %>
     <li>
+      
       <div class="product-container">
-        <div class="feature-product-image-container">
-          <%= image_tag product.image_url, class: "feature-product-image", alt: "#{product.name} by #{product.brand.name}" %>
-        </div>
-        
-        <%= link_to "Buy", buy_product_path(product), target: "_blank", class: "button buy-button feature-buy-button" %>
-        
-        <div class="product-description">
-          <p class="product-brand"> <%= product.brand.name %> </p>
-          <p class="product-name"> <%= product.name %> </p>
-          <p class="product-price"> £<%= number_with_precision(product.display_price, precision: 2) %> </p>
-        </div>
-        
+        <%= link_to buy_product_path(product), target: "_blank", class: "buy-link" do %>
+          <div class="feature-product-image-container">
+            <%= image_tag product.image_url, class: "feature-product-image", alt: "#{product.name} by #{product.brand.name}" %>
+          </div>
+        <% end %>
+        <a data-reveal-id="modal<%= product.id %>" class="button feature-info-button">Info</a>
+        <%= link_to buy_product_path(product), target: "_blank", class: "buy-link" do %>
+          <div class="product-description">
+            <p class="product-brand"> <%= product.brand.name %> </p>
+            <p class="product-name"> <%= product.name %> </p>
+            <p class="product-price"> £<%= number_with_precision(product.display_price, precision: 2) %> </p>
+          </div>
+        <% end %>
+      </div>
+      
+      <div id="modal<%= product.id %>" class="reveal-modal medium" data-reveal>
+        <%= link_to buy_product_path(product), target: "_blank" do %>
+          <h2><%= product.name.titleize %></h2>
+        <% end %>
+        <h4>By <%= product.brand.name.titleize %></h4>
+        <%= link_to buy_product_path(product), target: "_blank" do %>£<%= number_with_precision(product.display_price, precision: 2) %>
+        <% end %>
+        <p class="lead">Sizes: <%= product.size || link_to("See Retailer", buy_product_path(product), target: "_blank") %></p>
+        <p><%= product.name.titleize %> by <%= product.brand.name.titleize %> <br> <%= product.description %></p>
+         
+        <a class="close-reveal-modal">&#215;</a>
       </div>
   </li>
   <% end %>
@@ -165,7 +180,7 @@
           <div class="large-12 columns">
             <div class="row collapse">
               <div class="small-10 columns">
-                <input type="text" name="searchString" placeholder="search for what you've been dreaming of"/>
+                <input type="search" name="searchString" placeholder="search for what you've been dreaming of"/>
               </div>
               <div class="small-2 columns">
                 <input type="submit" class="button postfix"/> 
