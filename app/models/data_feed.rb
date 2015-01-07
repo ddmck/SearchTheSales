@@ -78,9 +78,9 @@ class DataFeed < ActiveRecord::Base
         product.image_url = item[:image_url]
         product.colors = set_colors(item)
         product.gender = set_gender(item)
-        product.category = set_category(item, product)
-        product.sub_category = set_sub_category(product) if product.category
       end
+      product.category = set_category(item, product)
+      product.sub_category = set_sub_category(product) if product.category
       product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
       product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
       product.size = item[:size].to_s if item[:size]
@@ -112,11 +112,28 @@ class DataFeed < ActiveRecord::Base
     categories = Category.all
     cat = nil
     sub_categories = SubCategory.all
-      
-    if item[:category]
+    
+
+    categories.each do |category|
+      if product.name.downcase.split(" ").include?(category.name) || 
+         product.name.downcase.split(" ").include?(category.name.singularize)
+        cat = category
+      end 
+    end
+
+    if cat == nil 
+      sub_categories.each do |sub_category|
+        if product.name.downcase.split(" ").include?(sub_category.name) || 
+           product.name.downcase.split(" ").include?(sub_category.name.singularize)
+          cat = sub_category.category
+        end
+      end
+    end
+
+    if cat.nil? && item[:category]
       categories.each do |category|
-        if sanitize_string(item[:category]).downcase.include?(category.name) || 
-           sanitize_string(item[:category]).downcase.include?(category.name.singularize)
+        if sanitize_string(item[:category]).downcase.split(" ").split(" ").include?(category.name) || 
+           sanitize_string(item[:category]).downcase.split(" ").include?(category.name.singularize)
           cat = category
         end 
       end
@@ -124,30 +141,14 @@ class DataFeed < ActiveRecord::Base
 
     if cat.nil? && item[:category]
       sub_categories.each do |sub_category|
-        if sanitize_string(item[:category]).downcase.include?(sub_category.name) || 
-           sanitize_string(item[:category]).downcase.include?(sub_category.name.singularize)
+        if sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name) || 
+           sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name.singularize)
           cat = sub_category.category
         end 
       end
     end
     
-    if cat == nil 
-      categories.each do |category|
-        if product.name.downcase.include?(category.name) || 
-           product.name.downcase.include?(category.name.singularize)
-          cat = category
-        end 
-      end
-    end
-
-    if cat == nil 
-      sub_categories.each do |sub_category|
-        if product.name.downcase.include?(sub_category.name) || 
-           product.name.downcase.include?(sub_category.name.singularize)
-          cat = sub_category.category
-        end
-      end
-    end
+    
 
     # if cat == nil && product.description
     #   categories.each do |category|
