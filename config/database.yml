@@ -1,11 +1,22 @@
 # PostgreSQL
 #   Ensure the PostgreSQL gem is defined in your Gemfile
 #   gem 'pg'
+<% current_system_user = `whoami`.chomp %>
+<% db_user = ENV['SALES_DB_USER'] %>
+
+
+
+<% if !db_user %>
+ <% db_user = current_system_user %>
+ <% puts "Warning - Using current user (#{current_system_user}) for database connection, change SALES_DB_USER environment variable to override" %>
+<% end %>
+
 development: 
   adapter: postgresql 
   encoding: utf8 
   database: searchthesales_development 
-  username: donald
+  username: <% db_user %>
+  password:
   host: localhost
   pool: 5
   port: 5432
@@ -14,10 +25,12 @@ test:
   adapter: postgresql
   encoding: utf8
   database: searchthesales_test
+  username: <% db_user %>
+  password:
   pool: 5
   port: 5432
   host: localhost
-  
+
 production: 
   adapter: postgresql
   encoding: utf8
