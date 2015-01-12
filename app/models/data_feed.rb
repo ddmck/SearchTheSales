@@ -30,6 +30,10 @@ class DataFeed < ActiveRecord::Base
     paths
   end
 
+  def store_name
+    self.store.name
+  end
+
   def process_file
     key_hash = {} 
     key_hash[name_column.to_sym] = :reference_name if name_column 
