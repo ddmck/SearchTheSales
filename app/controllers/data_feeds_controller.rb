@@ -1,7 +1,7 @@
 class DataFeedsController < ApplicationController
   before_action :set_data_feed, only: [:show, :edit, :update, :destroy]
 
-  respond_to :html
+  respond_to :html, :json
 
   def index
     @data_feeds = DataFeed.all
@@ -36,6 +36,11 @@ class DataFeedsController < ApplicationController
   def destroy
     @data_feed.destroy
     respond_with(@data_feed)
+  end
+
+  def get_feed_url
+    @data_feeds = DataFeed.all
+    respond_with(@data_feeds.pluck(:feed_url))
   end
 
   private
