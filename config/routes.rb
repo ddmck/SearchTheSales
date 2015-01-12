@@ -12,6 +12,7 @@ Searchthesales::Application.routes.draw do
   resources :wishlist_items
   
   resources :data_feeds
+  get '/get_data_feeds', to: 'data_feeds#get_feed_url', as: 'feed_url'
 
   resources :genders
 
