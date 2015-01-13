@@ -26,6 +26,8 @@ Searchthesales::Application.routes.draw do
 
   resources :categories
 
+  delete '/products/:url', to: 'products#destroy'
+
   resources :products do
     member do
       get 'buy'
