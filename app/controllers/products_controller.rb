@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy, :wish]
+  before_action :set_product, only: [:show, :edit, :update, :buy, :wish]
   before_action :get_collections, only: [:new, :edit]
   skip_before_filter :verify_authenticity_token
   # before_action :authenticate_current_user, only: [:wish]
@@ -62,8 +62,9 @@ class ProductsController < ApplicationController
   end
 
   def destroy
+    @product = Product.find(params[:url])
     @product.destroy
-    respond_with(@product)
+    respond_with(@product, status: 200)
   end
 
   def buy
@@ -104,6 +105,10 @@ class ProductsController < ApplicationController
                                     :image_url, 
                                     :description, 
                                     :gender)
+  end
+
+  def remove_params
+    params.require(:product).permit(:url)
   end
 
   def build_search_string(params)
