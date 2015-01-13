@@ -39,6 +39,7 @@ class DataFeedsController < ApplicationController
   end
 
   def get_feed_url
+    @stores = Store.all
     @data_feeds = DataFeed.all
     respond_with(@data_feeds.pluck(:feed_url))
   end
