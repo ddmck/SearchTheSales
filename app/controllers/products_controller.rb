@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :buy, :wish]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy, :wish]
   before_action :get_collections, only: [:new, :edit]
   skip_before_filter :verify_authenticity_token
   # before_action :authenticate_current_user, only: [:wish]
