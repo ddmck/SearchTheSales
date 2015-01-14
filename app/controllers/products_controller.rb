@@ -67,10 +67,11 @@ class ProductsController < ApplicationController
   end
 
   def destroy_by_url
-    url = params[:url]
-    @product = Product.find_by_url(url)
-    @product.delete
-    render :status => 200
+    @product = Product.find_by_url(params[:url])
+    if @product.delete
+      render :status => 200
+    else
+      render :status => 500
   end
 
   def buy

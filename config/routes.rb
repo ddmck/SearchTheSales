@@ -29,10 +29,11 @@ Searchthesales::Application.routes.draw do
   delete "/destroy_by_url", to: "products#destroy_by_url", constraints: { url: /[^\t\n\r]+/ }
 
   resources :products do
-    member do
-      get 'buy'
-      post 'wish'
-    end
+      delete "/destroy_by_url", to: "products#destroy_by_url", constraints: { url: /[^\t\n\r]+/ }, on: :collection
+      member do
+        get 'buy'
+        post 'wish'
+      end
   end
 
   resources :brands
