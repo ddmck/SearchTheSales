@@ -115,10 +115,6 @@ class ProductsController < ApplicationController
                                     :gender)
   end
 
-  def remove_params
-    params.require(:product).permit(:url)
-  end
-
   def build_search_string(params)
     string = params[:search_string].downcase.strip
     if params[:category]
