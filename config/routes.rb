@@ -26,7 +26,7 @@ Searchthesales::Application.routes.draw do
 
   resources :categories
 
-  delete "/products/:url", to: "products#destroy_by_url", constraints: { url: /[^\t\n\r]+/ }, as: 'products_destroy_by_url'
+  delete "/destroy_by_url", to: "products#destroy_by_url", constraints: { url: /[^\t\n\r]+/ }
 
   resources :products do
     member do

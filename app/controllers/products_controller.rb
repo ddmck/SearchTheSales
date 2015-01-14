@@ -67,8 +67,10 @@ class ProductsController < ApplicationController
   end
 
   def destroy_by_url
-    url = params[:url].insert(5, '/')
+    url = params[:url]
     puts url
+    dec_url = URI.unescape(url)
+    puts dec_url
     @product = Product.find_by_url(url)
     puts @product
     @product.delete
