@@ -66,6 +66,15 @@ class ProductsController < ApplicationController
     respond_with(@product)
   end
 
+  def destroy_by_url
+    @product = Product.find_by_url(params[:url])
+    if @product.try(:delete)
+      respond_with(@product, status: 200)
+    else
+      respond_with(status: 500)
+    end
+  end
+
   def buy
     redirect_to(@product.url)
   end

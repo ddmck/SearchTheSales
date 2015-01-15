@@ -37,7 +37,7 @@
   </div>
   <div class="field">
     <%= f.label :sub_category_ids %><br>
-    <%= f.select :sub_category_ids, options_for_select(@sub_categories.map { |sub_cat| [sub_cat.name, sub_cat.id]}, @product.sub_category_ids), {prompt: "Please Select"}, {multiple: true} %>
+    <%= f.select :sub_category_id, options_for_select(@sub_categories.map { |sub_cat| [sub_cat.name, sub_cat.id]}, @product.sub_category_id), {prompt: "Please Select"}, {multiple: true} %>
   </div>
   <div class="field">
     <%= f.label :color_ids %><br>
