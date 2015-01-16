@@ -42,6 +42,7 @@ class DataFeed < ActiveRecord::Base
     key_hash[sale_price_column.to_sym] = :sale_price if sale_price_column
     key_hash[description_column.to_sym] = :description if description_column
     key_hash[image_url_column.to_sym] = :image_url if image_url_column
+    key_hash[large_image_url_column.to_sym] = :large_image_url if large_image_url_column
     key_hash[link_column.to_sym] = :url if link_column
     key_hash[gender_column.to_sym] = :gender if gender_column
     key_hash[category_column.to_sym] = :category if category_column
@@ -80,6 +81,7 @@ class DataFeed < ActiveRecord::Base
         product.description = item[:description]
         product.url = item[:url]
         product.image_url = item[:image_url]
+        product.large_image_url = item[:large_image_url]
         product.colors = set_colors(item)
         product.gender = set_gender(item)
       end
