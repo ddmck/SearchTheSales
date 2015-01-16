@@ -136,7 +136,7 @@ class DataFeed < ActiveRecord::Base
 
     if cat.nil? && item[:category]
       categories.each do |category|
-        if sanitize_string(item[:category]).downcase.split(" ").split(" ").include?(category.name) || 
+        if sanitize_string(item[:category]).downcase.split(" ").include?(category.name) || 
            sanitize_string(item[:category]).downcase.split(" ").include?(category.name.singularize)
           cat = category
         end 
