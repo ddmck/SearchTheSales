@@ -26,6 +26,8 @@ class Product < ActiveRecord::Base
   has_many :users, through: :wishlist_items
   has_many :color_tags
   has_many :colors, through: :color_tags
+  has_many :size_tags
+  has_many :sizes, through: :size_tags
   
   has_many :trend_tags
   has_many :trends, through: :trend_tags
