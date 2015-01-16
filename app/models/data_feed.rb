@@ -228,6 +228,10 @@ class DataFeed < ActiveRecord::Base
     end
   end
 
+  def sanitize_sizes(string)
+    string.to_s.upcase.split(/,|\|/).map { |s| s.strip }
+  end
+
   def set_name(product)
     product.reference_name.downcase.remove(product.brand.name.downcase).squeeze(" ").gsub("`", "'")
   end

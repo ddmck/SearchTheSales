@@ -55,4 +55,17 @@ RSpec.describe DataFeed, :type => :model do
     expect(data_feed.detect_gender("Men > Tops & T-Shirts > Men's T-Shirts")).to eq("male")
     expect(data_feed.detect_gender("Men > Tops & T-Shirts")).to eq("male")
   end
+
+  it "should be able to sanitize sizes" do
+    # "10 (S)|12 (M)|14 (L)|16 (XL)|8 (XS)", "10 (38)|12 (40)|14 (42)", "XL", "one size", "L,M,L", "XXL (6)|XXXL (7)", "SMALL (36/38\"\" Chest)|MEDIUM (38/40\"\" Chest)|LARGE (40/42\"\" Chest)|XL (42/44\"\" Chest)|3XL (46/48\"\" Chest)", "XL (5)|XXL (6)|XXXL (7)", "Medium (36/38\"\" Chest)|XL (40/42\"\" Chest)|XXL (42/44\"\" Chest)", "10 (S)|14 (L)|16 (XL)", "Medium (36/38\"\" Chest)|Large (38/40\"\" Chest)|XL (40/42\"\" Chest)|XXL (42/44\"\" Chest)", "XXL (6)"
+    expect(data_feed.sanitize_sizes("")).to eq([])
+    expect(data_feed.sanitize_sizes("UK One Size")).to eq(["UK ONE SIZE"])
+    expect(data_feed.sanitize_sizes("Extra Sml|Medium|Small")).to eq(["EXTRA SML", "MEDIUM", "SMALL"])
+    expect(data_feed.sanitize_sizes("1|3")).to eq(["1", "3"])
+    expect(data_feed.sanitize_sizes("10|12|14|8")).to eq(["10", "12", "14", "8"])
+    expect(data_feed.sanitize_sizes("Extra Small|Large|Medium|Small")).to eq(["EXTRA SMALL", "LARGE", "MEDIUM", "SMALL"])
+    expect(data_feed.sanitize_sizes("Small (36/38\"\" Chest)|Medium (38/40\"\" Chest)|XS (34/36\"\" Chest)")).to eq(["SMALL (36/38\"\" CHEST)","MEDIUM (38/40\"\" CHEST)","XS (34/36\"\" CHEST)"])
+    expect(data_feed.sanitize_sizes("Extra Sml |Medium |Small ")).to eq(["EXTRA SML", "MEDIUM", "SMALL"])
+    expect(data_feed.sanitize_sizes(" Extra Sml | Medium | Small ")).to eq(["EXTRA SML", "MEDIUM", "SMALL"])
+  end
 end
