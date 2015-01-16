@@ -80,16 +80,16 @@ class DataFeed < ActiveRecord::Base
         product.name = set_name(product)
         product.description = item[:description]
         product.url = item[:url]
-        product.image_url = item[:image_url]
-        product.large_image_url = item[:large_image_url]
+        product.image_url = item[:image_url].gsub(/http:/, "https:")
+        product.large_image_url = item[:large_image_url].gsub(/http:/, "https:")
         product.colors = set_colors(item)
         product.gender = set_gender(item)
+        product.category = set_category(item, product)
+        product.sub_category = set_sub_category(product) if product.category
       end
-      product.category = set_category(item, product)
-      product.sub_category = set_sub_category(product) if product.category
       product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
       product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
-      product.size = item[:size].to_s if item[:size]
+      product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
       product.save if product.changed?
     end
   end
@@ -230,6 +230,16 @@ class DataFeed < ActiveRecord::Base
 
   def sanitize_sizes(string)
     string.to_s.upcase.split(/,|\|/).map { |s| s.strip }
+  end
+
+  def set_sizes(size_list)
+    size_list.map do |size|
+      set_size = Size.find_by_name(size)
+      if set_size.nil?
+        set_size = Size.create(name: size)
+      end
+      set_size
+    end
   end
 
   def set_name(product)
