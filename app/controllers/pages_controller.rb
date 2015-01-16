@@ -4,16 +4,16 @@ class PagesController < ApplicationController
   ]
 
   def home
-    if get_current_user
-      puts "Current user is: #{get_current_user.id}" 
-    else
-      puts "No user!"
-    end
-    @stores = Store.first(4)
-    @brands = Brand.first(4)
-    @products = Product.first(4)
-    @wishlist = current_user.wishlist if current_user
-    @basket = current_user.basket if current_user
+    # if get_current_user
+    #   puts "Current user is: #{get_current_user.id}" 
+    # else
+    #   puts "No user!"
+    # end
+    # @stores = Store.first(4)
+    # @brands = Brand.first(4)
+    # @products = Product.first(4)
+    # @wishlist = current_user.wishlist if current_user
+    # @basket = current_user.basket if current_user
   end
 
   def inside
