@@ -144,7 +144,7 @@
         <h4>By <%= product.brand.name.titleize %></h4>
         <%= link_to buy_product_path(product), target: "_blank" do %>£<%= number_with_precision(product.display_price, precision: 2) %>
         <% end %>
-        <p class="lead">Sizes: <%= product.size || link_to("See Retailer", buy_product_path(product), target: "_blank") %></p>
+        <!-- <p class="lead">Sizes: <%= product.size || link_to("See Retailer", buy_product_path(product), target: "_blank") %></p> -->
         <p><%= product.name.titleize %> by <%= product.brand.name.titleize %> <br> <%= product.description %></p>
          
         <a class="close-reveal-modal">&#215;</a>
