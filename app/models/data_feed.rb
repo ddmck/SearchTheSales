@@ -67,32 +67,32 @@ class DataFeed < ActiveRecord::Base
 
   def process_item(item)
 
-    if item[:reference_name].nil? || item[:image_url].nil? || item[:url].nil? || item[:brand].nil?
-      puts "####### NOT VALID MISSING IMPORTANT COLUMN!!!! ######"
-      puts "DataFeed: #{self.id}, Item: #{item}"
-      return
-    else
-      product = Product.find_by_url(item[:url])
-      if product.nil?
-        product = Product.new
-        product.brand = set_brand(item[:brand])
-        product.store = set_store
-        product.reference_name = set_reference_name(item[:reference_name], product.brand)
-        product.name = set_name(product)
-        product.description = item[:description]
-        product.url = item[:url]
-        product.image_url = item[:image_url].gsub(/http:/, "https:")
-        product.large_image_url = item[:large_image_url].try(:gsub, "http:", "https:") if item[:large_image_url]
-        product.colors = set_colors(item)
-        product.gender = set_gender(item)
-        product.category = set_category(item, product)
-        product.sub_category = set_sub_category(product) if product.category
-      end
-      product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
-      product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
-      product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
-      product.save if product.changed?
+    # if item[:reference_name].nil? || item[:image_url].nil? || item[:url].nil? || item[:brand].nil?
+    #   puts "####### NOT VALID MISSING IMPORTANT COLUMN!!!! ######"
+    #   puts "DataFeed: #{self.id}, Item: #{item}"
+    #   return
+    # else
+    product = Product.find_by_url(item[:url])
+    if product.nil?
+      product = Product.new
+      product.brand = set_brand(item[:brand])
+      product.store = set_store
+      product.reference_name = set_reference_name(item[:reference_name], product.brand)
+      product.name = set_name(product)
+      product.description = item[:description]
+      product.url = item[:url]
+      product.image_url = item[:image_url].gsub(/http:/, "https:")
+      product.large_image_url = item[:large_image_url].try(:gsub, "http:", "https:") if item[:large_image_url]
+      product.colors = set_colors(item)
+      product.gender = set_gender(item)
+      product.category = set_category(item, product)
+      product.sub_category = set_sub_category(product) if product.category
     end
+    product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
+    product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
+    product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
+    product.save if product.changed?
+    # end
   end
 
   def set_product(identifier)
