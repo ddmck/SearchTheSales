@@ -69,6 +69,7 @@ class DataFeed < ActiveRecord::Base
 
     if item[:reference_name].nil? || item[:image_url].nil? || item[:url].nil? || item[:brand].nil? || !detect_valid_url(item[:url])
       puts "####### NOT VALID MISSING IMPORTANT COLUMN!!!! ######"
+      puts "DataFeed: #{self.id}, Item: #{item}"
       return
     else
       product = Product.find_by_url(item[:url])
