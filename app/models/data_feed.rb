@@ -81,13 +81,13 @@ class DataFeed < ActiveRecord::Base
       product.name = set_name(product)
       product.description = item[:description]
       product.url = item[:url]
-      product.image_url = item[:image_url].try(:gsub, "http:", "https:") || item[:large_image_url].try(:gsub, "http:", "https:")
-      product.large_image_url = item[:large_image_url].try(:gsub, "http:", "https:") if item[:large_image_url]
       product.colors = set_colors(item)
       product.gender = set_gender(item)
       product.category = set_category(item, product)
       product.sub_category = set_sub_category(product) if product.category
     end
+    product.image_url = item[:image_url] || item[:large_image_url]
+    product.large_image_url = item[:large_image_url] if item[:large_image_url]
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
