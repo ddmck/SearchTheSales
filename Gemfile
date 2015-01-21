@@ -83,7 +83,7 @@ gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'bonsai-elasticsearch-rails'
 
-#for grabbing datafeeds
+#for grabbing CSV datafeeds
 gem 'httparty'
 
 #for unzipping files
@@ -97,3 +97,6 @@ gem 'prerender_rails'
 
 # For analytics
 gem 'newrelic_rpm'
+
+# For XML importer
+gem 'nokogiri'
