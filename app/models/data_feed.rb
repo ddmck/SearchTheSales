@@ -3,6 +3,10 @@ require 'zip'
 class DataFeed < ActiveRecord::Base
   validates_presence_of :feed_url
   belongs_to :store
+  
+  def self.update_all
+    self.all.each { |df| df.process_file }
+  end
 
   def download_feed
     HTTParty.get(feed_url).body
@@ -244,7 +248,11 @@ class DataFeed < ActiveRecord::Base
   end
 
   def set_name(product)
-    product.reference_name.downcase.remove(product.brand.name.downcase).squeeze(" ").gsub("`", "'")
+    name = product.reference_name.downcase.remove(product.brand.name.downcase).squeeze(" ").gsub("`", "'").strip()
+    if name[-3 .. -1] == " by"
+      name = name[0 .. -4] 
+    end
+    name
   end
 
   def set_reference_name(reference_name, brand)
