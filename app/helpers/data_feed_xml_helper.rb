@@ -1,0 +1,2 @@
+module DataFeedXmlHelper
+end
