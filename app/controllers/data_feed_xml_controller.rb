@@ -1,0 +1,2 @@
+class DataFeedXmlController < ApplicationController
+end
