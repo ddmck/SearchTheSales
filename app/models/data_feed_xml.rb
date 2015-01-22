@@ -2,17 +2,21 @@ require 'nokogiri'
 require 'net/ftp'
 
 class DataFeedXml < ActiveRecord::Base
-  validates_presence_of :feed_url
+  validates_presence_of :file
   belongs_to :store
 
-  def ftp_client(host, username, passwd, file)
+  def self.update_all
+    self.all.each { |df| df.process_file }
+  end
+
+  def ftp_client(host, username, passwd)
     Net::FTP.open(host) do |ftp|
       ftp.login(username, passwd)
       ftp.get(file + '.gz')
     end
   end
 
-  def uncompress_gz(file)
+  def uncompress_gz
     Zlib::GzipReader.open(file + ".gz") do |gz|
       File.open(file, "w") do |g|
         IO.copy_stream(gz, g)
@@ -55,7 +59,6 @@ class DataFeedXml < ActiveRecord::Base
     primary.each_with_index do |pri, i|
       source[i] = "#{pri} #{secondary[i]}"
     end
-    puts source
     source.each_with_index do |src, i|
 
       hash[i]["category_column"] = sanitize_cat(sanitize(sanitize(source[i])))
@@ -93,6 +96,29 @@ class DataFeedXml < ActiveRecord::Base
     doc.xpath(path).each_with_index do |xml, i|
       hash[i][col_name] = sanitize_url(sanitize(sanitize(xml)))
     end
+    hash
+  end
+
+  def process_file
+    hash = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
+    primary = []
+    secondary = []
+    ftp_client("aftp.linksynergy.com/","BertieWilson","2rKpC5TF",
+               "35663_3019047_mp.xml.gz")
+
+
+    extract_xml_attr("//product", "name", hash, "name_column")
+
+    extract_xml_url("//product//product", hash, "link_column")
+
+    extract_xml("//product//brand", hash, "brand_column")
+    extract_xml("//product//productImage", hash, "img_url_column")
+    extract_xml("//product//sale", hash, "sales_price_column")
+    extract_xml("//product//retail", hash, "rrp_price_column")
+    extract_xml("//product//short", hash, "description_column")
+    extract_xml("//product//Gender", hash, "gender_column")
+    extract_category(hash, primary, secondary)
+    extract_xml("//product//Size", hash, "size_column")
     hash
   end
 end
