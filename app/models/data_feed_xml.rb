@@ -25,7 +25,7 @@ class DataFeedXml < ActiveRecord::Base
   end
 
   def get_doc
-    Nokogiri::XML(File.open("test2.xml"))
+    Nokogiri::XML(File.open(""))
   end
 
   def style_canon(word)
@@ -103,8 +103,8 @@ class DataFeedXml < ActiveRecord::Base
     hash = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
     primary = []
     secondary = []
-    ftp_client("aftp.linksynergy.com/","BertieWilson","2rKpC5TF",
-               "35663_3019047_mp.xml.gz")
+    ftp_client("aftp.linksynergy.com/","BertieWilson","2rKpC5TF")
+    uncompress_gz(file)
 
 
     extract_xml_attr("//product", "name", hash, "name_column")
