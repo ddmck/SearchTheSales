@@ -9,9 +9,9 @@ class DataFeedXml < ActiveRecord::Base
     self.all.each { |df| df.process_file }
   end
 
-  def ftp_client(host, username, passwd)
+  def ftp_client
     Net::FTP.open(host) do |ftp|
-      ftp.login(username, passwd)
+      ftp.login(username, password)
       ftp.get(file + '.gz')
     end
   end
@@ -103,7 +103,7 @@ class DataFeedXml < ActiveRecord::Base
     hash = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
     primary = []
     secondary = []
-    ftp_client("aftp.linksynergy.com/","BertieWilson","2rKpC5TF")
+    ftp_client()
     uncompress_gz(file)
 
 
