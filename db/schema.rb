@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122102316) do
+ActiveRecord::Schema.define(version: 20150122151533) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(version: 20150122102316) do
     t.string   "image_url"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "ref"
   end
 
   create_table "categories", force: true do |t|
@@ -83,6 +82,9 @@ ActiveRecord::Schema.define(version: 20150122102316) do
     t.string   "category_column"
     t.string   "large_image_url_column"
     t.text     "file"
+    t.string   "host"
+    t.string   "user_name"
+    t.string   "password"
   end
 
   add_index "data_feed_xmls", ["store_id"], name: "index_data_feed_xmls_on_store_id", using: :btree
