@@ -60,6 +60,11 @@ FactoryGirl.define do
     store
   end
 
+  factory :data_feed_xml do
+    file 'file.xml'
+    store
+  end
+
   factory :feature do
     sequence(:title) { |n| "title#{n}"}
     copy 'The copy goes here'

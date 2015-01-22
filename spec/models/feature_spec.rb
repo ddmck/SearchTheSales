@@ -45,7 +45,6 @@ RSpec.describe Feature, :type => :model do
 
   it "should be able to build its query string" do
     wanted_string = "?category=#{feature.category_id}&gender=#{feature.gender.name}&searchString=#{feature.search_string.gsub(" ", "+")}&subCategory=#{feature.sub_category_id}"
-    puts wanted_string
     expect(feature.build_query_string).to eq(wanted_string)
   end
 end
