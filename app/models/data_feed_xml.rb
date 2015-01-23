@@ -99,6 +99,8 @@ class DataFeedXml < ActiveRecord::Base
     lines.each {|line| process_line(line)}
   end
 
+  handle_asynchronously :process_file, :queue => 'data_feeds'
+
   def process_line(item)
     product = Product.find_by_url(item[:url])
     if product.nil?
