@@ -11,6 +11,7 @@ class DataFeedXml < ActiveRecord::Base
 
   def ftp_client
     Net::FTP.open(host) do |ftp|
+      ftp.passive = true
       ftp.login(user_name, password)
       ftp.get(file, "./tmp/#{file}")
     end
