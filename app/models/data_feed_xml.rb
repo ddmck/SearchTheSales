@@ -11,21 +11,22 @@ class DataFeedXml < ActiveRecord::Base
 
   def ftp_client
     Net::FTP.open(host) do |ftp|
-      ftp.login(username, password)
-      ftp.get(file + '.gz')
+      ftp.login(user_name, password)
+      ftp.get(file, "./tmp/#{file}")
     end
   end
 
   def uncompress_gz
-    Zlib::GzipReader.open(file + ".gz") do |gz|
-      File.open(file, "w") do |g|
+    Zlib::GzipReader.open("./tmp/#{file}") do |gz|
+      puts "./tmp/#{file}"[0 .. -4]
+      File.open("./tmp/#{file}"[0 .. -4], "w") do |g|
         IO.copy_stream(gz, g)
       end
     end
   end
 
   def get_doc
-    Nokogiri::XML(File.open(""))
+    Nokogiri::XML(File.open("./tmp/#{file}"[0 .. -4]))
   end
 
   def style_canon(word)
@@ -40,85 +41,297 @@ class DataFeedXml < ActiveRecord::Base
     url.to_s.gsub(/&amp;/, "&")
   end
 
-  def extract_category_arrays(array, path)
-    doc = get_doc
-    doc.xpath(path).each do |xml|
-        array << xml
-    end
-    array
-  end
-
   def sanitize_cat(category)
     category.gsub(/[^\w\s\&]/, " ")
   end
 
-  def extract_category(hash, primary, secondary)
-    primary = extract_category_arrays(primary, "//product//primary")
-    secondary = extract_category_arrays(secondary, "//product//secondary")
-    source = []
-    primary.each_with_index do |pri, i|
-      source[i] = "#{pri} #{secondary[i]}"
-    end
-    source.each_with_index do |src, i|
-
-      hash[i]["category_column"] = sanitize_cat(sanitize(sanitize(source[i])))
-    end
-  end
-
-  def extract_xml(path, hash, col_name)
+  def extract_xml(path, lines, col_name)
     doc = get_doc
 
     doc.xpath(path).each_with_index do |xml, i|
-      hash[i][col_name] = style_canon(sanitize(sanitize(xml)))
+      lines[i][col_name.to_sym] = style_canon(sanitize(sanitize(xml)))
     end
-    hash
+    lines 
   end
 
-  def extract_xml_attr(path, attribute, hash, col_name)
+  def extract_xml_attr(path, attribute, lines, col_name)
     temp_arr = []
     doc = get_doc
 
-    doc.xpath("//product").each do |a|
+    doc.xpath(path).each do |a|
       temp_arr << a.attr(attribute)
     end
 
     temp_arr = temp_arr.compact!
 
     temp_arr.each_with_index do |a, i|
-      hash[i][col_name] = a.to_s
+      lines[i] = {col_name.to_sym => a.to_s}
     end
-    hash
+    lines
   end
 
-  def extract_xml_url(path, hash, col_name)
+  def extract_xml_url(path, lines, col_name)
     doc = get_doc
 
     doc.xpath(path).each_with_index do |xml, i|
-      hash[i][col_name] = sanitize_url(sanitize(sanitize(xml)))
+      lines[i][col_name.to_sym] = sanitize_url(sanitize(sanitize(xml)))
     end
-    hash
+    lines
   end
 
   def process_file
-    hash = Hash.new{ |h,k| h[k] = Hash.new(&h.default_proc) }
-    primary = []
-    secondary = []
-    ftp_client()
-    uncompress_gz(file)
+    lines = []
+    ftp_client
+    uncompress_gz
 
 
-    extract_xml_attr("//product", "name", hash, "name_column")
+    lines = extract_xml_attr("//product", "name", lines, "reference_name")
+    lines = extract_xml_url(link_column, lines, "url")
+    lines = extract_xml(brand_column, lines, "brand")
+    lines = extract_xml(image_url_column, lines, "image_url")
+    lines = extract_xml(image_url_column, lines, "large_image_url")
+    lines = extract_xml(sale_price_column, lines, "sale_price")
+    lines = extract_xml(rrp_column, lines, "rrp")
+    lines = extract_xml(description_column, lines, "description")
+    lines = extract_xml(gender_column, lines, "gender")
+    lines = extract_xml(category_column, lines, "category")
+    lines = extract_xml(size_column, lines, "size")
+    lines.each {|line| process_line(line)}
+  end
 
-    extract_xml_url("//product//product", hash, "link_column")
+  def process_line(item)
+    product = Product.find_by_url(item[:url])
+    if product.nil?
+      product = Product.new
+      product.brand = set_brand(item[:brand])
+      product.store = set_store
+      product.reference_name = set_reference_name(item[:reference_name], product.brand)
+      product.name = set_name(product)
+      product.description = item[:description]
+      product.url = item[:url]
+      product.colors = set_colors(item)
+      product.gender = set_gender(item)
+      product.category = set_category(item, product)
+      product.sub_category = set_sub_category(product) if product.category
+    end
+    product.image_url = item[:image_url] || item[:large_image_url]
+    product.large_image_url = item[:large_image_url] if item[:large_image_url]
+    product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
+    product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
+    product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
+    product.save if product.changed?
+  end
 
-    extract_xml("//product//brand", hash, "brand_column")
-    extract_xml("//product//productImage", hash, "img_url_column")
-    extract_xml("//product//sale", hash, "sales_price_column")
-    extract_xml("//product//retail", hash, "rrp_price_column")
-    extract_xml("//product//short", hash, "description_column")
-    extract_xml("//product//Gender", hash, "gender_column")
-    extract_category(hash, primary, secondary)
-    extract_xml("//product//Size", hash, "size_column")
-    hash
+
+  #### REFACTOR THIS INTO PRODUCT AFTER PROVING THAT IT WORKS
+
+  def set_product(identifier)
+    product = Product.find_by_reference_name(identifier)
+    if product.nil?
+      product.new(reference_name: identifier)
+    end
+    product
+  end
+
+  def set_store
+    Store.find(store_id)
+  end
+
+  def set_brand(identifier)
+    brand = Brand.find_by_name(identifier.to_s.downcase)
+    if brand.nil?
+      brand = Brand.create(name: identifier.to_s.downcase, image_url: "#");
+    end
+    brand
+  end
+
+  def set_category(item, product)
+    categories = Category.all
+    cat = nil
+    sub_categories = SubCategory.all
+    
+
+    categories.each do |category|
+      if product.name.downcase.split(" ").include?(category.name) || 
+         product.name.downcase.split(" ").include?(category.name.singularize)
+        cat = category
+      end 
+    end
+
+    if cat == nil 
+      sub_categories.each do |sub_category|
+        if product.name.downcase.split(" ").include?(sub_category.name) || 
+           product.name.downcase.split(" ").include?(sub_category.name.singularize)
+          cat = sub_category.category
+        end
+      end
+    end
+
+    if cat.nil? && item[:category]
+      categories.each do |category|
+        if sanitize_string(item[:category]).downcase.split(" ").include?(category.name) || 
+           sanitize_string(item[:category]).downcase.split(" ").include?(category.name.singularize)
+          cat = category
+        end 
+      end
+    end
+
+    if cat.nil? && item[:category]
+      sub_categories.each do |sub_category|
+        if sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name) || 
+           sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name.singularize)
+          cat = sub_category.category
+        end 
+      end
+    end
+    
+    
+
+    # if cat == nil && product.description
+    #   categories.each do |category|
+    #     if product.description.downcase.remove(product.brand.name).include?(category.name) ||
+    #        product.description.downcase.remove(product.brand.name).include?(category.name.singularize)
+    #       cat = category
+    #     end
+    #   end
+    # end
+
+    # if cat == nil && product.description
+    #   sub_categories.each do |sub_category|
+    #     if product.description.downcase.remove(product.brand.name).include?(sub_category.name) ||
+    #        product.description.downcase.remove(product.brand.name).include?(sub_category.name.singularize)
+    #       cat = sub_category.category
+    #     end 
+    #   end
+    # end
+    cat
+  end
+
+  def set_sub_category(product)
+    sub_cat = nil
+    name = sanitize_string(product.name).downcase.split(" ")
+    description = sanitize_string(product.description).downcase.remove(product.brand.name).split(" ") if product.description
+    sub_categories = product.category.sub_categories
+    sub_categories.each do |sub_category|
+      if name.include?(sub_category.name) || 
+         name.include?(sub_category.name.singularize)
+        sub_cat = sub_category
+      end 
+      if sub_cat.nil? && product.description
+        if description.include?(sub_category.name) ||
+           description.include?(sub_category.name.singularize)
+          sub_cat = sub_category
+        end
+      end 
+    end
+    sub_cat
+  end
+
+  def set_colors(item)
+    clrs = []
+    name = sanitize_string(item[:reference_name]).downcase.split(" ")
+    description = sanitize_string(item[:description]).downcase.split(" ") if item[:description]
+    colors = Color.all
+    colors.each do |color|
+      if name.include?(color.name) || 
+         name.include?(color.name.singularize)
+        clrs << color
+      end 
+      if item[:description]
+        if description.include?(color.name) ||
+           description.include?(color.name.singularize)
+          clrs << color
+        end
+      end
+    end
+    clrs 
+  end
+
+  def sanitize_string(string)
+    string.to_s.gsub(/[^\p{Alnum}\p{Space}]/u, '')
+  end
+
+  def sanitize_price(price)
+    if price.class == String
+      price.gsub(/[^\d\.]/, '').to_f
+    else
+      price.to_f
+    end
+  end
+
+  def sanitize_sizes(string)
+    string.to_s.upcase.split(/,|\|/).map { |s| s.strip }
+  end
+
+  def set_sizes(size_list)
+    size_list.map do |size|
+      set_size = Size.find_by_name(size)
+      if set_size.nil?
+        set_size = Size.create(name: size)
+      end
+      set_size
+    end
+  end
+
+  def set_name(product)
+    name = product.reference_name.downcase.remove(product.brand.name.downcase).squeeze(" ").gsub("`", "'").strip()
+    if name[-3 .. -1] == " by"
+      name = name[0 .. -4] 
+    end
+    name
+  end
+
+  def set_reference_name(reference_name, brand)
+    if reference_name.downcase.include?(brand.name.downcase)
+      reference_name.downcase.gsub("`", "'")
+    else 
+      brand.name.downcase + " " + reference_name.downcase.gsub("`", "'")
+    end
+  end
+
+  def set_gender(item)
+    gender = detect_gender(item[:gender]) if item[:gender]
+    if gender.nil? && item[:category]
+      gender = detect_gender(item[:category])
+    end
+    if gender.nil? && item[:reference_name]
+      gender = detect_gender(item[:reference_name])
+    end
+    if gender.nil? && item[:description]
+      gender = detect_gender(item[:description])
+    end
+    if gender
+      return Gender.find_by_name(gender)
+    else
+      return nil
+    end
+  end
+
+  def detect_gender(string)
+    mens_matches = ["m", "men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
+    womens_matches = ["f", "women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
+    unisex_matches = ["unisex", "uni-sex"]
+    gender_match = nil
+    sanitize_string(string).downcase.split(" ").each do |word|
+      unless gender_match
+        if mens_matches.include?(word)
+          gender_match = "male"
+        elsif womens_matches.include?(word)
+          gender_match = "female"
+        elsif unisex_matches.include?(word)
+          gender_match = "unisex"
+        end
+      end
+    end
+    gender_match
+  end
+
+  def detect_valid_url(string)
+    uri = URI.parse(string)
+    %w( http https ).include?(uri.scheme)
+  rescue URI::BadURIError
+    false
+  rescue URI::InvalidURIError
+    false
   end
 end

@@ -1,0 +1,89 @@
+<%= form_for(@data_feed_xml) do |f| %>
+  <% if @data_feed_xml.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@data_feed_xml.errors.count, "error") %> prohibited this data_feed from being saved:</h2>
+
+      <ul>
+      <% @data_feed_xml.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :host %><br>
+    <%= f.text_area :host %>
+  </div>
+  <div class="field">
+    <%= f.label :user_name %><br>
+    <%= f.text_area :user_name %>
+  </div>
+  <div class="field">
+    <%= f.label :password %><br>
+    <%= f.text_area :password %>
+  </div>
+  <div class="field">
+    <%= f.label :file %><br>
+    <%= f.text_area :file %>
+  </div>
+  <div class="field">
+    <%= f.label :store_id %><br>
+    <%= f.select :store_id, options_for_select(@stores.map { |store| [store.name, store.id]}, @data_feed_xml.store_id), prompt: "Please Select" %>
+  </div>
+  <div class="field">
+    <%= f.label :name_column %><br>
+    <%= f.text_field :name_column %>
+  </div>
+  <div class="field">
+    <%= f.label :description_column %><br>
+    <%= f.text_field :description_column %>
+  </div>
+  <div class="field">
+    <%= f.label :rrp_column %><br>
+    <%= f.text_field :rrp_column %>
+  </div>
+  <div class="field">
+    <%= f.label :sale_price_column %><br>
+    <%= f.text_field :sale_price_column %>
+  </div>
+  <div class="field">
+    <%= f.label :link_column %><br>
+    <%= f.text_field :link_column %>
+  </div>
+  <div class="field">
+    <%= f.label :image_url_column %><br>
+    <%= f.text_field :image_url_column %>
+  </div>
+  <div class="field">
+    <%= f.label :large_image_url_column %><br>
+    <%= f.text_field :large_image_url_column %>
+  </div>
+  <div class="field">
+    <%= f.label :brand_column %><br>
+    <%= f.text_field :brand_column %>
+  </div>
+  <div class="field">
+    <%= f.label :size_column %><br>
+    <%= f.text_field :size_column %>
+  </div>
+
+  <div class="field">
+    <%= f.label :color_column %><br>
+    <%= f.text_field :color_column %>
+  </div>
+
+  <div class="field">
+    <%= f.label :gender_column %><br>
+    <%= f.text_field :gender_column %>
+  </div>
+
+  <div class="field">
+    <%= f.label :category_column %><br>
+    <%= f.text_field :category_column %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

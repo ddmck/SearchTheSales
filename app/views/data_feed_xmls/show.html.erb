@@ -1,0 +1,74 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>File:</strong>
+  <%= @data_feed_xml.file %>
+</p>
+
+<p>
+  <strong>Host:</strong>
+  <%= @data_feed_xml.host %>
+</p>
+
+<p>
+  <strong>user_name:</strong>
+  <%= @data_feed_xml.user_name %>
+</p>
+
+<p>
+  <strong>password:</strong>
+  <%= @data_feed_xml.password %>
+</p>
+
+<p>
+  <strong>Store:</strong>
+  <%= @data_feed_xml.store %>
+</p>
+
+<p>
+  <strong>Name column:</strong>
+  <%= @data_feed_xml.name_column %>
+</p>
+
+<p>
+  <strong>Description column:</strong>
+  <%= @data_feed_xml.description_column %>
+</p>
+
+<p>
+  <strong>Rrp column:</strong>
+  <%= @data_feed_xml.rrp_column %>
+</p>
+
+<p>
+  <strong>Sale price column:</strong>
+  <%= @data_feed_xml.sale_price_column %>
+</p>
+
+<p>
+  <strong>Link column:</strong>
+  <%= @data_feed_xml.link_column %>
+</p>
+
+<p>
+  <strong>Image url column:</strong>
+  <%= @data_feed_xml.image_url_column %>
+</p>
+
+<p>
+  <strong>Brand column:</strong>
+  <%= @data_feed_xml.brand_column %>
+</p>
+
+<p>
+  <strong>Size column:</strong>
+  <%= @data_feed_xml.size_column %>
+</p>
+
+<p>
+  <strong>Color column:</strong>
+  <%= @data_feed_xml.color_column %>
+</p>
+
+<%= link_to 'Edit', edit_data_feed_xml_path(@data_feed_xml) %> |
+<%= link_to 'Back', data_feed_xmls_path %>

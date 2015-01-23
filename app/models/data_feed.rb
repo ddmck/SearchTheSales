@@ -8,6 +8,12 @@ class DataFeed < ActiveRecord::Base
     self.all.each { |df| df.process_file }
   end
 
+  def store_name
+    self.store.name
+  end
+
+  ### Concerning Downloading Files
+
   def download_feed
     HTTParty.get(feed_url).body
   end
@@ -34,9 +40,7 @@ class DataFeed < ActiveRecord::Base
     paths
   end
 
-  def store_name
-    self.store.name
-  end
+  ### concerning CSV
 
   def process_file
     key_hash = {} 
@@ -98,6 +102,8 @@ class DataFeed < ActiveRecord::Base
     product.save if product.changed?
     # end
   end
+
+  ## Concerning Products
 
   def set_product(identifier)
     product = Product.find_by_reference_name(identifier)

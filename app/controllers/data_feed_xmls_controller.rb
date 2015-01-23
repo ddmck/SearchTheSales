@@ -1,4 +1,4 @@
-class DataFeedXmlController < ApplicationController
+class DataFeedXmlsController < ApplicationController
   before_action :set_data_feed_xml, only: [:show, :edit, :update, :destroy]
 
   respond_to :html, :json
@@ -45,11 +45,14 @@ class DataFeedXmlController < ApplicationController
 
   private
   def set_data_feed_xml
-    @data_feed = DataFeedXml.find(params[:id])
+    @data_feed_xml = DataFeedXml.find(params[:id])
   end
 
   def data_feed_params
-    params.require(:data_feed_xml).permit(:feed_url, 
+    params.require(:data_feed_xml).permit(:file,
+                                      :host,
+                                      :user_name,
+                                      :password, 
                                       :store_id, 
                                       :name_column, 
                                       :description_column, 
