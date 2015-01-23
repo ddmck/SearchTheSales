@@ -1,85 +1,107 @@
-require 'zip'
+require 'nokogiri'
+require 'net/ftp'
 
-class DataFeed < ActiveRecord::Base
-  validates_presence_of :feed_url
+class DataFeedXml < ActiveRecord::Base
+  validates_presence_of :file
   belongs_to :store
-  
+
   def self.update_all
     self.all.each { |df| df.process_file }
   end
 
-  def store_name
-    self.store.name
+  def ftp_client
+    Net::FTP.open(host) do |ftp|
+      ftp.login(user_name, password)
+      ftp.get(file, "./tmp/#{file}")
+    end
   end
 
-  ### Concerning Downloading Files
-
-  def download_feed
-    HTTParty.get(feed_url).body
-  end
-
-  def feed_temp_file_path
-    file = Tempfile.new("feed_file")
-    file.binmode
-    file.write(download_feed)
-    file.close
-    file.path
-  end
-
-  def unzipped_file_path
-    paths = []
-    Zip::File.open(feed_temp_file_path) do |file|
-      file.each do |entry|
-        unzipped_file = Tempfile.new("gfile")
-        unzipped_file.binmode
-        unzipped_file.write(file.read(entry))
-        unzipped_file.close
-        paths << unzipped_file.path
+  def uncompress_gz
+    Zlib::GzipReader.open("./tmp/#{file}") do |gz|
+      puts "./tmp/#{file}"[0 .. -4]
+      File.open("./tmp/#{file}"[0 .. -4], "w") do |g|
+        IO.copy_stream(gz, g)
       end
     end
-    paths
   end
 
-  ### concerning CSV
+  def get_doc
+    Nokogiri::XML(File.open("./tmp/#{file}"[0 .. -4]))
+  end
+
+  def style_canon(word)
+    word.capitalize
+  end
+
+  def sanitize(word)
+    word.to_s.gsub(/\<.\w+\>/, "")
+  end
+
+  def sanitize_url(url)
+    url.to_s.gsub(/&amp;/, "&")
+  end
+
+  def sanitize_cat(category)
+    category.gsub(/[^\w\s\&]/, " ")
+  end
+
+  def extract_xml(path, lines, col_name)
+    doc = get_doc
+
+    doc.xpath(path).each_with_index do |xml, i|
+      lines[i][col_name.to_sym] = style_canon(sanitize(sanitize(xml)))
+    end
+    lines 
+  end
+
+  def extract_xml_attr(path, attribute, lines, col_name)
+    temp_arr = []
+    doc = get_doc
+
+    doc.xpath(path).each do |a|
+      temp_arr << a.attr(attribute)
+    end
+
+    temp_arr = temp_arr.compact!
+
+    temp_arr.each_with_index do |a, i|
+      lines[i] = {col_name.to_sym => a.to_s}
+    end
+    lines
+  end
+
+  def extract_xml_url(path, lines, col_name)
+    doc = get_doc
+
+    doc.xpath(path).each_with_index do |xml, i|
+      lines[i][col_name.to_sym] = sanitize_url(sanitize(sanitize(xml)))
+    end
+    lines
+  end
 
   def process_file
-    key_hash = {} 
-    key_hash[name_column.to_sym] = :reference_name if name_column 
-    key_hash[brand_column.to_sym] = :brand if brand_column
-    key_hash[rrp_column.to_sym] = :rrp if rrp_column
-    key_hash[sale_price_column.to_sym] = :sale_price if sale_price_column
-    key_hash[description_column.to_sym] = :description if description_column
-    key_hash[image_url_column.to_sym] = :image_url if image_url_column
-    key_hash[large_image_url_column.to_sym] = :large_image_url if large_image_url_column
-    key_hash[link_column.to_sym] = :url if link_column
-    key_hash[gender_column.to_sym] = :gender if gender_column
-    key_hash[category_column.to_sym] = :category if category_column
-    key_hash[size_column.to_sym] = :size if size_column
-    paths = unzipped_file_path
-    paths.each do |path|
-      SmarterCSV.process(path,  chunk_size: 100, 
-                                key_mapping: key_hash) do |chunk|
-        process_chunk(chunk)
-      end
-    end
-    self.last_run_time = Time.now
-    self.save
+    lines = []
+    ftp_client
+    uncompress_gz
+
+
+    lines = extract_xml_attr("//product", "name", lines, "reference_name")
+    lines = extract_xml_url(link_column, lines, "url")
+    lines = extract_xml(brand_column, lines, "brand")
+    lines = extract_xml(image_url_column, lines, "image_url")
+    lines = extract_xml(image_url_column, lines, "large_image_url")
+    lines = extract_xml(sale_price_column, lines, "sale_price")
+    lines = extract_xml(rrp_column, lines, "rrp")
+    lines = extract_xml(description_column, lines, "description")
+    lines = extract_xml(gender_column, lines, "gender")
+    lines = extract_xml(category_column, lines, "category")
+    lines = extract_xml(size_column, lines, "size")
+    lines.each {|line| process_line(line)}
   end
+
   handle_asynchronously :process_file, :queue => 'data_feeds'
 
-  def process_chunk(chunk)
-    chunk.each do |item|
-      process_item(item)
-    end
-  end
-
-  def process_item(item)
-
-    # if item[:reference_name].nil? || item[:image_url].nil? || item[:url].nil? || item[:brand].nil?
-    #   puts "####### NOT VALID MISSING IMPORTANT COLUMN!!!! ######"
-    #   puts "DataFeed: #{self.id}, Item: #{item}"
-    #   return
-    # else
+  def process_line(item)
     product = Product.find_by_url(item[:url])
     if product.nil?
       product = Product.new
@@ -100,10 +122,10 @@ class DataFeed < ActiveRecord::Base
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
     product.save if product.changed?
-    # end
   end
 
-  ## Concerning Products
+
+  #### REFACTOR THIS INTO PRODUCT AFTER PROVING THAT IT WORKS
 
   def set_product(identifier)
     product = Product.find_by_reference_name(identifier)
@@ -314,5 +336,4 @@ class DataFeed < ActiveRecord::Base
   rescue URI::InvalidURIError
     false
   end
-
 end

@@ -15,7 +15,8 @@ Searchthesales::Application.routes.draw do
   
   resources :data_feeds
   get '/get_data_feeds', to: 'data_feeds#get_feed_url', as: 'feed_url'
-
+  resources :data_feed_xmls
+  
   resources :genders
 
   resources :trends
