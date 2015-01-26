@@ -13,11 +13,7 @@ class Product < ActiveRecord::Base
   after_commit on: [:destroy] do
     delete_document
   end
-
-  after_commit on: [:delete] do
-    delete_document
-  end
-
+  
   validates_presence_of :name, :brand_id, :store_id, :url
   validates_uniqueness_of :name, :url
   belongs_to :brand
