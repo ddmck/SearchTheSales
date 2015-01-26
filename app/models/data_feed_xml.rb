@@ -58,7 +58,8 @@ class DataFeedXml < ActiveRecord::Base
   end
 
   def build_xml_array
-    get_doc.xpath("//product")
+    # Skip product urls being included
+    get_doc.css("product:nth-child(even)")
   end
 
   def process_file
