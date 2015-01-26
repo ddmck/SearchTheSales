@@ -19,7 +19,6 @@ class DataFeedXml < ActiveRecord::Base
 
   def uncompress_gz
     Zlib::GzipReader.open("./tmp/#{file}") do |gz|
-      puts "./tmp/#{file}"[0 .. -4]
       File.open("./tmp/#{file}"[0 .. -4], "w") do |g|
         IO.copy_stream(gz, g)
       end
@@ -46,58 +45,43 @@ class DataFeedXml < ActiveRecord::Base
     category.gsub(/[^\w\s\&]/, " ")
   end
 
-  def extract_xml(path, lines, col_name)
-    doc = get_doc
-
-    doc.xpath(path).each_with_index do |xml, i|
-      lines[i][col_name.to_sym] = style_canon(sanitize(sanitize(xml)))
-    end
-    lines 
+  def extract_xml(path, product)
+    style_canon(sanitize(sanitize(product.css(path))))
   end
 
-  def extract_xml_attr(path, attribute, lines, col_name)
-    temp_arr = []
-    doc = get_doc
-
-    doc.xpath(path).each do |a|
-      temp_arr << a.attr(attribute)
-    end
-
-    temp_arr = temp_arr.compact!
-
-    temp_arr.each_with_index do |a, i|
-      lines[i] = {col_name.to_sym => a.to_s}
-    end
-    lines
+  def extract_xml_attr(attribute, product)
+    product.attr(attribute)
   end
 
-  def extract_xml_url(path, lines, col_name)
-    doc = get_doc
+  def extract_xml_url(path, product)
+    sanitize_url(sanitize(sanitize(product.xpath(path))))
+  end
 
-    doc.xpath(path).each_with_index do |xml, i|
-      lines[i][col_name.to_sym] = sanitize_url(sanitize(sanitize(xml)))
-    end
-    lines
+  def build_xml_array
+    get_doc.xpath("//product")
   end
 
   def process_file
-    lines = []
     ftp_client
     uncompress_gz
 
+    products = build_xml_array
 
-    lines = extract_xml_attr("//product", "name", lines, "reference_name")
-    lines = extract_xml_url(link_column, lines, "url")
-    lines = extract_xml(brand_column, lines, "brand")
-    lines = extract_xml(image_url_column, lines, "image_url")
-    lines = extract_xml(image_url_column, lines, "large_image_url")
-    lines = extract_xml(sale_price_column, lines, "sale_price")
-    lines = extract_xml(rrp_column, lines, "rrp")
-    lines = extract_xml(description_column, lines, "description")
-    lines = extract_xml(gender_column, lines, "gender")
-    lines = extract_xml(category_column, lines, "category")
-    lines = extract_xml(size_column, lines, "size")
-    lines.each {|line| process_line(line)}
+    products.each do |product|
+      result = {}
+      result[:reference_name] = extract_xml_attr(name_column, product)
+      result[:url] = extract_xml_url(link_column, product)
+      result[:brand] = extract_xml(brand_column, product)
+      result[:image_url] = extract_xml(image_url_column, product)
+      result[:large_image_url] = extract_xml(image_url_column, product)
+      result[:sale_price] = extract_xml(sale_price_column, product)
+      result[:rrp] = extract_xml(rrp_column, product)
+      result[:description] = extract_xml(description_column, product)
+      result[:gender] = extract_xml(gender_column, product)
+      result[:category] = extract_xml(category_column, product)
+      result[:size] = extract_xml(size_column, product)
+      process_line(result)
+    end
   end
 
   handle_asynchronously :process_file, :queue => 'data_feeds'
