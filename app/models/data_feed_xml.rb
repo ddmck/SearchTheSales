@@ -29,10 +29,6 @@ class DataFeedXml < ActiveRecord::Base
     Nokogiri::XML(File.open("./tmp/#{file}"[0 .. -4]))
   end
 
-  def style_canon(word)
-    word.capitalize
-  end
-
   def sanitize(word)
     word.to_s.gsub(/\<.\w+\>/, "")
   end
@@ -46,7 +42,7 @@ class DataFeedXml < ActiveRecord::Base
   end
 
   def extract_xml(path, product)
-    style_canon(sanitize(sanitize(product.css(path))))
+    sanitize(sanitize(product.css(path)))
   end
 
   def extract_xml_attr(attribute, product)
