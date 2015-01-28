@@ -54,7 +54,7 @@ class DataFeedXml < ActiveRecord::Base
   end
 
   def extract_xml_url(path, product)
-    sanitize_url(sanitize(sanitize(product.xpath(path))))
+    sanitize_url(sanitize(sanitize(product.css(path))))
   end
 
   def build_xml_array
@@ -72,7 +72,7 @@ class DataFeedXml < ActiveRecord::Base
       result[:reference_name] = extract_xml_attr(name_column, product)
       result[:url] = extract_xml_url(link_column, product)
       result[:brand] = extract_xml(brand_column, product)
-      result[:image_url] = extract_xml(image_url_column, product)
+      result[:image_url] = extract_xml_url(image_url_column, product)
       result[:large_image_url] = extract_xml(image_url_column, product)
       result[:sale_price] = extract_xml(sale_price_column, product)
       result[:rrp] = extract_xml(rrp_column, product)
