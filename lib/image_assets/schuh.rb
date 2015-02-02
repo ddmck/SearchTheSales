@@ -1,4 +1,16 @@
 class Schuh
+  def self.import
+    s = Store.find_by_name("schuh")
+
+    prod = s.products
+
+    prod.each do |p|
+      image_urls = generate_image_urls(p)
+      p.image_urls = image_urls
+      p.save
+    end
+  end
+
   def self.generate_image_urls(p)
     image_urls = []
     
@@ -19,17 +31,5 @@ class Schuh
 
   def self.main_to_zm(url)
     return url.gsub(/_main/, '_zm').to_s
-  end
-
-  schuh = Store.find_by_name("schuh")
-
-  products = schuh.products
-
-  products.each do |p|
-    image_urls = generate_image_urls(p)
-    puts image_urls
-    gets
-    p.image_urls = image_urls
-    p.save
   end
 end
