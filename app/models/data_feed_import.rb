@@ -3,7 +3,7 @@ class DataFeedImport
 
   def perform
     DataFeed.all.each do |df|
-      df.process_file
+      df.process_file if df.active
     end
   end
 

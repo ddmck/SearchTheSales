@@ -12,7 +12,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 
-ActiveRecord::Schema.define(version: 20150202144014) do
+ActiveRecord::Schema.define(version: 20150203135222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20150202144014) do
     t.string   "gender_column"
     t.string   "category_column"
     t.string   "large_image_url_column"
+    t.boolean  "active"
   end
 
   add_index "data_feeds", ["store_id"], name: "index_data_feeds_on_store_id", using: :btree
