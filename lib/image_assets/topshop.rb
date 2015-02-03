@@ -1,6 +1,6 @@
 class Topshop
   def self.import
-    s = Store.find_by_name("topshop")
+    s = Store.find_by_name("Topshop")
 
     prod = s.products
 
