@@ -33,6 +33,8 @@ class Product < ActiveRecord::Base
   has_many :trend_tags
   has_many :trends, through: :trend_tags
 
+  serialize :image_urls
+
   def add_to_wishlist(user)
     puts "User: #{user}"
     puts "Id: #{id}"
