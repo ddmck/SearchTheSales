@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
   has_many :wishlist_items
   has_many :products, through: :wishlist_items
+  has_many :orders
   has_one :basket
   before_create -> do 
     puts "YO!"

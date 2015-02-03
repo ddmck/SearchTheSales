@@ -1,9 +1,12 @@
 Searchthesales::Application.routes.draw do
+  resources :orders
+
   resources :sizes
 
   scope '/api' do 
     mount_devise_token_auth_for 'User', at: '/auth'
-    post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token" 
+    post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token"
+    resources :orders
   end
 
   
