@@ -1,0 +1,66 @@
+class OrdersController < ApplicationController
+  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  respond_to :html, :json
+
+  def index
+    @orders = Order.all
+    respond_with(@orders)
+  end
+
+  def show
+    respond_with(@order)
+  end
+
+  def new
+    @order = Order.new
+    respond_with(@order)
+  end
+
+  def edit
+  end
+
+  def create
+    user = current_user
+    if user
+      Stripe.api_key = "sk_test_6eztj9qH74QKl7wL0fBsw2QD"
+      unless user.stripe_customer_id
+        resp = Stripe::Customer.create(
+          :description => "Customer for #{user.email}",
+          :card => order_params[:token]
+        )
+        user.stripe_customer_id = resp.id
+        user.save
+      end
+      
+      @order = current_user.orders.build(address: order_params[:address])
+      @order.save
+      order_params[:basket].each do |product|
+        oi = @order.order_items.build(product_id: product[:productId], size_id: product[:sizeId])
+        oi.save
+      end
+      @order.order_items.each do |oi|
+        oi.create_invoice_item
+      end
+      respond_with(@order)
+    end
+  end
+
+  def update
+    @order.update(order_params)
+    respond_with(@order)
+  end
+
+  def destroy
+    @order.destroy
+    respond_with(@order)
+  end
+
+  private
+    def set_order
+      @order = Order.find(params[:id])
+    end
+
+    def order_params
+      params.require(:order).permit!
+    end
+end

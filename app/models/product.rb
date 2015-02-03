@@ -13,7 +13,7 @@ class Product < ActiveRecord::Base
   after_commit on: [:destroy] do
     delete_document
   end
-  
+
   validates_presence_of :name, :brand_id, :store_id, :url
   validates_uniqueness_of :name, :url
   belongs_to :brand
@@ -21,6 +21,7 @@ class Product < ActiveRecord::Base
   belongs_to :category
   belongs_to :sub_category
   belongs_to :gender
+  has_many :order_items
   has_many :basket_items
   has_many :wishlist_items
   has_many :users, through: :wishlist_items
@@ -31,6 +32,8 @@ class Product < ActiveRecord::Base
   
   has_many :trend_tags
   has_many :trends, through: :trend_tags
+
+  serialize :image_urls
 
   def add_to_wishlist(user)
     puts "User: #{user}"

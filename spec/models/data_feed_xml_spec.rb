@@ -20,11 +20,11 @@ RSpec.describe 'data_feed_xml', :type => :model do
     expect(data_feed_xml.sanitize_url("www.fetch.com/")).to eq("www.fetch.com/")
   end
 
-  it "Should be able to format capitalisation" do
-    expect(data_feed_xml.style_canon("word")).to eq("Word")
-    expect(data_feed_xml.style_canon("tHIS IS A TeSt")).to eq("This is a test")
-    expect(data_feed_xml.style_canon("LOREM IPSUM")).to eq("Lorem ipsum")
-  end
+  # it "Should be able to format capitalisation" do
+  #   expect(data_feed_xml.style_canon("word")).to eq("Word")
+  #   expect(data_feed_xml.style_canon("tHIS IS A TeSt")).to eq("This is a test")
+  #   expect(data_feed_xml.style_canon("LOREM IPSUM")).to eq("Lorem ipsum")
+  # end
 
   # it "should set an XML file to doc" do
   #   doc = Nokogiri::XML(open(Rails.root + 'spec/support/test.xml'))

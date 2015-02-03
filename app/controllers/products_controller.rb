@@ -6,6 +6,7 @@ class ProductsController < ApplicationController
   respond_to :html, :json
 
   def index
+    puts "User:  #{get_current_user}"
     if params[:search_string]
       @products = Product.__elasticsearch__.search(query: {
                                                     query_string: {
