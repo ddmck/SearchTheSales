@@ -8,4 +8,12 @@ class Category < ActiveRecord::Base
   def downcase_name
     name.downcase!
   end
+
+  def is_female_only
+    if female_only
+      return true
+    else  
+      return false
+    end
+  end
 end
