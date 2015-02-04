@@ -1,6 +1,6 @@
-class Schuh
+class Jigsaw
   def import
-    s = Store.find_by_name("schuh")
+    s = Store.find_by_name("jigsaw")
 
     prod = s.products.where(image_urls: nil)
 
@@ -17,20 +17,12 @@ class Schuh
     
     base_url = p.image_url
 
-    image_urls << main_to_zm(base_url)
-
-    (1..7).each do |i|
-      image_urls << main_to_zm_numb(base_url, i)
-    end
+    image_urls << grab_image_url(base_url)
 
     return image_urls 
   end
 
-  def self.main_to_zm_numb(url, count)
-    return url.to_s.gsub(/_main/, "m#{count}_zm")
-  end
-
-  def self.main_to_zm(url)
-    return url.gsub(/_main/, '_zm').to_s
+  def self.grab_image_url(url)
+    return url.gsub(/_1/, '_2').to_s
   end
 end
