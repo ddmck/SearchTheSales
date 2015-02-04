@@ -1,8 +1,8 @@
 class Schuh
-  def self.import
+  def import
     s = Store.find_by_name("schuh")
 
-    prod = s.products
+    prod = s.products.where(image_urls: nil)
 
     prod.each do |p|
       image_urls = generate_image_urls(p)
@@ -10,6 +10,7 @@ class Schuh
       p.save
     end
   end
+  handle_asynchronously :import, :queue => 'data_feeds'
 
   def self.generate_image_urls(p)
     image_urls = []
