@@ -2,6 +2,7 @@ require 'elasticsearch/model'
 
 class Product < ActiveRecord::Base
   include Elasticsearch::Model
+
   after_commit on: [:create] do
     index_document
   end
@@ -34,6 +35,23 @@ class Product < ActiveRecord::Base
   has_many :trends, through: :trend_tags
 
   serialize :image_urls
+
+  def as_indexed_json(options={})
+    {
+      id: id,
+      name: name,
+      reference_name: reference_name,
+      display_price: display_price.to_f,
+      brand_id: brand_id,
+      store_id: store_id,
+      category_id: category_id,
+      sub_category_id: sub_category_id,
+      gender_id: gender_id,
+      url: url,
+      image_url: image_url,
+      first_letter: name.try(:ord) || 0
+    }
+  end
 
   def add_to_wishlist(user)
     puts "User: #{user}"

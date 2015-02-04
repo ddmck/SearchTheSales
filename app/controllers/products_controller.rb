@@ -7,12 +7,19 @@ class ProductsController < ApplicationController
 
   def index
     puts "User:  #{get_current_user}"
+    puts "Params:  #{params}"
     if params[:search_string]
-      @products = Product.__elasticsearch__.search(query: {
-                                                    query_string: {
-                                                      default_field: "reference_name",
-                                                      query: build_search_string(params)
-                                                    }}, size: 200).page(params[:page]).records
+      hash = {query: {
+                      query_string: {
+                        default_field: "reference_name",
+                        query: build_search_string(params)
+                        }
+                      }, size: 200}
+      if params[:sort]
+        args = params[:sort].split(", ")
+        hash[:sort] = [{args[0] => args[1]}]
+      end
+      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     else
       if params["gender"]
         @gender = Gender.find_by_name(params["gender"])
