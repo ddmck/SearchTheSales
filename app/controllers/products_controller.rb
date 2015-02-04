@@ -8,41 +8,41 @@ class ProductsController < ApplicationController
   def index
     puts "User:  #{get_current_user}"
     puts "Params:  #{params}"
-    if params[:search_string]
-      hash = {query: {
-                      query_string: {
-                        default_field: "reference_name",
-                        query: build_search_string(params)
-                        }
-                      }, size: 200}
-      if params[:sort]
-        args = params[:sort].split(", ")
-        hash[:sort] = [{args[0] => args[1]}]
-      end
-      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
-    else
-      if params["gender"]
-        @gender = Gender.find_by_name(params["gender"])
-        if params[:category]
-          @products = Product.where(category_id: params[:category], gender_id: @gender.id)
-          if params[:sub_category]
-            @products = @products.where(sub_category_id: params[:sub_category])
-          end
-        else
-          @products = @gender.products
-        end
-      elsif params[:category]
-        @category = Category.find(params[:category])
-        @products = @category.products
-        if params[:sub_category]
-          @products = @products.where(sub_category_id: params[:sub_category])
-        end
-      else  
-        @products = Product.all
-        
-      end
-      @products = @products.paginate(page: params[:page])
+    # if params[:search_string]
+    hash = {query: {
+                    query_string: {
+                      default_field: "reference_name",
+                      query: build_search_string(params)
+                      }
+                    }, size: 200}
+    if params[:sort]
+      args = params[:sort].split(", ")
+      hash[:sort] = [{args[0] => args[1]}]
     end
+    @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
+    # else
+    #   if params["gender"]
+    #     @gender = Gender.find_by_name(params["gender"])
+    #     if params[:category]
+    #       @products = Product.where(category_id: params[:category], gender_id: @gender.id)
+    #       if params[:sub_category]
+    #         @products = @products.where(sub_category_id: params[:sub_category])
+    #       end
+    #     else
+    #       @products = @gender.products
+    #     end
+    #   elsif params[:category]
+    #     @category = Category.find(params[:category])
+    #     @products = @category.products
+    #     if params[:sub_category]
+    #       @products = @products.where(sub_category_id: params[:sub_category])
+    #     end
+    #   else  
+    #     @products = Product.all
+        
+    #   end
+    #   @products = @products.paginate(page: params[:page])
+    # end
     respond_with(@products)
   end
 
@@ -124,7 +124,7 @@ class ProductsController < ApplicationController
   end
 
   def build_search_string(params)
-    string = params[:search_string].downcase.strip
+    string = params[:search_string].try(:downcase).try(:strip) || '*'
     if params[:category]
       curr_category = Category.find(params[:category])
       string = string.remove(curr_category.name).remove(curr_category.name.singularize).strip 
