@@ -58,6 +58,18 @@ class DataFeedXml < ActiveRecord::Base
     get_doc.css("product:nth-child(even)")
   end
 
+  def extract_store
+    xml_array = build_xml_array
+    sanitize(sanitize(xml_array.css("merchantName")))
+  end
+
+  def prep_file_return_xml_array
+    ftp_client
+    uncompress_gz
+
+    return build_xml_array
+  end
+
   def process_file
     ftp_client
     uncompress_gz
@@ -106,6 +118,37 @@ class DataFeedXml < ActiveRecord::Base
     product.save if product.changed?
   end
 
+  def delete_expired_products
+    result = {}
+    data2 = {}
+    expired_products = []
+
+    ftp_client
+    uncompress_gz
+
+    products = build_xml_array
+
+    products.each do |p|
+      result[extract_xml_url(link_column, p)] = extract_xml(name_column, p)
+    end
+
+    #Grab and store products from products model and compare hashes
+    current_products = Product.all.where(store: extract_store)
+    current_products.each do |p|
+      data2 = ["#{p.url}"] = p.name
+    end
+
+    current_products.each_key do |e|
+      if(!data2.has_key?(e))
+        expired_products[e] = current_products.fetch(e)
+      end
+    end
+
+    expired_products.each_key do |key|
+      product = Product.find_by_url(key)
+      product.delete
+    end
+  end
 
   #### REFACTOR THIS INTO PRODUCT AFTER PROVING THAT IT WORKS
 
