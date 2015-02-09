@@ -58,11 +58,6 @@ class DataFeedXml < ActiveRecord::Base
     get_doc.css("product:nth-child(even)")
   end
 
-  def extract_store
-    xml_array = build_xml_array
-    sanitize(sanitize(xml_array.css("merchantName")))
-  end
-
   def prep_file_return_xml_array
     ftp_client
     uncompress_gz
@@ -120,8 +115,8 @@ class DataFeedXml < ActiveRecord::Base
 
   def delete_expired_products
     result = {}
-    data2 = {}
-    expired_products = []
+    products_hash = {}
+    expired_products = {}
 
     ftp_client
     uncompress_gz
@@ -129,25 +124,26 @@ class DataFeedXml < ActiveRecord::Base
     products = build_xml_array
 
     products.each do |p|
-      result[extract_xml_url(link_column, p)] = extract_xml(name_column, p)
+      result[extract_xml_url(link_column, p)] = extract_xml_attr(name_column, p)
     end
 
-    #Grab and store products from products model and then compare hashes
-    current_products = Product.all.where(store: extract_store)
+    store = store_id
+    current_products = Product.all.where("store_id = #{store}")
 
     current_products.each do |p|
-      data2 = ["#{p.url}"] = p.name
+      products_hash["#{p.url}"] = p.name
     end
 
-    current_products.each_key do |e|
+    products_hash.each_key do |e|
       if(!result.has_key?(e))
-        expired_products[e] = current_products.fetch(e)
+        expired_products[e] = products_hash.fetch(e)
       end
     end
 
     expired_products.each_key do |key|
       product = Product.find_by_url(key)
-      product.delete
+      product.sizes = []
+      product.save
     end
   end
 
