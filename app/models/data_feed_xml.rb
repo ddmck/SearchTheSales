@@ -58,13 +58,6 @@ class DataFeedXml < ActiveRecord::Base
     get_doc.css("product:nth-child(even)")
   end
 
-  def prep_file_return_xml_array
-    ftp_client
-    uncompress_gz
-
-    return build_xml_array
-  end
-
   def process_file
     ftp_client
     uncompress_gz
