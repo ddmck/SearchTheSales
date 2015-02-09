@@ -132,14 +132,15 @@ class DataFeedXml < ActiveRecord::Base
       result[extract_xml_url(link_column, p)] = extract_xml(name_column, p)
     end
 
-    #Grab and store products from products model and compare hashes
+    #Grab and store products from products model and then compare hashes
     current_products = Product.all.where(store: extract_store)
+
     current_products.each do |p|
       data2 = ["#{p.url}"] = p.name
     end
 
     current_products.each_key do |e|
-      if(!data2.has_key?(e))
+      if(!result.has_key?(e))
         expired_products[e] = current_products.fetch(e)
       end
     end
