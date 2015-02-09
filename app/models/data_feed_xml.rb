@@ -62,6 +62,8 @@ class DataFeedXml < ActiveRecord::Base
     ftp_client
     uncompress_gz
 
+    delete_expired_products
+
     products = build_xml_array
 
     products.each do |product|
@@ -110,9 +112,6 @@ class DataFeedXml < ActiveRecord::Base
     result = {}
     products_hash = {}
     expired_products = {}
-
-    ftp_client
-    uncompress_gz
 
     products = build_xml_array
 
