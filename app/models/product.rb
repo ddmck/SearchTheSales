@@ -49,7 +49,8 @@ class Product < ActiveRecord::Base
       gender_id: gender_id,
       url: url,
       image_url: image_url,
-      first_letter: name.try(:ord) || 0
+      first_letter: name.try(:ord) || 0,
+      out_of_stock: sizes.empty?
     }
   end
 

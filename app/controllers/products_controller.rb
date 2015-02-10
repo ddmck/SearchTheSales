@@ -139,6 +139,7 @@ class ProductsController < ApplicationController
       @gender = Gender.find_by_name(params[:gender])
       string += " AND gender_id: #{@gender.id}"
     end
+    string += " AND out_of_stock: false"
     string
   end
 end
