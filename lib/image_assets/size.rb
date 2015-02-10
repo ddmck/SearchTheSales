@@ -40,6 +40,6 @@ class Size
   end
 
   def self.change_char_value(url, char)
-    return url.to_s.gsub(/_a?/, "_#{char}?")
+    return url.to_s.gsub(/_a\?/, "_#{char}\?")
   end
 end
