@@ -60,7 +60,7 @@ gem 'angularjs-rails'
 
 # Unicorn: http://unicorn.bogomips.org
 
-gem 'unicorn'
+gem 'puma'
 
 group :test do
   gem 'factory_girl_rails'

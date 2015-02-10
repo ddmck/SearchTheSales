@@ -33,3 +33,4 @@ storeluvdata.csv
 frontend/bower_components
 frontend/node_modules
 .elasticbeanstalk/
+.env
