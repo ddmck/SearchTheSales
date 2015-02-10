@@ -6,7 +6,7 @@ class DataFeed < ActiveRecord::Base
   belongs_to :store
   
   def self.update_all
-    self.all.each { |df| df.process_file }
+    self.where(active: true).each { |df| df.process_file }
   end
 
   def store_name
