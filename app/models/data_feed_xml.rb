@@ -62,6 +62,8 @@ class DataFeedXml < ActiveRecord::Base
     ftp_client
     uncompress_gz
 
+    delete_expired_products
+
     products = build_xml_array
 
     products.each do |product|
@@ -106,6 +108,36 @@ class DataFeedXml < ActiveRecord::Base
     product.save if product.changed?
   end
 
+  def delete_expired_products
+    result = {}
+    products_hash = {}
+    expired_products = {}
+
+    products = build_xml_array
+
+    products.each do |p|
+      result[extract_xml_url(link_column, p)] = extract_xml_attr(name_column, p)
+    end
+
+    store = store_id
+    current_products = Product.all.where("store_id = #{store}")
+
+    current_products.each do |p|
+      products_hash["#{p.url}"] = p.name
+    end
+
+    products_hash.each_key do |e|
+      if(!result.has_key?(e))
+        expired_products[e] = products_hash.fetch(e)
+      end
+    end
+
+    expired_products.each_key do |key|
+      product = Product.find_by_url(key)
+      product.sizes = []
+      product.save
+    end
+  end
 
   #### REFACTOR THIS INTO PRODUCT AFTER PROVING THAT IT WORKS
 
