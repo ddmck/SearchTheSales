@@ -80,6 +80,8 @@ class DataFeed < ActiveRecord::Base
     #   puts "DataFeed: #{self.id}, Item: #{item}"
     #   return
     # else
+    delete_expired_products
+
     product = Product.find_by_url(item[:url])
     if product.nil?
       product = Product.new
@@ -101,6 +103,41 @@ class DataFeed < ActiveRecord::Base
     product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
     product.save if product.changed?
     # end
+  end
+
+
+  def delete_expired_products
+
+    paths = unzipped_file_path
+
+    result = {}
+    products_hash = {}
+    expired_products = {}
+
+    paths.each do |path|
+      CSV.foreach(path) do |row|
+        result[row[3]] = [row[0]]
+      end
+    end
+
+     store = store_id
+     current_products = Product.all.where("store_id = #{store}")
+
+     current_products.each do |p|
+       products_hash["#{p.url}"] = p.name
+     end
+
+    products_hash.each_key do |e|
+      if(!result.has_key?(e))
+        expired_products[e] = products_hash.fetch(e)
+      end
+    end
+
+    expired_products.each_key do |key|
+      product = Product.find_by_url(key)
+      product.sizes = []
+      product.save
+    end
   end
 
   ## Concerning Products
