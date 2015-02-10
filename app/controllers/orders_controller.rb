@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   respond_to :html, :json
 
   def index
-    @orders = Order.all
+    @orders = Order.where(user_id: current_user.id)
     respond_with(@orders)
   end
 
