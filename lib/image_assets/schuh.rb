@@ -19,7 +19,7 @@ class SchuhImageImporter
 
     image_urls << main_to_zm(base_url)
 
-    (1..6).each do |i|
+    (1..5).each do |i|
       image_urls << main_to_zm_numb(base_url, i)
     end
 
