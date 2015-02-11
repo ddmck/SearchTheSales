@@ -1,4 +1,4 @@
-class Topshop
+class TopshopImageImporter
   def import
     s = Store.find_by_name("Topshop")
 

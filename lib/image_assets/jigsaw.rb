@@ -1,4 +1,4 @@
-class Jigsaw
+class JigsawImageImporter
   def import
     s = Store.find_by_name("jigsaw")
 

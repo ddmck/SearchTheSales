@@ -1,4 +1,4 @@
-class FrenchConnection
+class FrenchConnectionImageImporter
   def import
     s = Store.find_by_name("french connection")
 
