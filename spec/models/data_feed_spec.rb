@@ -67,5 +67,7 @@ RSpec.describe DataFeed, :type => :model do
     expect(data_feed.sanitize_sizes("Small (36/38\"\" Chest)|Medium (38/40\"\" Chest)|XS (34/36\"\" Chest)")).to eq(["SMALL (36/38\"\" CHEST)","MEDIUM (38/40\"\" CHEST)","XS (34/36\"\" CHEST)"])
     expect(data_feed.sanitize_sizes("Extra Sml |Medium |Small ")).to eq(["EXTRA SML", "MEDIUM", "SMALL"])
     expect(data_feed.sanitize_sizes(" Extra Sml | Medium | Small ")).to eq(["EXTRA SML", "MEDIUM", "SMALL"])
+    expect(data_feed.sanitize_sizes(" Extra Sml ~ Medium ~ Small ")).to eq(["EXTRA SML", "MEDIUM", "SMALL"])
+    expect(data_feed.sanitize_sizes(" Extra Sml ~~ Medium ~~ Small ")).to eq(["EXTRA SML", "MEDIUM", "SMALL"])
   end
 end
