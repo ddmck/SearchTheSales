@@ -66,7 +66,7 @@ class DataFeed < ActiveRecord::Base
       end
     end
     if image_assets
-      assets = Object.const_get(image_assets).new if image_assets
+      assets = Object.const_get(image_assets).new
       assets.import
     end
     self.last_run_time = Time.now

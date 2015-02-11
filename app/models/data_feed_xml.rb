@@ -84,7 +84,7 @@ class DataFeedXml < ActiveRecord::Base
       process_line(result)
     end
     if image_assets
-      assets = Object.const_get(image_assets).new if image_assets
+      assets = Object.const_get(image_assets).new
       assets.import
     end
   end
