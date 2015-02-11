@@ -12,7 +12,7 @@ class JigsawImageImporter
   end
   handle_asynchronously :import, :queue => 'data_feeds'
 
-  def self.generate_image_urls(p)
+  def generate_image_urls(p)
     image_urls = []
     
     base_url = p.image_url
@@ -22,7 +22,7 @@ class JigsawImageImporter
     return image_urls 
   end
 
-  def self.grab_image_url(url)
+  def grab_image_url(url)
     return url.gsub(/_1/, '_2').to_s
   end
 end

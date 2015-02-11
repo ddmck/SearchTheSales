@@ -12,7 +12,7 @@ class HobbsImageImporter
   end
   handle_asynchronously :import, :queue => 'data_feeds'
 
-  def self.generate_image_urls(p)
+  def generate_image_urls(p)
     image_urls = []
     base_url = p.image_url
 
@@ -21,7 +21,7 @@ class HobbsImageImporter
       end
   end
 
-  def self.extract_images(url, count)
+  def extract_images(url, count)
     return url.gsub(/_01_/, "_0#{count}_")
   end
 end
