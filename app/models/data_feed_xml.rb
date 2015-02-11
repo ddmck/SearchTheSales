@@ -3,7 +3,6 @@ require 'net/ftp'
 
 class DataFeedXml < ActiveRecord::Base
   include DataFeedSetter
-  require 'schuh'
   validates_presence_of :file
   belongs_to :store
 
