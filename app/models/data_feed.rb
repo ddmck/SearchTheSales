@@ -2,6 +2,7 @@ require 'zip'
 
 class DataFeed < ActiveRecord::Base
   include DataFeedSetter
+  require 'schuh'
   validates_presence_of :feed_url
   belongs_to :store
   
@@ -44,7 +45,8 @@ class DataFeed < ActiveRecord::Base
   ### concerning CSV
 
   def process_file
-    key_hash = {} 
+    delete_expired_products
+    key_hash = {}
     key_hash[name_column.to_sym] = :reference_name if name_column 
     key_hash[brand_column.to_sym] = :brand if brand_column
     key_hash[rrp_column.to_sym] = :rrp if rrp_column
@@ -62,6 +64,10 @@ class DataFeed < ActiveRecord::Base
                                 key_mapping: key_hash) do |chunk|
         process_chunk(chunk)
       end
+    end
+    if image_assets
+      assets = Object.const_get(image_assets).new if image_assets
+      assets.import
     end
     self.last_run_time = Time.now
     self.save
@@ -81,7 +87,7 @@ class DataFeed < ActiveRecord::Base
     #   puts "DataFeed: #{self.id}, Item: #{item}"
     #   return
     # else
-    delete_expired_products
+
 
     product = Product.find_by_url(item[:url])
     if product.nil?
@@ -96,7 +102,6 @@ class DataFeed < ActiveRecord::Base
       product.gender = set_gender(item)
       product.category = set_category(item, product)
       product.sub_category = set_sub_category(product) if product.category
-      product.image_urls = set_image_assets(product) if image_assets
     end
     product.image_url = item[:image_url] || item[:large_image_url]
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
@@ -122,12 +127,11 @@ class DataFeed < ActiveRecord::Base
       end
     end
 
-     store = store_id
-     current_products = Product.all.where("store_id = #{store}")
+    current_products = store.products
 
-     current_products.each do |p|
-       products_hash["#{p.url}"] = p.name
-     end
+    current_products.each do |p|
+      products_hash["#{p.url}"] = p.name
+    end
 
     products_hash.each_key do |e|
       if(!result.has_key?(e))
@@ -138,7 +142,7 @@ class DataFeed < ActiveRecord::Base
     expired_products.each_key do |key|
       product = Product.find_by_url(key)
       product.sizes = []
-      product.save
+      product.save if product.changed?
     end
   end
 end
