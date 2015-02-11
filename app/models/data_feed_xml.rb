@@ -3,6 +3,7 @@ require 'net/ftp'
 
 class DataFeedXml < ActiveRecord::Base
   include DataFeedSetter
+  require 'schuh'
   validates_presence_of :file
   belongs_to :store
 
@@ -82,6 +83,10 @@ class DataFeedXml < ActiveRecord::Base
       result[:size] = extract_xml(size_column, product)
       process_line(result)
     end
+    if image_assets
+      assets = Object.const_get(image_assets).new
+      assets.import
+    end
   end
 
   handle_asynchronously :process_file, :queue => 'data_feeds'
@@ -136,7 +141,7 @@ class DataFeedXml < ActiveRecord::Base
     expired_products.each_key do |key|
       product = Product.find_by_url(key)
       product.sizes = []
-      product.save
+      product.save if product.changed?
     end
   end
 end
