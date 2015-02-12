@@ -22,7 +22,7 @@ class OrdersController < ApplicationController
   def create
     user = current_user
     if user
-      Stripe.api_key = "sk_test_6eztj9qH74QKl7wL0fBsw2QD"
+      Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
       unless user.stripe_customer_id
         resp = Stripe::Customer.create(
           :description => "Customer for #{user.email}",
