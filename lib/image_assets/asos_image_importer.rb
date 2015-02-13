@@ -1,4 +1,4 @@
-class Asos
+class AsosImageImporter
   def import
     s = Store.find_by_name("asos")
 
