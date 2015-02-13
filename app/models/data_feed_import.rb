@@ -3,7 +3,10 @@ class DataFeedImport
 
   def perform
     DataFeed.all.each do |df|
-      df.process_file if df.active
+      df.process_file
+    end
+    DataFeedXml.all.each do |df|
+      df.process_file
     end
   end
 
