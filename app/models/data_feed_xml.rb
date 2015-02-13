@@ -109,8 +109,10 @@ class DataFeedXml < ActiveRecord::Base
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
+    sbefore = product.sizes.to_a
     product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
-    product.save if product.changed?
+    schanged = (sbefore != product.sizes.to_a)
+    product.save if product.changed? || schanged
   end
 
   def delete_expired_products
@@ -139,8 +141,10 @@ class DataFeedXml < ActiveRecord::Base
 
     expired_products.each_key do |key|
       product = Product.find_by_url(key)
+      sbefore = product.sizes.to_a
       product.sizes = []
-      product.save if product.changed?
+      schanged = (sbefore != product.sizes.to_a)
+      product.save if schanged
     end
   end
 end
