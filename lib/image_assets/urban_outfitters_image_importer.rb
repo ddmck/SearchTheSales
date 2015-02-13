@@ -1,4 +1,4 @@
-class SizeImageImporter
+class UrbanOutfittersImageImporter
   def import
     s = Store.find_by_name("Size?")
 
@@ -28,12 +28,12 @@ class SizeImageImporter
       return image_urls
     elsif p.category_id != shoes.id || jackets.id
       normArr.each do |i|
-        image_urls << change_char_value(base_url, i)
+        image_urls << extract_images(base_url, i)
       end
       return image_urls
     else 
       charArr.each do |i|
-        image_urls << change_char_value(base_url, i)
+        image_urls << extract_images(base_url, i)
       end
       return image_urls 
     end
