@@ -42,26 +42,7 @@ class User < ActiveRecord::Base
     super
   end
 
-  def render_anywhere(partial, assigns = {})
-    view = ActionView::Base.new(ActionController::Base.view_paths, assigns)
-    view.extend ApplicationHelper
-    view.render(:partial => partial)
-  end 
-
   def send_welcome_email
-
-
-    mg_client = Mailgun::Client.new(ENV['MAILGUN_API_KEY'])
-    @html = render_anywhere('mailgun_templates/welcome', {:email => email})
-    puts @html.to_str.class
-    # Define your message parameters
-    message_params = {:from    => "Bertie Wilson <customercare@fetchmyfashion.com>",
-                      :to      => email,
-                      :subject => 'Welcome to Fetch My Fashion!',
-                      :text    => '<h1>Hello</h1><h2>buy things</h2><h3>PrEtTy ThInGs!</h3>', 
-                      :html    => @html.to_str
-                    }
-    # Send your message through the client
-    mg_client.send_message "mg.fetchmyfashion.com", message_params
+    NewUserMailer.new(self).deliver
   end
 end
