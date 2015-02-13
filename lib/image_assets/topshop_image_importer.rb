@@ -12,7 +12,7 @@ class TopshopImageImporter
   end
   handle_asynchronously :import, :queue => 'data_feeds'
 
-  def self.generate_image_urls(p)
+  def generate_image_urls(p)
     image_urls = []
     base_url = p.image_url
 
@@ -37,11 +37,11 @@ class TopshopImageImporter
     end
   end
 
-  def self.normal_to_large(url)
+  def normal_to_large(url)
     return url.gsub(/_normal/, '_large').to_s
   end
 
-  def self.extract_images(url, count)
+  def extract_images(url, count)
     return url.gsub(/_normal/, "_#{count}_large")
   end
 end

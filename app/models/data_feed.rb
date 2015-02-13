@@ -2,7 +2,6 @@ require 'zip'
 
 class DataFeed < ActiveRecord::Base
   include DataFeedSetter
-  require 'schuh'
   validates_presence_of :feed_url
   belongs_to :store
   

@@ -12,7 +12,7 @@ class FrenchConnectionImageImporter
   end
   handle_asynchronously :import, :queue => 'data_feeds'
 
-  def self.generate_image_urls(p)
+  def generate_image_urls(p)
     image_urls = []
 
     base_url = p.image_url
@@ -26,11 +26,11 @@ class FrenchConnectionImageImporter
     return image_urls
   end
 
-  def self.model_to_numb(url, count)
+  def model_to_numb(url, count)
     return url.to_s.gsub(/_model/, "_#{count}")
   end
 
-  def self.model_to_blank(url)
+  def model_to_blank(url)
     return url.gsub(/_model/, '').to_s
   end
 end

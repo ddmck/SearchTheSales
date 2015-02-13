@@ -1,6 +1,6 @@
-class HobbsImageImporter
+class JigsawImageImporter
   def import
-    s = Store.find_by_name("Topshop")
+    s = Store.find_by_name("jigsaw")
 
     prod = s.products.where(image_urls: nil)
 
@@ -12,16 +12,17 @@ class HobbsImageImporter
   end
   handle_asynchronously :import, :queue => 'data_feeds'
 
-  def self.generate_image_urls(p)
+  def generate_image_urls(p)
     image_urls = []
+    
     base_url = p.image_url
 
-      (2..3).each do |i|
-        image_urls << extract_images(base_url, i)
-      end
+    image_urls << grab_image_url(base_url)
+
+    return image_urls 
   end
 
-  def self.extract_images(url, count)
-    return url.gsub(/_01_/, "_0#{count}_")
+  def grab_image_url(url)
+    return url.gsub(/_1/, '_2').to_s
   end
 end
