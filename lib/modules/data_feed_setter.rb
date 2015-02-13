@@ -126,7 +126,7 @@ module DataFeedSetter
   end
 
   def sanitize_sizes(string)
-    string.to_s.upcase.split(/,|\|/).map { |s| s.strip }
+    string.to_s.upcase.split(/,|\||\~\~|\~/).map { |s| s.strip }
   end
 
   def set_sizes(size_list)
