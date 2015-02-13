@@ -1,6 +1,6 @@
-class SizeImageImporter
+class UrbanOutfittersImageImporter
   def import
-    s = Store.find_by_name("Size?")
+    s = Store.find_by_name("urbanoutfitters")
 
     prod = s.products.where(image_urls: nil)
 
@@ -15,18 +15,14 @@ class SizeImageImporter
   def generate_image_urls(p)
     image_urls = []
 
-    normArr = ['b']
-    charArr = ['b','c','d']
+    normArr = ['b','d','e','f']
+    charArr = ['b','d','e','f','g']
     
     base_url = p.image_url
 
-    tees = Category.find_by_name("tees")
-    shoes = Category.find_by_name("shoes")
-    jackets = Category.find_by_name("jackets")
+    accessories = Category.find_by_name("accessories")
 
-    if p.category_id == tees.id
-      return image_urls
-    elsif p.category_id != shoes.id || jackets.id
+    if p.category_id == accessories.id
       normArr.each do |i|
         image_urls << change_char_value(base_url, i)
       end
