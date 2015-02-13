@@ -1,4 +1,4 @@
-class Size
+class SizeImageImporter
   def import
     s = Store.find_by_name("Size?")
 
