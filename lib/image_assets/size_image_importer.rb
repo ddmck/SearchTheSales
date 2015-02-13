@@ -12,7 +12,7 @@ class SizeImageImporter
   end
   handle_asynchronously :import, :queue => 'data_feeds'
 
-  def self.generate_image_urls(p)
+  def generate_image_urls(p)
     image_urls = []
 
     normArr = ['b']
@@ -39,7 +39,7 @@ class SizeImageImporter
     end
   end
 
-  def self.change_char_value(url, char)
+  def change_char_value(url, char)
     return url.to_s.gsub(/_a\?/, "_#{char}\?")
   end
 end
