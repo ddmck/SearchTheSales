@@ -1,6 +1,6 @@
 class JigsawImageImporter
   def import
-    s = Store.find_by_name("jigsaw")
+    s = Store.find_by_name("Jigsaw")
 
     prod = s.products.where(image_urls: nil)
 
