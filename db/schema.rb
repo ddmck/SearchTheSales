@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211111227) do
+ActiveRecord::Schema.define(version: 20150216111323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,6 +264,12 @@ ActiveRecord::Schema.define(version: 20150211111227) do
     t.string   "image_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.decimal  "standard_price"
+    t.decimal  "express_price"
+    t.decimal  "free_delivery_threshold"
+    t.text     "delivery_copy"
+    t.integer  "days_to_return"
+    t.text     "returns_copy"
   end
 
   create_table "sub_categories", force: true do |t|
