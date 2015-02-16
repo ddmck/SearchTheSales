@@ -1,6 +1,6 @@
 class HobbsImageImporter
   def import
-    s = Store.find_by_name("Topshop")
+    s = Store.find_by_name("Hobbs")
 
     prod = s.products.where(image_urls: nil)
 
@@ -16,7 +16,7 @@ class HobbsImageImporter
     image_urls = []
     base_url = p.image_url
 
-      (2..3).each do |i|
+      (1..3).each do |i|
         image_urls << extract_images(base_url, i)
       end
   end
