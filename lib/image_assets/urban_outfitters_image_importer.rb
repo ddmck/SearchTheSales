@@ -15,8 +15,8 @@ class UrbanOutfittersImageImporter
   def generate_image_urls(p)
     image_urls = []
 
-    normArr = ['b','d','e','f']
-    charArr = ['b','d','e','f','g']
+    normArr = ['a','b','d','e','f']
+    charArr = ['a','b','d','e','f','g']
     
     base_url = p.image_url
 
