@@ -50,12 +50,5 @@
   <%= @store.returns_copy %>
 </p>
 
-
-<ul>
-<% @store.products.each do |product| %>
-  <li><%= product.name %></li>
-<% end %>
-</ul>
-
 <%= link_to 'Edit', edit_store_path(@store) %> |
 <%= link_to 'Back', stores_path %>
