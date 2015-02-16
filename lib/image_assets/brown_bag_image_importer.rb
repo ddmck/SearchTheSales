@@ -1,6 +1,6 @@
-class HobbsImageImporter
+class BrownBagImageImporter
   def import
-    s = Store.find_by_name("Hobbs")
+    s = Store.find_by_name("BB Clothing")
 
     prod = s.products.where(image_urls: nil)
 
@@ -14,14 +14,17 @@ class HobbsImageImporter
 
   def generate_image_urls(p)
     image_urls = []
+    
     base_url = p.image_url
 
-      (2..3).each do |i|
-        image_urls << extract_images(base_url, i)
-      end
+    (1..4).each do |i|
+      image_urls << grab_image_url(base_url, i)
+    end
+
+    return image_urls 
   end
 
-  def extract_images(url, count)
-    return url.gsub(/_01_/, "_0#{count}_")
+  def grab_image_url(url, count)
+    return url.to_s.gsub(/_1/, "_#{count}")
   end
 end
