@@ -17,6 +17,7 @@ class JigsawImageImporter
     
     base_url = p.image_url
 
+    image_url << base_url
     image_urls << grab_image_url(base_url)
 
     return image_urls 

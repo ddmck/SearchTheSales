@@ -15,8 +15,8 @@ class SizeImageImporter
   def generate_image_urls(p)
     image_urls = []
 
-    normArr = ['b']
-    charArr = ['b','c','d']
+    normArr = ['a','b']
+    charArr = ['a','b','c','d']
     
     base_url = p.image_url
 

@@ -16,7 +16,7 @@ class HobbsImageImporter
     image_urls = []
     base_url = p.image_url
 
-      (2..3).each do |i|
+      (1..3).each do |i|
         image_urls << extract_images(base_url, i)
       end
   end
