@@ -12,7 +12,7 @@ class AsosImageImporter
   end
   handle_asynchronously :import, :queue => 'data_feeds'
 
-  def self.generate_image_urls(p)
+  def generate_image_urls(p)
     image_urls = []
     
     base_url = p.image_url
@@ -26,11 +26,11 @@ class AsosImageImporter
     return image_urls 
   end
 
-  def self.grab_larger_image_numb(url, count)
+  def grab_larger_image_numb(url, count)
     return url.gsub(/\/\w+\/\w+\d\w+.\w+$/, "\/image#{count}xxl.jpg").to_s
   end
 
-  def self.grab_larger_image(url)
+  def grab_larger_image(url)
     return  url.to_s.gsub(/image1xl/, 'image1xxl')
   end
 end

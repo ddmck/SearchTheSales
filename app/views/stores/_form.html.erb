@@ -27,6 +27,31 @@
     <%= f.label :image_url %><br>
     <%= f.text_field :image_url %>
   </div>
+  <div class="field">
+    <%= f.label :standard_price %><br>
+    <%= f.number_field :standard_price, :step => 0.01 %>
+  </div>
+ <div class="field">
+    <%= f.label :express_price %><br>
+    <%= f.number_field :express_price, :step => 0.01 %>
+  </div>
+  <div class="field">
+    <%= f.label :free_delivery_threshold %><br>
+    <%= f.number_field :free_delivery_threshold, :step => 0.01 %>
+  </div>
+  <div class="field">
+    <%= f.label :delivery_copy %><br>
+    <%= f.text_area :delivery_copy %>
+  </div>
+  <div class="field">
+    <%= f.label :days_to_return %><br>
+    <%= f.number_field :days_to_return, :step => 1 %>
+  </div>
+  <div class="field">
+    <%= f.label :returns_copy %><br>
+    <%= f.text_area :returns_copy %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

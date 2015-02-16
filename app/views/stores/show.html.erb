@@ -20,11 +20,35 @@
   <%= @store.image_url %>
 </p>
 
-<ul>
-<% @store.products.each do |product| %>
-  <li><%= product.name %></li>
-<% end %>
-</ul>
+<p>
+  <strong>Standard price:</strong>
+  <%= @store.standard_price %>
+</p>
+
+<p>
+  <strong>Express price:</strong>
+  <%= @store.express_price %>
+</p>
+
+<p>
+  <strong>Free Delivery Threshold:</strong>
+  <%= @store.free_delivery_threshold %>
+</p>
+
+<p>
+  <strong>Delivery copy:</strong>
+  <%= @store.delivery_copy %>
+</p>
+
+<p>
+  <strong>Days to return:</strong>
+  <%= @store.days_to_return %>
+</p>
+
+<p>
+  <strong>Returns copy:</strong>
+  <%= @store.returns_copy %>
+</p>
 
 <%= link_to 'Edit', edit_store_path(@store) %> |
 <%= link_to 'Back', stores_path %>

@@ -3,12 +3,15 @@ class DataFeedImport
 
   def perform
     DataFeed.all.each do |df|
-      df.process_file if df.active
+      df.process_file
+    end
+    DataFeedXml.all.each do |df|
+      df.process_file
     end
   end
 
   def self.time_to_recur(run_at)
-    run_at + 24.hours
+    run_at.end_of_day + 7.hours
   end
 
 end

@@ -80,14 +80,6 @@ class DataFeed < ActiveRecord::Base
   end
 
   def process_item(item)
-
-    # if item[:reference_name].nil? || item[:image_url].nil? || item[:url].nil? || item[:brand].nil?
-    #   puts "####### NOT VALID MISSING IMPORTANT COLUMN!!!! ######"
-    #   puts "DataFeed: #{self.id}, Item: #{item}"
-    #   return
-    # else
-
-
     product = Product.find_by_url(item[:url])
     if product.nil?
       product = Product.new
@@ -107,8 +99,10 @@ class DataFeed < ActiveRecord::Base
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
-    product.save if product.changed?
-    # end
+    sbefore = product.sizes.to_a
+    product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
+    schanged = (sbefore != product.sizes.to_a)
+    product.save if product.changed? || schanged
   end
 
 
@@ -140,8 +134,10 @@ class DataFeed < ActiveRecord::Base
 
     expired_products.each_key do |key|
       product = Product.find_by_url(key)
+      sbefore = product.sizes.to_a
       product.sizes = []
-      product.save if product.changed?
+      schanged = (sbefore != product.sizes.to_a)
+      product.save if schanged
     end
   end
 end
