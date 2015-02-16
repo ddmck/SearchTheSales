@@ -17,6 +17,8 @@ class JohnLewisImageImporter
     
     base_url = p.image_url
 
+    image_urls << base_url
+
     (1..4).each do |i|
       image_urls << grab_image_url(base_url, i)
     end
