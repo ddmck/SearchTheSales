@@ -1,6 +1,6 @@
 class UrbanOutfittersImageImporter
   def import
-    s = Store.find_by_name("urbanoutfitters")
+    s = Store.find(33)
 
     prod = s.products.where(image_urls: nil)
 

@@ -1,6 +1,6 @@
 class AsosImageImporter
   def import
-    s = Store.find_by_name("asos")
+    s = Store.find(1)
 
     prod = s.products.where(image_urls: nil)
 

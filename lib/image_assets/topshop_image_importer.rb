@@ -1,6 +1,6 @@
 class TopshopImageImporter
   def import
-    s = Store.find_by_name("Topshop")
+    s = Store.find(49)
 
     prod = s.products.where(image_urls: nil)
 

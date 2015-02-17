@@ -1,6 +1,6 @@
 class JohnLewisImageImporter
   def import
-    s = Store.find_by_name("johnlewis")
+    s = Store.find(2)
 
     prod = s.products.where(image_urls: nil)
 

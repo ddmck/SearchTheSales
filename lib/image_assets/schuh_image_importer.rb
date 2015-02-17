@@ -1,6 +1,6 @@
 class SchuhImageImporter
   def import
-    s = Store.find_by_name("schuh")
+    s = Store.find(39)
 
     prod = s.products.where(image_urls: nil)
 

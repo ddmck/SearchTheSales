@@ -1,6 +1,6 @@
 class ReissImageImporter
   def import
-    s = Store.find_by_name("reiss")
+    s = Store.find(56)
 
     prod = s.products.where(image_urls: nil)
 

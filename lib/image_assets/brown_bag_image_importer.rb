@@ -1,6 +1,6 @@
 class BrownBagImageImporter
   def import
-    s = Store.find_by_name("BB Clothing")
+    s = Store.find(55)
 
     prod = s.products.where(image_urls: nil)
 

@@ -1,6 +1,6 @@
 class MatchesImageImporter
   def import
-    s = Store.find_by_name("matches")
+    s = Store.find(21)
 
     prod = s.products.where(image_urls: nil)
 
