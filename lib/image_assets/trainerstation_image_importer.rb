@@ -1,6 +1,6 @@
 class TrainerstationImageImporter
   def import
-    s = Store.find(28)
+    s = Store.find(37)
 
     prod = s.products.where(image_urls: nil)
 
