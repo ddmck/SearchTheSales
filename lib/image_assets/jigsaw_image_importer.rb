@@ -17,13 +17,14 @@ class JigsawImageImporter
     
     base_url = p.image_url
 
-    image_url << base_url
-    image_urls << grab_image_url(base_url)
+    (1..5).each do |i|
+      image_urls << grab_image_url(base_url, i)
+    end
 
     return image_urls 
   end
 
-  def grab_image_url(url)
-    return url.gsub(/_1/, '_2').to_s
+  def grab_image_url(url, count)
+    return url.to_s.gsub(/_1/, "_#{count}")
   end
 end
