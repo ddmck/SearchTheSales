@@ -19,4 +19,14 @@ class Order < ActiveRecord::Base
       }
     end
   end
+
+  def create_delivery_invoice_item(delivery)
+    store = Store.find(delivery[:store])
+    Stripe::InvoiceItem.create(
+      :customer => self.user.stripe_customer_id,
+      :amount => (delivery[:price] * 100).to_i,
+      :currency => "gbp",
+      :description => "#{delivery[:type].capitalize} delivery for #{store.name}"
+    )
+  end
 end

@@ -41,6 +41,10 @@ class OrdersController < ApplicationController
       @order.order_items.each do |oi|
         oi.create_invoice_item
       end
+      order_params[:deliveries].each do |delivery|
+        @order.create_delivery_invoice_item(delivery)
+      end
+
       respond_with(@order)
     end
   end
