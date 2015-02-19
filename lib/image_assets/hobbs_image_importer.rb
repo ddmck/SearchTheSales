@@ -1,6 +1,6 @@
 class HobbsImageImporter
   def import
-    s = Store.find_by_name("Hobbs")
+    s = Store.find(68)
 
     prod = s.products.where(image_urls: nil)
 

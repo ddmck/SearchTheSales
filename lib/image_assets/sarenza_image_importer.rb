@@ -1,6 +1,6 @@
 class SarenzaImageImporter
   def import
-    s = Store.find_by_name("sarenza")
+    s = Store.find(3)
 
     prod = s.products.where(image_urls: nil)
 

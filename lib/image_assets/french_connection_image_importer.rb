@@ -1,6 +1,6 @@
 class FrenchConnectionImageImporter
   def import
-    s = Store.find_by_name("French Connection")
+    s = Store.find(64)
 
     prod = s.products.where(image_urls: nil)
 

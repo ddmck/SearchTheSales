@@ -1,6 +1,6 @@
 class SizeImageImporter
   def import
-    s = Store.find_by_name("Size?")
+    s = Store.find(50)
 
     prod = s.products.where(image_urls: nil)
 
