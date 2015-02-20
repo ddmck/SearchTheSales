@@ -25,6 +25,6 @@ class WoodhouseImageImporter
   end
 
   def get_image_url(url, count)
-    return url.to_s.gsub(/_1/, "_#{count}x")
+    return url.to_s.gsub(/_1/, "_#{count}")
   end
 end
