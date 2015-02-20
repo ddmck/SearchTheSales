@@ -19,7 +19,7 @@ class RubbersoleImageImporter
     base_url = p.image_url
 
     normArr.each do |i|
-      image_urls << grab_image_url(base_url, i)
+      image_urls << get_image_url(base_url, i)
     end
 
     return image_urls 
