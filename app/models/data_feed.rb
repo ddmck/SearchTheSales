@@ -79,6 +79,8 @@ class DataFeed < ActiveRecord::Base
     end
   end
 
+  handle_asynchronously :process_chunk, :queue => 'data_feeds'
+
   def process_item(item)
     product = Product.find_by_url(item[:url])
     if product.nil?
