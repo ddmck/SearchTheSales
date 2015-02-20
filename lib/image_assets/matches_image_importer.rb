@@ -17,8 +17,6 @@ class MatchesImageImporter
     
     base_url = p.image_url
 
-    image_urls << main_to_zm(base_url)
-
     (1..5).each do |i|
       image_urls << get_image_url(base_url, i)
     end

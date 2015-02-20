@@ -24,7 +24,7 @@ class SarenzaImageImporter
     return image_urls 
   end
 
-  def get_imgage_url(url, count)
+  def get_image_url(url, count)
     return url.to_s.gsub(/_09/, "_0#{count}")
   end
 end
