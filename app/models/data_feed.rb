@@ -107,33 +107,20 @@ class DataFeed < ActiveRecord::Base
 
 
   def delete_expired_products
-
+    key_hash = {}
+    key_hash[link_column.to_sym] = :url if link_column
     paths = unzipped_file_path
-
-    result = {}
-    products_hash = {}
-    expired_products = {}
-
+    result = []
     paths.each do |path|
-      CSV.foreach(path) do |row|
-        result[row[3]] = [row[0]]
-      end
+      result += SmarterCSV.process(path, key_mapping: key_hash)
     end
-
+    result = result.map{ |x| x[:url] }
     current_products = store.products
+    prod_urls = current_products.map {|p| p.url}
+    to_be_del = prod_urls - result
 
-    current_products.each do |p|
-      products_hash["#{p.url}"] = p.name
-    end
-
-    products_hash.each_key do |e|
-      if(!result.has_key?(e))
-        expired_products[e] = products_hash.fetch(e)
-      end
-    end
-
-    expired_products.each_key do |key|
-      product = Product.find_by_url(key)
+    to_be_del.each do |p|
+      product = Product.find_by_url(p)
       sbefore = product.sizes.to_a
       product.sizes = []
       schanged = (sbefore != product.sizes.to_a)
