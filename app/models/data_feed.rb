@@ -59,7 +59,7 @@ class DataFeed < ActiveRecord::Base
     key_hash[size_column.to_sym] = :size if size_column
     paths = unzipped_file_path
     paths.each do |path|
-      SmarterCSV.process(path,  chunk_size: 100, 
+      SmarterCSV.process(path,  chunk_size: 1000, 
                                 key_mapping: key_hash) do |chunk|
         process_chunk(chunk)
       end

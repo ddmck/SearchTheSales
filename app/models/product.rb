@@ -73,6 +73,10 @@ class Product < ActiveRecord::Base
     brand.name
   end 
 
+  def pretty_brand_name
+    brand.name.titleize
+  end
+
   def display_price
     sale_price || rrp
   end
