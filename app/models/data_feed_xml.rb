@@ -94,7 +94,8 @@ class DataFeedXml < ActiveRecord::Base
     product = Product.find_by_url(item[:url])
     if product.nil?
       product = Product.new
-      product.brand = set_brand(item[:brand])
+      product.brand_reference = set_brand_reference(item[:brand])
+      product.brand = set_brand(product)
       product.store = set_store
       product.reference_name = set_reference_name(item[:reference_name], product.brand)
       product.name = set_name(product)
