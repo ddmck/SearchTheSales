@@ -4,11 +4,15 @@ module DataFeedSetter
   end
 
   def set_brand(identifier)
-    brand = Brand.find_by_name(identifier.to_s.downcase)
-    if brand.nil?
-      brand = Brand.create(name: identifier.to_s.downcase, image_url: "#");
+    Brand.find(product.brand_reference.brand.try(:id))
+  end
+
+  def set_brand_reference(identifier)
+    brand_ref = BrandReference.find_by_reference(identifier.to_s.downcase)
+    if brand_ref.nil?
+      brand_ref = BrandReference.create(name: identifier.to_s, reference: identifier.to_s.downcase)
     end
-    brand
+    brand_ref
   end
 
   def set_category(item, product)
