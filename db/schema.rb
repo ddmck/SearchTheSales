@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150216111323) do
+ActiveRecord::Schema.define(version: 20150225143521) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,12 +34,23 @@ ActiveRecord::Schema.define(version: 20150216111323) do
 
   add_index "baskets", ["user_id"], name: "index_baskets_on_user_id", using: :btree
 
+  create_table "brand_references", force: true do |t|
+    t.string   "reference"
+    t.integer  "brand_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
+
+  add_index "brand_references", ["brand_id"], name: "index_brand_references_on_brand_id", using: :btree
+
   create_table "brands", force: true do |t|
     t.string   "name"
     t.text     "feature_text"
     t.string   "image_url"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ref"
   end
 
   create_table "categories", force: true do |t|
@@ -110,6 +121,7 @@ ActiveRecord::Schema.define(version: 20150216111323) do
     t.string   "category_column"
     t.string   "large_image_url_column"
     t.boolean  "active"
+    t.string   "image_urls_column"
     t.string   "image_assets"
   end
 
@@ -226,17 +238,19 @@ ActiveRecord::Schema.define(version: 20150216111323) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "rrp",             precision: 10, scale: 2
-    t.decimal  "sale_price",      precision: 10, scale: 2
+    t.decimal  "rrp",                precision: 10, scale: 2
+    t.decimal  "sale_price",         precision: 10, scale: 2
     t.integer  "category_id"
     t.integer  "gender_id"
     t.string   "reference_name"
     t.integer  "sub_category_id"
     t.text     "large_image_url"
     t.text     "image_urls"
+    t.integer  "brand_reference_id"
   end
 
   add_index "products", ["brand_id", "store_id"], name: "index_products_on_brand_id_and_store_id", using: :btree
+  add_index "products", ["brand_reference_id"], name: "index_products_on_brand_reference_id", using: :btree
   add_index "products", ["category_id"], name: "index_products_on_category_id", using: :btree
   add_index "products", ["gender_id"], name: "index_products_on_gender_id", using: :btree
   add_index "products", ["sub_category_id"], name: "index_products_on_sub_category_id", using: :btree
