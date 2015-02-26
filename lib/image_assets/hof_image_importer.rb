@@ -17,7 +17,7 @@ class HOFImageImporter
     
     base_url = p.image_url
 
-    (0..4).each do |i|
+    (0..3).each do |i|
       image_urls << grab_image_url(base_url, i)
     end
 
