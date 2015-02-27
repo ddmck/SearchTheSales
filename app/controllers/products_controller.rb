@@ -107,6 +107,7 @@ class ProductsController < ApplicationController
     string = string.downcase.split(" ").join("^2 ") + '^2' + ' OR ' + string.downcase.split(" ").join("~1 ") + '~1' 
     string += ' AND category_id: ' + params[:category] if params[:category]
     string += ' AND sub_category_id: ' + params[:sub_category]  if params[:sub_category]
+    string += ' AND brand_id: ' + params[:brand] if params[:brand]
     if params[:gender]
       @gender = Gender.find_by_name(params[:gender])
       string += " AND gender_id: #{@gender.id}"
