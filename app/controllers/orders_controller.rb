@@ -26,7 +26,8 @@ class OrdersController < ApplicationController
       unless user.stripe_customer_id
         resp = Stripe::Customer.create(
           :description => "Customer for #{user.email}",
-          :card => order_params[:token]
+          :card => order_params[:token], 
+          :email => user.email
         )
         user.stripe_customer_id = resp.id
         user.save
