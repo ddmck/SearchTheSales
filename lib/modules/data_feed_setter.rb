@@ -3,7 +3,7 @@ module DataFeedSetter
     Store.find(store_id)
   end
 
-  def set_brand(identifier)
+  def set_brand(product)
     Brand.find(product.brand_reference.brand.try(:id))
   end
 
