@@ -50,7 +50,6 @@ ActiveRecord::Schema.define(version: 20150225143521) do
     t.string   "image_url"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "ref"
   end
 
   create_table "categories", force: true do |t|
@@ -121,7 +120,6 @@ ActiveRecord::Schema.define(version: 20150225143521) do
     t.string   "category_column"
     t.string   "large_image_url_column"
     t.boolean  "active"
-    t.string   "image_urls_column"
     t.string   "image_assets"
   end
 
