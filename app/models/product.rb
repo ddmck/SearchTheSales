@@ -81,6 +81,13 @@ class Product < ActiveRecord::Base
     sale_price || rrp
   end
 
+  def set_brand_ref
+    brand_reference_id = brand.brand_references.first.id
+    save
+  end
+
+  handle_asynchronously :set_brand_ref, :queue => 'data_feeds'
+
   def index_document
     __elasticsearch__.index_document
   end
