@@ -144,7 +144,7 @@ module DataFeedSetter
   end
 
   def set_name(product)
-    name = product.reference_name.downcase.remove(product.brand.try(:name).try(:downcase)).squeeze(" ").gsub("`", "'").strip() if product.brand.try(:name).try(:downcase)
+    name = product.brand.try(:name).try(:downcase) ? product.reference_name.downcase.remove(product.brand.try(:name).try(:downcase)).squeeze(" ").gsub("`", "'").strip() : product.reference_name.downcase.squeeze(" ").gsub("`", "'").strip()
     if name[-3 .. -1] == " by"
       name = name[0 .. -4] 
     end
