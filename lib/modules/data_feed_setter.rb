@@ -4,7 +4,7 @@ module DataFeedSetter
   end
 
   def set_brand(product)
-    product.brand_reference.brand_id
+    product.brand_reference.brand
   end
 
   def set_brand_reference(identifier)
@@ -144,7 +144,7 @@ module DataFeedSetter
   end
 
   def set_name(product)
-    name = product.reference_name.downcase.remove(product.brand.name.downcase).squeeze(" ").gsub("`", "'").strip()
+    name = product.reference_name.downcase.remove(product.brand.try(:name).try(:downcase)).squeeze(" ").gsub("`", "'").strip()
     if name[-3 .. -1] == " by"
       name = name[0 .. -4] 
     end
@@ -152,10 +152,10 @@ module DataFeedSetter
   end
 
   def set_reference_name(reference_name, brand)
-    if reference_name.downcase.include?(brand.name.downcase)
+    if reference_name.downcase.include?(brand.try(:name).try(:downcase))
       reference_name.downcase.gsub("`", "'")
     else 
-      brand.name.downcase + " " + reference_name.downcase.gsub("`", "'")
+      brand.try(:name).try(:downcase) + " " + reference_name.downcase.gsub("`", "'")
     end
   end
 
