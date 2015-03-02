@@ -80,7 +80,8 @@ module DataFeedSetter
   def set_sub_category(product)
     sub_cat = nil
     name = sanitize_string(product.name).downcase.split(" ")
-    description = sanitize_string(product.description).downcase.remove(product.brand.name).split(" ") if product.description
+    bn = product.brand.try(:name) ? product.brand.try(:name) : ""
+    description = sanitize_string(product.description).downcase.remove(bn).split(" ") if product.description
     sub_categories = product.category.sub_categories
     sub_categories.each do |sub_category|
       if name.include?(sub_category.name) || 
