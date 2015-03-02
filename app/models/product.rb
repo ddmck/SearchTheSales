@@ -18,6 +18,7 @@ class Product < ActiveRecord::Base
   validates_presence_of :name, :brand_id, :store_id, :url
   validates_uniqueness_of :name, :url
   belongs_to :brand
+  belongs_to :brand_reference
   belongs_to :store
   belongs_to :category
   belongs_to :sub_category
