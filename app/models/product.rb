@@ -27,12 +27,11 @@ class Product < ActiveRecord::Base
   has_many :basket_items
   has_many :wishlist_items
   has_many :users, through: :wishlist_items
-  has_many :color_tags
+  has_many :color_tags, :dependent => :destroy
   has_many :colors, through: :color_tags
-  has_many :size_tags
+  has_many :size_tags, :dependent => :destroy
   has_many :sizes, through: :size_tags
-  
-  has_many :trend_tags
+  has_many :trend_tags, :dependent => :destroy
   has_many :trends, through: :trend_tags
 
   serialize :image_urls
