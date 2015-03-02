@@ -82,4 +82,17 @@ RSpec.describe Product, type: :model do
     expect(product).to respond_to(:gender)
   end
 
+  it "should be able to build a where hash for itself" do
+    filters = {
+      "category" => 1,
+      "brand" => 1
+    }
+    result = product.build_where_hash(filters)
+    desired = {
+      category_id: 1,
+      brand_id: 1
+    }
+    expect(result).to eq(desired)
+  end
+
 end

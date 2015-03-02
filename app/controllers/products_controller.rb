@@ -4,21 +4,29 @@ class ProductsController < ApplicationController
   respond_to :html, :json
 
   def index
-    hash = {query: {
-                    query_string: {
-                      default_field: "reference_name",
-                      query: build_search_string(params)
-                      }
-                    }, size: 200}
-    if params[:sort]
-      args = params[:sort].split(", ")
-      hash[:sort] = [{args[0] => args[1]}]
+    if params["search_string"] 
+      hash = {query: {
+                      query_string: {
+                        default_field: "reference_name",
+                        query: build_search_string(params)
+                        }
+                      }, size: 200}
+      if params[:sort]
+        args = params[:sort].split(", ")
+        hash[:sort] = [{args[0] => args[1]}]
+      end
+      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
+    else
+      sorters = {
+        "first_letter, asc" => "name ASC",
+        "first_letter, desc" => "name DESC",
+        "display_price, asc" => "sale_price ASC",
+        "display_price, desc" => "sale_price DESC"
+      }
+      ord_string = sorters[params[:sort]] || ""
+      where_opts = JSON.parse(params[:filters])
+      @products = Product.where(where_opts).order(ord_string).paginate(page: params[:page])
     end
-    puts "hash: "
-    puts hash
-    @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
-    puts "Products: "
-    puts @products
     respond_with(@products)
   end
 
@@ -100,23 +108,28 @@ class ProductsController < ApplicationController
   end
 
   def build_search_string(params)
+    filters = params[:filters] ? JSON.parse(params[:filters]) : {}
     string = params[:search_string].try(:downcase).try(:strip) || '*'
-    if params[:category]
-      curr_category = Category.find(params[:category])
+    if filters["category_id"]
+      curr_category = Category.find(filters["category_id"])
       string = string.remove(curr_category.name).remove(curr_category.name.singularize).strip 
     end
     if string.strip == ""
       string = params[:search_string].downcase.strip
     end
     string = string.downcase.split(" ").join("^2 ") + '^2' + ' OR ' + string.downcase.split(" ").join("~1 ") + '~1' 
-    string += ' AND category_id: ' + params[:category] if params[:category]
-    string += ' AND sub_category_id: ' + params[:sub_category]  if params[:sub_category]
-    string += ' AND brand_id: ' + params[:brand] if params[:brand]
-    if params[:gender]
-      @gender = Gender.find_by_name(params[:gender])
-      string += " AND gender_id: #{@gender.id}"
+    if !filters.empty?
+      string = build_filters(string, filters)
     end
     string += " AND out_of_stock: false"
+    string
+  end
+
+  def build_filters(string, filters)
+    filters.each do |key, val|
+      string += ' AND ' + key + ': ' + val.to_s
+    end
+    puts string
     string
   end
 end

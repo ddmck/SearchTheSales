@@ -55,6 +55,15 @@ class Product < ActiveRecord::Base
     }
   end
 
+  def build_where_hash(filters)
+    new_hash = {}
+    filters.each_pair do |k, v|
+      new_hash[(k + "_id").to_sym] = v
+    end
+    new_hash
+  end
+
+
   def add_to_wishlist(user)
     puts "User: #{user}"
     puts "Id: #{id}"
