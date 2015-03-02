@@ -110,10 +110,10 @@ class DataFeedXml < ActiveRecord::Base
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
-    sbefore = product.sizes.to_a
+    product.display_price = product.calc_display_price
     product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
-    schanged = (sbefore != product.sizes.to_a)
-    product.save if product.changed? || schanged
+    product.out_of_stock = false
+    product.save if product.changed?
   end
 
   def delete_expired_products
@@ -127,8 +127,7 @@ class DataFeedXml < ActiveRecord::Base
       result[extract_xml_url(link_column, p)] = extract_xml_attr(name_column, p)
     end
 
-    store = store_id
-    current_products = Product.all.where("store_id = #{store}")
+    current_products = store.products
 
     current_products.each do |p|
       products_hash["#{p.url}"] = p.name
@@ -142,10 +141,9 @@ class DataFeedXml < ActiveRecord::Base
 
     expired_products.each_key do |key|
       product = Product.find_by_url(key)
-      sbefore = product.sizes.to_a
       product.sizes = []
-      schanged = (sbefore != product.sizes.to_a)
-      product.save if schanged
+      product.out_of_stock = true
+      product.save if product.changed?
     end
   end
 end

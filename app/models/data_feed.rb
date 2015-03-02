@@ -101,11 +101,10 @@ class DataFeed < ActiveRecord::Base
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
+    product.display_price = product.calc_display_price
     product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
-    sbefore = product.sizes.to_a
-    product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
-    schanged = (sbefore != product.sizes.to_a)
-    product.save if product.changed? || schanged
+    product.out_of_stock = false
+    product.save if product.changed?
   end
 
 
@@ -124,10 +123,9 @@ class DataFeed < ActiveRecord::Base
 
     to_be_del.each do |p|
       product = Product.find_by_url(p)
-      sbefore = product.sizes.to_a
       product.sizes = []
-      schanged = (sbefore != product.sizes.to_a)
-      product.save if schanged
+      product.out_of_stock = true
+      product.save if product.changed?
     end
   end
 end

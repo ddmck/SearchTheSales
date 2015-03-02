@@ -51,7 +51,7 @@ class Product < ActiveRecord::Base
       url: url,
       image_url: image_url,
       first_letter: name.try(:ord) || 0,
-      out_of_stock: sizes.empty?
+      out_of_stock: out_of_stock
     }
   end
 
@@ -87,7 +87,7 @@ class Product < ActiveRecord::Base
     brand.name.titleize
   end
 
-  def display_price
+  def calc_display_price
     sale_price || rrp
   end
 
