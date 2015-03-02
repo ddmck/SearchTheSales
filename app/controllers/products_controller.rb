@@ -14,7 +14,11 @@ class ProductsController < ApplicationController
       args = params[:sort].split(", ")
       hash[:sort] = [{args[0] => args[1]}]
     end
+    puts "hash: "
+    puts hash
     @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
+    puts "Products: "
+    puts @products
     respond_with(@products)
   end
 
