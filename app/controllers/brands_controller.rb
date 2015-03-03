@@ -1,10 +1,10 @@
 class BrandsController < ApplicationController
   before_action :set_brand, only: [:show, :edit, :update, :destroy]
-
+  
   respond_to :html, :json
 
   def index
-    @brands = Brand.all
+    @brands = Brand.featured
     respond_with(@brands)
   end
 
