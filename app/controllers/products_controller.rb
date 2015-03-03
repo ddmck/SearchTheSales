@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
       ord_string = sorters[params[:sort]] || ""
       where_opts = JSON.parse(params[:filters])
       where_opts[:out_of_stock] = false
-      @products = Product.includes(:sizes).where(where_opts).order(ord_string).paginate(page: params[:page])
+      @products = Product.where(where_opts).order(ord_string).paginate(page: params[:page])
     end
     respond_with(@products)
   end
