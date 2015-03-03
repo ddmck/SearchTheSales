@@ -19,7 +19,7 @@ class JohnLewisImageImporter
 
     image_urls << base_url
 
-    (1..4).each do |i|
+    (1..2).each do |i|
       image_urls << grab_image_url(base_url, i)
     end
 
