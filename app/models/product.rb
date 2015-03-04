@@ -79,11 +79,11 @@ class Product < ActiveRecord::Base
   end
 
   def brand_name
-    brand.name
+    brand.try(:name) || brand_reference.name
   end 
 
   def pretty_brand_name
-    brand.name.titleize
+    brand_name.titleize
   end
 
   def calc_display_price
