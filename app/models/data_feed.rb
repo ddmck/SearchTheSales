@@ -103,7 +103,7 @@ class DataFeed < ActiveRecord::Base
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.display_price = product.calc_display_price
     product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
-    product.out_of_stock = product.sizes.length > 0 ? true : false
+    product.out_of_stock = product.sizes.empty? ? true : false
     product.save if product.changed?
   end
 
