@@ -78,11 +78,10 @@ class DataFeed < ActiveRecord::Base
       process_item(item)
     end
   end
-
   handle_asynchronously :process_chunk, :queue => 'data_feeds'
 
   def process_item(item)
-    product = Product.find_by_url(item[:url])
+    product = Product.find_by_large_image_url(item[:large_image_url])
     if product.nil?
       product = Product.new
       product.brand_reference = set_brand_reference(item[:brand])
@@ -102,7 +101,13 @@ class DataFeed < ActiveRecord::Base
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.display_price = product.calc_display_price
-    product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
+
+    if product.size_tags.last && product.size_tags.last.updated_at > 15.minutes.ago
+      product.sizes += set_sizes(sanitize_sizes(item[:size])) if item[:size]
+    else
+      product.sizes = []
+      product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
+    end
     product.out_of_stock = product.sizes.empty?
     product.save if product.changed?
   end
