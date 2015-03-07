@@ -23,11 +23,11 @@ class Product < ActiveRecord::Base
   belongs_to :category
   belongs_to :sub_category
   belongs_to :gender
+  has_one  :color
   has_many :order_items
   has_many :basket_items
   has_many :wishlist_items
   has_many :users, through: :wishlist_items
-  has_one  :color
   has_many :size_tags, :dependent => :destroy
   has_many :sizes, through: :size_tags
   has_many :trend_tags, :dependent => :destroy
@@ -46,6 +46,7 @@ class Product < ActiveRecord::Base
       category_id: category_id,
       sub_category_id: sub_category_id,
       gender_id: gender_id,
+      color_id: color_id,
       url: url,
       image_url: image_url,
       first_letter: name.try(:ord) || 0,
