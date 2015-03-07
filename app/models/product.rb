@@ -27,8 +27,7 @@ class Product < ActiveRecord::Base
   has_many :basket_items
   has_many :wishlist_items
   has_many :users, through: :wishlist_items
-  has_many :color_tags, :dependent => :destroy
-  has_many :colors, through: :color_tags
+  has_one  :color
   has_many :size_tags, :dependent => :destroy
   has_many :sizes, through: :size_tags
   has_many :trend_tags, :dependent => :destroy
@@ -61,7 +60,6 @@ class Product < ActiveRecord::Base
     end
     new_hash
   end
-
 
   def add_to_wishlist(user)
     puts "User: #{user}"

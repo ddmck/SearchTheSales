@@ -98,24 +98,16 @@ module DataFeedSetter
     sub_cat
   end
 
-  def set_colors(item)
-    clrs = []
+  def set_color(item)
+    clr = nil
     name = sanitize_string(item[:reference_name]).downcase.split(" ")
-    description = sanitize_string(item[:description]).downcase.split(" ") if item[:description]
     colors = Color.all
     colors.each do |color|
-      if name.include?(color.name) || 
-         name.include?(color.name.singularize)
-        clrs << color
+      if name.include?(color.name)
+        clr = color
       end 
-      if item[:description]
-        if description.include?(color.name) ||
-           description.include?(color.name.singularize)
-          clrs << color
-        end
-      end
     end
-    clrs 
+    clr
   end
 
   def sanitize_string(string)

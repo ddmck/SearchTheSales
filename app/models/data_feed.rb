@@ -92,7 +92,7 @@ class DataFeed < ActiveRecord::Base
       product.name = set_name(product)
       product.description = item[:description]
       product.url = item[:url]
-      product.colors = set_colors(item)
+      product.color = set_color(item)
       product.gender = set_gender(item)
       product.category = set_category(item, product)
       product.sub_category = set_sub_category(product) if product.category

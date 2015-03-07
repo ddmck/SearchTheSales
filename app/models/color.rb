@@ -1,7 +1,6 @@
 class Color < ActiveRecord::Base
   before_save :downcase_name
-  has_many :color_tags
-  has_many :products, through: :color_tags
+  has_many :products
   validates_uniqueness_of :name
 
   def downcase_name
