@@ -23,7 +23,7 @@ class Product < ActiveRecord::Base
   belongs_to :category
   belongs_to :sub_category
   belongs_to :gender
-  has_one  :color
+  belongs_to :color
   has_many :order_items
   has_many :basket_items
   has_many :wishlist_items
@@ -112,5 +112,5 @@ class Product < ActiveRecord::Base
     __elasticsearch__.delete_document
   end
 
-  handle_asynchronously :delete_document, :queue => 'indexes'
+  # handle_asynchronously :delete_document, :queue => 'indexes'
 end
