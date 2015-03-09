@@ -4,7 +4,7 @@ class FeaturesController < ApplicationController
   before_action :require_admin!, only: [:new, :edit, :update, :destroy]
   skip_before_filter :verify_authenticity_token
 
-  respond_to :html
+  respond_to :html, :json
 
   def index
     @features = Feature.all
