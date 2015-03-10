@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150310120756) do
+ActiveRecord::Schema.define(version: 20150310142759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(version: 20150310120756) do
     t.boolean  "out_of_stock",                                default: false
     t.decimal  "display_price"
     t.integer  "color_id"
+    t.text     "slug"
   end
 
   add_index "products", ["brand_id", "store_id"], name: "index_products_on_brand_id_and_store_id", using: :btree
@@ -250,6 +251,7 @@ ActiveRecord::Schema.define(version: 20150310120756) do
   add_index "products", ["color_id"], name: "index_products_on_color_id", using: :btree
   add_index "products", ["gender_id"], name: "index_products_on_gender_id", using: :btree
   add_index "products", ["image_url"], name: "index_products_on_image_url", using: :btree
+  add_index "products", ["slug"], name: "index_products_on_slug", unique: true, using: :btree
   add_index "products", ["sub_category_id"], name: "index_products_on_sub_category_id", using: :btree
 
   create_table "size_tags", force: true do |t|

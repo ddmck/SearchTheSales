@@ -32,6 +32,8 @@ class Product < ActiveRecord::Base
   has_many :sizes, through: :size_tags
   has_many :trend_tags, :dependent => :destroy
   has_many :trends, through: :trend_tags
+  extend FriendlyId
+  friendly_id :name, use: :slugged
 
   serialize :image_urls
 
