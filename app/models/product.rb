@@ -2,6 +2,8 @@ require 'elasticsearch/model'
 
 class Product < ActiveRecord::Base
   include Elasticsearch::Model
+  extend FriendlyId
+  friendly_id :name, use: :slugged
 
   after_commit on: [:create] do
     index_document
@@ -32,8 +34,6 @@ class Product < ActiveRecord::Base
   has_many :sizes, through: :size_tags
   has_many :trend_tags, :dependent => :destroy
   has_many :trends, through: :trend_tags
-  extend FriendlyId
-  friendly_id :name, use: :slugged
 
   serialize :image_urls
 
@@ -80,7 +80,7 @@ class Product < ActiveRecord::Base
   end
 
   def brand_name
-    brand.try(:name) || brand_reference.name
+    brand.name
   end 
 
   def pretty_brand_name

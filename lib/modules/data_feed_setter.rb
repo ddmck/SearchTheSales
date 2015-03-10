@@ -10,7 +10,8 @@ module DataFeedSetter
   def set_brand_reference(identifier)
     brand_ref = BrandReference.find_by_reference(identifier.to_s.downcase)
     if brand_ref.nil?
-      brand_ref = BrandReference.create(name: identifier.to_s, reference: identifier.to_s.downcase)
+      brand = Brand.create(name: identifier.to_s)
+      brand_ref = BrandReference.create(name: identifier.to_s, reference: identifier.to_s.downcase, brand_id: brand.id)
     end
     brand_ref
   end
