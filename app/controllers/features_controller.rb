@@ -12,8 +12,6 @@ class FeaturesController < ApplicationController
   end
 
   def show
-    @features = Feature.last(10)
-    @products = @feature.products
     respond_with(@feature)
   end
 
