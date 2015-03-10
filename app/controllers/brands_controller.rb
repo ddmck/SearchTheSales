@@ -9,7 +9,6 @@ class BrandsController < ApplicationController
   end
 
   def show
-    @products = @brand.products
     respond_with(@brand)
   end
 
@@ -40,7 +39,7 @@ class BrandsController < ApplicationController
   private
 
   def set_brand
-    @brand = Brand.find(params[:id])
+    @brand = Brand.friendly.find(params[:id])
   end
 
   def brand_params
