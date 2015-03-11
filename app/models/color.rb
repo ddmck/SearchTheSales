@@ -3,6 +3,8 @@ class Color < ActiveRecord::Base
   has_many :products
   validates_uniqueness_of :name
 
+  scope :featured, -> { where(featured: true)}
+
   def downcase_name
     name.downcase!
   end
