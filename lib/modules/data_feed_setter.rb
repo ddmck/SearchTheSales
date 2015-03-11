@@ -117,7 +117,11 @@ module DataFeedSetter
 
   def sanitize_price(price)
     if price.class == String
-      price.gsub(/[^\d\.]/, '').to_f
+      if price == ""
+        nil
+      else
+        price.gsub(/[^\d\.]/, '').to_f
+      end
     else
       price.to_f
     end

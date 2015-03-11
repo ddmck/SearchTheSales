@@ -32,6 +32,7 @@ RSpec.describe DataFeed, :type => :model do
     expect(data_feed.sanitize_price("£1 234.56")).to eq(1234.56)
     expect(data_feed.sanitize_price(12)).to eq(12.00)
     expect(data_feed.sanitize_price(134.99)).to eq(134.99)
+    expect(data_feed.sanitize_price("")).to eq(nil)
   end
 
   it "should be able to detect gender" do
