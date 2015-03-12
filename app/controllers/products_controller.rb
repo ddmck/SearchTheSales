@@ -15,7 +15,7 @@ class ProductsController < ApplicationController
         args = params[:sort].split(", ")
         hash[:sort] = [{args[0] => args[1]}]
       end
-      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records.includes(:brand)
+      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     else
       sorters = {
         "first_letter, asc" => "name ASC",
@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
       ord_string = sorters[params[:sort]] || ""
       where_opts = JSON.parse(params[:filters])
       where_opts[:out_of_stock] = false
-      @products = Product.includes(:brand).where(where_opts).order(ord_string).paginate(page: params[:page])
+      @products = Product.where(where_opts).order(ord_string).paginate(page: params[:page])
     end
     respond_with(@products)
   end
