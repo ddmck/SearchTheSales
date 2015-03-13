@@ -17,16 +17,20 @@ class ProductsController < ApplicationController
       end
       @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     else
-      sorters = {
-        "first_letter, asc" => "name ASC",
-        "first_letter, desc" => "name DESC",
-        "display_price, asc" => "display_price ASC",
-        "display_price, desc" => "display_price DESC"
-      }
-      ord_string = sorters[params[:sort]] || ""
+      hash = {}
+      hash[:query] = {match_all: {}}
+
       where_opts = JSON.parse(params[:filters])
       where_opts[:out_of_stock] = false
-      @products = Product.where(where_opts).order(ord_string).paginate(page: params[:page])
+      where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
+      hash[:filter] = { and: where_opts}
+
+      if params[:sort]
+        args = params[:sort].split(", ")
+        hash[:sort] = [{args[0] => args[1]}]
+      end
+      puts where_opts.class
+      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     end
     respond_with(@products)
   end
