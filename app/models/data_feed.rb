@@ -57,6 +57,7 @@ class DataFeed < ActiveRecord::Base
     key_hash[gender_column.to_sym] = :gender if gender_column
     key_hash[category_column.to_sym] = :category if category_column
     key_hash[size_column.to_sym] = :size if size_column
+    key_hash[color_column.to_sym] = :color if color_column
     paths = unzipped_file_path
     paths.each do |path|
       SmarterCSV.process(path,  chunk_size: 1000, 

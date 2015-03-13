@@ -80,6 +80,7 @@ class DataFeedXml < ActiveRecord::Base
       result[:gender] = extract_xml(gender_column, product)
       result[:category] = extract_xml(category_column, product)
       result[:size] = extract_xml(size_column, product)
+      result[:color] = extract_xml(color_column, product)
       process_line(result)
     end
     if image_assets

@@ -101,13 +101,28 @@ module DataFeedSetter
 
   def set_color(item)
     clr = nil
+    color_arr = sanitize_string(item[:color]).downcase.split(" ") if item[:color]
     name = sanitize_string(item[:reference_name]).downcase.split(" ")
     colors = Color.all
-    colors.each do |color|
-      if name.include?(color.name)
-        clr = color
-      end 
+
+    if color_arr
+      colors.each do |color|
+        if color_arr.include?(color.name)
+          clr = color
+        end
+        break if clr
+      end
     end
+
+    if clr.nil?
+      colors.each do |color|
+        if name.include?(color.name)
+          clr = color
+        end
+        break if clr 
+      end
+    end
+
     clr
   end
 
