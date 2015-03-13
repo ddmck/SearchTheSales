@@ -7,6 +7,7 @@ Searchthesales::Application.routes.draw do
     mount_devise_token_auth_for 'User', at: '/auth'
     post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token"
     resources :orders
+    resources :wishlist_items
   end
 
   

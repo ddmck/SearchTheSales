@@ -1,20 +1,20 @@
 class WishlistItemsController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+  # skip_before_filter :verify_authenticity_token
   respond_to :html, :json
 
   def index
-    items = WishlistItem.where(user_id: get_current_user.id)
-    respond_with(items)
+    @wishlist_items = current_user.wishlist_items.includes(:product)
+
+    respond_with(@wishlist_items)
   end
 
   def create
-    item = WishlistItem.new(item_params)
-    item.user_id = get_current_user.id
-    puts "Items attributes: #{item.attributes}"
-    if item.save
-      respond_with(item, status: 200)
+    @wishlist_item = current_user.wishlist_items.build(item_params)
+    puts @wishlist_item_params
+    if @wishlist_item.save
+      respond_with(@wishlist_item, status: 200)
     else
-      respond_with(item, status: 500)
+      respond_with(@wishlist_item, status: 500)
     end
   end
 
@@ -30,7 +30,7 @@ class WishlistItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:wishlist_item).permit(:product_id)
+    params.require(:params).permit(:product_id)
   end
 
 end
