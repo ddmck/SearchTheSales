@@ -3,9 +3,14 @@ class WishlistItemsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @wishlist_items = current_user.wishlist_items.includes(:product)
-
-    respond_with(@wishlist_items)
+    if current_user
+      
+      @wishlist_items = current_user.wishlist_items.includes(:product)
+      respond_with(@wishlist_items, status: 200)
+    else
+      @wishlist_items = []
+      respond_with(@wishlist_items, status: 401)
+    end
   end
 
   def create
