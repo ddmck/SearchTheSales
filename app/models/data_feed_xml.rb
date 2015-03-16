@@ -103,6 +103,7 @@ class DataFeedXml < ActiveRecord::Base
       product.description = item[:description]
       product.url = item[:url]
       product.color = set_color(item)
+      product.material = set_material(item)
       product.gender = set_gender(item)
       product.category = set_category(item, product)
       product.sub_category = set_sub_category(product) if product.category
