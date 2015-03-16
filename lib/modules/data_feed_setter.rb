@@ -126,6 +126,22 @@ module DataFeedSetter
     clr
   end
 
+  def set_material(item)
+    mtrl = nil
+    name = sanitize_string(item[:reference_name]).downcase.split(" ")
+    materials = Material.all
+
+    materials.each do |material|
+      if name.include?(material.name)
+        mtrl = material
+      end
+      break if mtrl
+    end
+
+
+    mtrl
+  end
+
   def sanitize_string(string)
     string.to_s.gsub(/[^\p{Alnum}\p{Space}]/u, '')
   end
