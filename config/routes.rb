@@ -31,6 +31,8 @@ Searchthesales::Application.routes.draw do
 
   resources :colors
 
+  resources :materials
+
   resources :categories
 
   # delete "/destroy_by_url", to: "products#destroy_by_url", constraints: { url: /[^\t\n\r]+/ }
