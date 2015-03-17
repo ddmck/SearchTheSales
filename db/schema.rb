@@ -11,7 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150316104741) do
+
+ActiveRecord::Schema.define(version: 20150317122023) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -253,6 +255,8 @@ ActiveRecord::Schema.define(version: 20150316104741) do
     t.decimal  "display_price"
     t.integer  "color_id"
     t.text     "slug"
+    t.integer  "material_id"
+    t.integer  "style_id"
   end
 
   add_index "products", ["brand_id", "store_id"], name: "index_products_on_brand_id_and_store_id", using: :btree
@@ -261,7 +265,9 @@ ActiveRecord::Schema.define(version: 20150316104741) do
   add_index "products", ["color_id"], name: "index_products_on_color_id", using: :btree
   add_index "products", ["gender_id"], name: "index_products_on_gender_id", using: :btree
   add_index "products", ["image_url"], name: "index_products_on_image_url", using: :btree
+  add_index "products", ["material_id"], name: "index_products_on_material_id", using: :btree
   add_index "products", ["slug"], name: "index_products_on_slug", unique: true, using: :btree
+  add_index "products", ["style_id"], name: "index_products_on_style_id", using: :btree
   add_index "products", ["sub_category_id"], name: "index_products_on_sub_category_id", using: :btree
 
   create_table "size_tags", force: true do |t|
@@ -294,6 +300,15 @@ ActiveRecord::Schema.define(version: 20150316104741) do
     t.integer  "days_to_return"
     t.text     "returns_copy"
   end
+
+  create_table "styles", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "category_id"
+  end
+
+  add_index "styles", ["category_id"], name: "index_styles_on_category_id", using: :btree
 
   create_table "sub_categories", force: true do |t|
     t.string   "name"
