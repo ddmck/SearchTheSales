@@ -24,6 +24,7 @@ class Product < ActiveRecord::Base
   belongs_to :store
   belongs_to :category
   belongs_to :sub_category
+  belongs_to :style
   belongs_to :gender
   belongs_to :color
   belongs_to :material
@@ -48,6 +49,7 @@ class Product < ActiveRecord::Base
       store_id: store_id,
       category_id: category_id,
       sub_category_id: sub_category_id,
+      style_id: style_id,
       gender_id: gender_id,
       color_id: color_id,
       material_id: material_id,
