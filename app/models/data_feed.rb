@@ -96,6 +96,7 @@ class DataFeed < ActiveRecord::Base
       product.gender = set_gender(item)
       product.category = set_category(item, product)
       product.sub_category = set_sub_category(product) if product.category
+      product.style = set_style(product) if product.category
     end
     product.material = set_material(product)
     product.image_url = item[:image_url] || item[:large_image_url]
