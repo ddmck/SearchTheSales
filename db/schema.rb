@@ -11,9 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 20150317122023) do
-
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +50,6 @@ ActiveRecord::Schema.define(version: 20150317122023) do
     t.string   "image_url"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "ref"
     t.boolean  "featured"
     t.text     "slug"
   end
@@ -118,7 +115,6 @@ ActiveRecord::Schema.define(version: 20150317122023) do
     t.string   "category_column"
     t.string   "large_image_url_column"
     t.boolean  "active"
-    t.string   "image_urls_column"
     t.string   "image_assets"
   end
 
