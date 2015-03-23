@@ -26,6 +26,7 @@ class Product < ActiveRecord::Base
   belongs_to :sub_category
   belongs_to :gender
   belongs_to :color
+  belongs_to :material
   has_many :order_items
   has_many :basket_items
   has_many :wishlist_items
@@ -49,6 +50,7 @@ class Product < ActiveRecord::Base
       sub_category_id: sub_category_id,
       gender_id: gender_id,
       color_id: color_id,
+      material_id: material_id,
       url: url,
       image_url: image_url,
       first_letter: name.try(:ord) || 0,
