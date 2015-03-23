@@ -118,13 +118,13 @@ class DataFeed < ActiveRecord::Base
 
   def delete_expired_products
     key_hash = {}
-    key_hash[link_column.to_sym] = :url if link_column
+    key_hash[large_image_url_column.to_sym] = :large_image_url if large_image_url_column
     paths = unzipped_file_path
     result = []
     paths.each do |path|
       result += SmarterCSV.process(path, key_mapping: key_hash)
     end
-    result = result.map{ |x| x[:url] }
+    result = result.map{ |x| x[:large_image_url] }
     current_products = store.products
     prod_urls = current_products.map {|p| p.url}
     to_be_del = prod_urls - result

@@ -127,13 +127,13 @@ class DataFeedXml < ActiveRecord::Base
     products = build_xml_array
 
     products.each do |p|
-      result[extract_xml_url(link_column, p)] = extract_xml_attr(name_column, p)
+      result[extract_xml_url(large_image_url_column, p)] = extract_xml_attr(name_column, p)
     end
 
     current_products = store.products
 
     current_products.each do |p|
-      products_hash["#{p.url}"] = p.name
+      products_hash["#{p.large_image_url}"] = p.name
     end
 
     products_hash.each_key do |e|
