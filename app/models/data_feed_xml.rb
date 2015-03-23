@@ -92,7 +92,7 @@ class DataFeedXml < ActiveRecord::Base
   handle_asynchronously :process_file, :queue => 'data_feeds'
 
   def process_line(item)
-    product = Product.find_by_url(item[:url])
+    product = Product.find_by_large_image_url(item[:large_image_url])
     if product.nil?
       product = Product.new
       product.brand_reference = set_brand_reference(item[:brand])
