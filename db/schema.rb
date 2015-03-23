@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317122023) do
+ActiveRecord::Schema.define(version: 20150323165154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -261,6 +261,7 @@ ActiveRecord::Schema.define(version: 20150317122023) do
   add_index "products", ["color_id"], name: "index_products_on_color_id", using: :btree
   add_index "products", ["gender_id"], name: "index_products_on_gender_id", using: :btree
   add_index "products", ["image_url"], name: "index_products_on_image_url", using: :btree
+  add_index "products", ["large_image_url"], name: "index_products_on_large_image_url", using: :btree
   add_index "products", ["material_id"], name: "index_products_on_material_id", using: :btree
   add_index "products", ["slug"], name: "index_products_on_slug", unique: true, using: :btree
   add_index "products", ["style_id"], name: "index_products_on_style_id", using: :btree
