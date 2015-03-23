@@ -106,9 +106,18 @@ module DataFeedSetter
 
     styles = product.category.styles
     styles.each do |style|
-      if name.include?(style.name) ||
-         name.include?(style.name.singularize)
-         s = style
+
+      if style.contains_space?
+        style.pseudonyms.each do |pseudo|
+        if sanitize_string(product.name).downcase.include?(psuedo) ||
+          sanitize_string(product.name).downcase.include?(psuedo.singularize)
+          s = style
+        end
+      else
+        if name.include?(style.name) ||
+          name.include?(style.name.singularize)
+          s = style
+        end
       end
     end
     s
