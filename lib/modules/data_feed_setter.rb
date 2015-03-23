@@ -99,6 +99,21 @@ module DataFeedSetter
     sub_cat
   end
 
+  def set_style(product)
+    name = sanitize_string(product.name).downcase.split(" ")
+    s = nil
+
+
+    styles = product.category.styles
+    styles.each do |style|
+      if name.include?(style.name) ||
+         name.include?(style.name.singularize)
+         s = style
+      end
+    end
+    s
+  end
+
   def set_color(item)
     clr = nil
     color_arr = sanitize_string(item[:color]).downcase.split(" ") if item[:color]

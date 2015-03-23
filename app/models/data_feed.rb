@@ -98,6 +98,7 @@ class DataFeed < ActiveRecord::Base
       product.sub_category = set_sub_category(product) if product.category
     end
     product.material = set_material(product)
+    product.style = set_style(product) if product.category
     product.image_url = item[:image_url] || item[:large_image_url]
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]

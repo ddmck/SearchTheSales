@@ -27,6 +27,8 @@ Searchthesales::Application.routes.draw do
 
   resources :sub_categories
 
+  resources :styles
+
   resources :color_tags
 
   resources :colors
