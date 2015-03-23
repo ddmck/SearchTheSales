@@ -126,9 +126,9 @@ module DataFeedSetter
     clr
   end
 
-  def set_material(item)
+  def set_material(product)
     mtrl = nil
-    name = sanitize_string(item[:reference_name]).downcase.split(" ")
+    name = sanitize_string(product.name).downcase.split(" ")
     materials = Material.all
 
     materials.each do |material|
@@ -137,7 +137,6 @@ module DataFeedSetter
       end
       break if mtrl
     end
-
 
     mtrl
   end
