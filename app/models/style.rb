@@ -7,4 +7,14 @@ class Style < ActiveRecord::Base
   def downcase_name
     name.downcase!
   end
+
+  def contains_space?
+    self.name.include?(" ")
+  end
+
+  def pseudonyms
+    list = [self.name]
+    list << self.name.gsub(" ", "-")
+    list << self.name.gsub(" ", "")
+  end
 end
