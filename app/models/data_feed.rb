@@ -126,10 +126,9 @@ class DataFeed < ActiveRecord::Base
     end
     result = result.map{ |x| x[:large_image_url] }
 
-    delete_start = 0
-    delete_inc = 1000
-    current_products = store.products[(delete_start...(delete_start + delete_inc) )]
-    while current_products
+    
+    store.products.find_in_batches(batch_size: 500) do |current_products|
+    
       prod_urls = current_products.map {|p| p.large_image_url}
       to_be_del = prod_urls - result
 
@@ -140,8 +139,6 @@ class DataFeed < ActiveRecord::Base
         product.save if product.changed?
       end
 
-      delete_start += delete_inc
-      current_products = store.products[(delete_start...(delete_start + delete_inc) )]
 
     end
   end
