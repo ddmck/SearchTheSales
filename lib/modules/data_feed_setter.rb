@@ -109,9 +109,10 @@ module DataFeedSetter
 
       if style.contains_space?
         style.pseudonyms.each do |pseudo|
-        if sanitize_string(product.name).downcase.include?(psuedo) ||
-          sanitize_string(product.name).downcase.include?(psuedo.singularize)
-          s = style
+          if sanitize_string(product.name).downcase.include?(pseudo) ||
+            sanitize_string(product.name).downcase.include?(pseudo.singularize)
+            s = style
+          end
         end
       else
         if name.include?(style.name) ||
