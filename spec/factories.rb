@@ -83,4 +83,9 @@ FactoryGirl.define do
     feature
   end
 
+  factory :style do
+    name "tuxedo"
+    category
+  end
+
 end
