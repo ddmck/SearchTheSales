@@ -125,15 +125,24 @@ class DataFeed < ActiveRecord::Base
       result += SmarterCSV.process(path, key_mapping: key_hash)
     end
     result = result.map{ |x| x[:large_image_url] }
-    current_products = store.products
-    prod_urls = current_products.map {|p| p.url}
-    to_be_del = prod_urls - result
 
-    to_be_del.each do |p|
-      product = Product.find_by_url(p)
-      product.sizes = []
-      product.out_of_stock = true
-      product.save if product.changed?
+    delete_start = 0
+    delete_inc = 1000
+    current_products = store.products[(delete_start...(delete_start + delete_inc) )]
+    while current_products
+      prod_urls = current_products.map {|p| p.large_image_url}
+      to_be_del = prod_urls - result
+
+      to_be_del.each do |p|
+        product = Product.find_by_large_image_url(p)
+        product.sizes = []
+        product.out_of_stock = true
+        product.save if product.changed?
+      end
+
+      delete_start += delete_inc
+      current_products = store.products[(delete_start...(delete_start + delete_inc) )]
+
     end
   end
 end
