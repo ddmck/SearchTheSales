@@ -139,7 +139,6 @@ class DataFeed < ActiveRecord::Base
         product.save if product.changed?
       end
 
-
     end
   end
 end
