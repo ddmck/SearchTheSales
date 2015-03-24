@@ -147,35 +147,6 @@ class DataFeedXml < ActiveRecord::Base
         product.out_of_stock = true
         product.save if product.changed?
       end
-
     end
-    # result = {}
-    # products_hash = {}
-    # expired_products = {}
-
-    # products = build_xml_array
-
-    # products.each do |p|
-    #   result[extract_xml_url(large_image_url_column, p)] = extract_xml_attr(name_column, p)
-    # end
-
-    # current_products = store.products
-
-    # current_products.each do |p|
-    #   products_hash["#{p.large_image_url}"] = p.name
-    # end
-
-    # products_hash.each_key do |e|
-    #   if(!result.has_key?(e))
-    #     expired_products[e] = products_hash.fetch(e)
-    #   end
-    # end
-
-    # expired_products.each_key do |key|
-    #   product = Product.find_by_url(key)
-    #   product.sizes = []
-    #   product.out_of_stock = true
-    #   product.save if product.changed?
-    # end
   end
 end
