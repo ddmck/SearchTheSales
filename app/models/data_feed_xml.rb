@@ -114,39 +114,39 @@ class DataFeedXml < ActiveRecord::Base
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.display_price = product.calc_display_price
-    product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
+
+    if product.size_tags.last && product.size_tags.last.updated_at > 15.minutes.ago
+      product.sizes += set_sizes(sanitize_sizes(item[:size])) if item[:size]
+    else
+      product.sizes = []
+      product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
+    end
     product.out_of_stock = product.sizes.empty?
     product.save if product.changed?
   end
 
   def delete_expired_products
-    result = {}
-    products_hash = {}
-    expired_products = {}
 
+    key_hash = {}
+    key_hash[large_image_url_column.to_sym] = :large_image_url if large_image_url_column
+    result = []
     products = build_xml_array
 
-    products.each do |p|
-      result[extract_xml_url(large_image_url_column, p)] = extract_xml_attr(name_column, p)
+    products.each do |prod|
+      result << extract_xml_url(large_image_url_column, prod)
     end
+    
+    store.products.find_in_batches(batch_size: 500) do |current_products|
+    
+      prod_urls = current_products.map {|p| p.large_image_url}
+      to_be_del = prod_urls - result
 
-    current_products = store.products
-
-    current_products.each do |p|
-      products_hash["#{p.large_image_url}"] = p.name
-    end
-
-    products_hash.each_key do |e|
-      if(!result.has_key?(e))
-        expired_products[e] = products_hash.fetch(e)
+      to_be_del.each do |p|
+        product = Product.find_by_large_image_url(p)
+        product.sizes = []
+        product.out_of_stock = true
+        product.save if product.changed?
       end
-    end
-
-    expired_products.each_key do |key|
-      product = Product.find_by_url(key)
-      product.sizes = []
-      product.out_of_stock = true
-      product.save if product.changed?
     end
   end
 end
