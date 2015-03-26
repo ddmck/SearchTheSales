@@ -186,7 +186,7 @@ module DataFeedSetter
     end
 
 
-    if mtrl.nil?
+    if mtrl.nil? && description
       materials.each do |material|
         if description.include?(material.name)
           mtrl = material
