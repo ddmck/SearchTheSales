@@ -4,12 +4,12 @@ class ZalandoImageImporter
   def import
     s = Store.find(30)
 
-    prod = s.products.where(image_urls: nil)
-
-    prod.each do |p|
-      image_urls = generate_image_urls(p)
-      p.image_urls = image_urls
-      p.save
+    s.products.where(image_urls: nil).find_in_batches(batch_size: 500) do |prod|
+      prod.each do |p|
+        image_urls = generate_image_urls(p)
+        p.image_urls = image_urls
+        p.save
+      end
     end
   end
   handle_asynchronously :import, :queue => 'data_feeds'
