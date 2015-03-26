@@ -19,7 +19,8 @@ class Brand < ActiveRecord::Base
     categoriesHash = Hash.new
     categoriesArr = []
     holdingArr = []
-    lastArr = []
+    lastHash = Hash.new
+    collection = []
 
 
     categories.each do |c|
@@ -28,16 +29,18 @@ class Brand < ActiveRecord::Base
 
     categoriesArr = categoriesHash.sort_by { |id, count| count }.reverse
 
-    (0..2).each do |count|
+    (0..3).each do |count|
       holdingArr << categoriesArr[count][0]
     end
 
     holdingArr.each do |id|
-      Category.find(id).name
-      lastArr << "#{id}-" + Category.find(id).name
+      lastHash["name"] = Category.find(id).name
+      lastHash["id"] = id
+      collection.push(lastHash)
+      lastHash = Hash.new
     end
 
-    self.featured_categories = lastArr
+    self.featured_categories = collection
     self.save
   end
 
