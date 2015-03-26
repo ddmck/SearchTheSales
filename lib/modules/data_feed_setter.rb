@@ -124,7 +124,7 @@ module DataFeedSetter
       end
     end
 
-    if s.nil?
+    if s.nil? && description
       styles.each do |style|
         if style.contains_space?
           style.pseudonyms.each do |pseudo|
