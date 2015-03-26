@@ -100,7 +100,9 @@ module DataFeedSetter
   end
 
   def set_style(product)
+    bn = product.brand.try(:name) ? product.brand.try(:name) : ""
     name = sanitize_string(product.name).downcase.split(" ")
+    description = sanitize_string(product.description).downcase.remove(bn).split(" ") if product.description
     s = nil
 
 
@@ -120,6 +122,25 @@ module DataFeedSetter
           s = style
         end
       end
+    end
+
+    if s.nil?
+      styles.each do |style|
+
+      if style.contains_space?
+        style.pseudonyms.each do |pseudo|
+          if sanitize_string(product.description).downcase.remove(bn).include?(pseudo) ||
+            sanitize_string(product.description).downcase.remove(bn).include?(pseudo.singularize)
+            s = style
+          end
+        end
+      else
+        if description.include?(style.name) ||
+          description.include?(style.name.singularize)
+          s = style
+        end
+      end
+    end
     end
     s
   end

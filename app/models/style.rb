@@ -1,6 +1,6 @@
 class Style < ActiveRecord::Base
   before_save :downcase_name
-  validates_uniqueness_of :name
+  validates :name, uniqueness: { scope: :category_id }
   belongs_to :category
   has_many :products
 
