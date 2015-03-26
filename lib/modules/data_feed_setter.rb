@@ -100,8 +100,8 @@ module DataFeedSetter
   end
 
   def set_style(product)
-    bn = product.brand.try(:name) ? product.brand.try(:name) : ""
     name = sanitize_string(product.name).downcase.split(" ")
+    bn = product.brand.try(:name) ? product.brand.try(:name) : ""
     description = sanitize_string(product.description).downcase.remove(bn).split(" ") if product.description
     s = nil
 
@@ -126,21 +126,20 @@ module DataFeedSetter
 
     if s.nil?
       styles.each do |style|
-
-      if style.contains_space?
-        style.pseudonyms.each do |pseudo|
-          if sanitize_string(product.description).downcase.remove(bn).include?(pseudo) ||
-            sanitize_string(product.description).downcase.remove(bn).include?(pseudo.singularize)
+        if style.contains_space?
+          style.pseudonyms.each do |pseudo|
+            if sanitize_string(product.description).downcase.remove(bn).include?(pseudo) ||
+              sanitize_string(product.description).downcase.remove(bn).include?(pseudo.singularize)
+              s = style
+            end
+          end
+        else
+          if description.include?(style.name) ||
+            description.include?(style.name.singularize)
             s = style
           end
         end
-      else
-        if description.include?(style.name) ||
-          description.include?(style.name.singularize)
-          s = style
-        end
       end
-    end
     end
     s
   end
@@ -175,6 +174,8 @@ module DataFeedSetter
   def set_material(product)
     mtrl = nil
     name = sanitize_string(product.name).downcase.split(" ")
+    bn = product.brand.try(:name) ? product.brand.try(:name) : ""
+    description = sanitize_string(product.description).downcase.remove(bn).split(" ") if product.description
     materials = Material.all
 
     materials.each do |material|
@@ -182,6 +183,16 @@ module DataFeedSetter
         mtrl = material
       end
       break if mtrl
+    end
+
+
+    if mtrl.nil?
+      materials.each do |material|
+        if description.include?(material.name)
+          mtrl = material
+        end
+        break if mtrl
+      end
     end
 
     mtrl
