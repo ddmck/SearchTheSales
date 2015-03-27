@@ -10,7 +10,7 @@ class Brand < ActiveRecord::Base
   serialize :featured_categories
 
   def self.generate_all
-    self.featured.each { |b| b.generate_featured_categories }
+    self.featured.find_each(&:generate_featured_categories)
   end
 
   def generate_featured_categories
@@ -30,7 +30,9 @@ class Brand < ActiveRecord::Base
     categoriesArr = categoriesHash.sort_by { |id, count| count }.reverse
 
     (0..3).each do |count|
-      holdingArr << categoriesArr[count][0]
+      if products.where(category_id: categoriesArr[count][0]).count >= 50
+        holdingArr << categoriesArr[count][0]
+      end
     end
 
     holdingArr.each do |id|
