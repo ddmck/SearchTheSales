@@ -1,8 +1,12 @@
 class TrainerstationImageImporter
-  def import
+  def import(import_all=false)
     s = Store.find(37)
-
-    prod = s.products.where(image_urls: nil)
+    
+    if import_all
+      prod = s.products
+    else
+      prod = s.products.where(image_urls: nil)
+    end
 
     prod.each do |p|
       image_urls = generate_image_urls(p)
