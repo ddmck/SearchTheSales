@@ -16,8 +16,8 @@ class UrbanOutfittersImageImporter
     image_urls = []
 
 
-    normArr = ['a','b','d','e']
-    charArr = ['a','b','d','e']
+    normArr = ['b','d','e']
+    charArr = ['b','d','e']
     
     base_url = p.image_url
 
@@ -37,6 +37,6 @@ class UrbanOutfittersImageImporter
   end
 
   def change_char_value(url, char)
-    return url.to_s.gsub(/_a\?/, "_#{char}\?")
+    return url.to_s.gsub(/_[bcde]\?/, "_#{char}\?")
   end
 end
