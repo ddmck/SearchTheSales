@@ -56,8 +56,17 @@ class Product < ActiveRecord::Base
       url: url,
       image_url: image_url,
       first_letter: name.try(:ord) || 0,
-      out_of_stock: out_of_stock
+      out_of_stock: out_of_stock,
+      on_sale: on_sale?
     }
+  end
+
+  def on_sale?
+    if sale_price && rrp
+      sale_price < rrp
+    else 
+      false
+    end
   end
 
   def build_where_hash(filters)
