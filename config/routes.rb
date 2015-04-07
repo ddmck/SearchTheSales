@@ -1,4 +1,6 @@
 Searchthesales::Application.routes.draw do
+  get 'password_resets/new'
+
   resources :users
 
   resources :orders
@@ -26,6 +28,8 @@ Searchthesales::Application.routes.draw do
   resources :genders
 
   resources :trends
+
+  resources :password_resets
 
   resources :sub_categories
 
