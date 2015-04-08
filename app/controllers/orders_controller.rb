@@ -25,9 +25,12 @@ class OrdersController < ApplicationController
       Stripe.api_key = ENV["STRIPE_SECRET_KEY"]
       unless user.stripe_customer_id
         resp = Stripe::Customer.create(
-          :description => "Customer for #{user.email}",
+          :description => "Customer for #{user.name} #{user.email}",
           :card => order_params[:token], 
-          :email => user.email
+          :email => user.email,
+          :metadata => {
+            :name => user.name
+          }
         )
         user.stripe_customer_id = resp.id
         user.save
