@@ -58,6 +58,7 @@ class DataFeed < ActiveRecord::Base
     key_hash[category_column.to_sym] = :category if category_column
     key_hash[size_column.to_sym] = :size if size_column
     key_hash[color_column.to_sym] = :color if color_column
+    key_hash[deeplink_column.to_sym] = :deeplink if deeplink_column
     paths = unzipped_file_path
     paths.each do |path|
       SmarterCSV.process(path,  chunk_size: 500, 
@@ -101,6 +102,7 @@ class DataFeed < ActiveRecord::Base
     product.style = set_style(product) if product.category
     product.image_url = item[:image_url] || item[:large_image_url]
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
+    product.deeplink = item[:deeplink] || item[:deeplink]
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.display_price = product.calc_display_price

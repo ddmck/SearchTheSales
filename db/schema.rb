@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150325124910) do
+ActiveRecord::Schema.define(version: 20150410134801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20150325124910) do
     t.string   "large_image_url_column"
     t.boolean  "active"
     t.string   "image_assets"
+    t.text     "deeplink_column"
   end
 
   add_index "data_feeds", ["store_id"], name: "index_data_feeds_on_store_id", using: :btree
@@ -254,6 +255,7 @@ ActiveRecord::Schema.define(version: 20150325124910) do
     t.text     "slug"
     t.integer  "material_id"
     t.integer  "style_id"
+    t.text     "deeplink"
   end
 
   add_index "products", ["brand_id", "store_id"], name: "index_products_on_brand_id_and_store_id", using: :btree
