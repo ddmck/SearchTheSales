@@ -1,7 +1,7 @@
 class NewUserMailer
 
   def initialize(user)
-    @mg_client = Mailgun::Client.new(ENV['MAILGUN_API_KEY'])
+    @mg_client = Mailgunner::Client.new()
     @html =  render_anywhere('mailgun_templates/welcome', {:email => user.email}).to_str
     @params = {
       :from    => "Bertie Wilson <customercare@fetchmyfashion.com>",
@@ -19,7 +19,7 @@ class NewUserMailer
   end
 
   def deliver
-    @mg_client.send_message("mg.fetchmyfashion.com", @params)
+    @mg_client.send_message(@params)
   end 
 
 end
