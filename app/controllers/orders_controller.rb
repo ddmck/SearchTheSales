@@ -39,7 +39,7 @@ class OrdersController < ApplicationController
       @order = current_user.orders.build(address: order_params[:address])
       @order.save
       order_params[:basket].each do |product|
-        oi = @order.order_items.build(product_id: product[:productId], size_id: product[:sizeId])
+        oi = @order.order_items.build(product_id: product[:productId], size_name: product[:sizeName])
         oi.save
       end
       @order.order_items.each do |oi|
