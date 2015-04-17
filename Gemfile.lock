@@ -160,9 +160,7 @@ GEM
     lumberjack (1.0.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mailgun-ruby (1.0.3)
-      json (~> 1.8)
-      rest-client (~> 1.6)
+    mailgunner (2.2.0)
     method_source (0.8.2)
     mime-types (2.4.3)
     mini_portile (0.6.2)
@@ -338,7 +336,7 @@ DEPENDENCIES
   httparty
   jbuilder (= 2.2.4)
   kaminari (= 0.16.1)
-  mailgun-ruby (~> 1.0.3)
+  mailgunner
   newrelic_rpm
   nokogiri
   omniauth

@@ -105,4 +105,4 @@ gem 'nokogiri'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 # For Email 
-gem 'mailgun-ruby', '~>1.0.3', require: 'mailgun'
+gem 'mailgunner'
