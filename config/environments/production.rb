@@ -80,7 +80,7 @@ Searchthesales::Application.configure do
 
   # Mailer
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: request.host_with_port }
+  config.action_mailer.default_url_options = { host: lambda { |env| Rack::Request.new(env).host } }
   config.action_mailer.delivery_method = :mailgun
   # config.action_mailer.smtp_settings = {
   #   address: ENV['SMTP_SERVER'],
