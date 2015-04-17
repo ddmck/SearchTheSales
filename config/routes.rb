@@ -29,8 +29,6 @@ Searchthesales::Application.routes.draw do
 
   resources :trends
 
-  resources :password_resets
-
   resources :sub_categories
 
   resources :styles
