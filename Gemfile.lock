@@ -5,6 +5,14 @@ GIT
     database_cleaner (1.3.0)
 
 GIT
+  remote: https://github.com/ddmck/devise_token_auth.git
+  revision: cd96cc54d6a3757df7fef02e500b1cc237069fe1
+  specs:
+    devise_token_auth (0.1.30)
+      devise (~> 3.3)
+      rails (~> 4.1)
+
+GIT
   remote: https://github.com/stripe/stripe-ruby
   revision: 085ad6cfb303f9e470d161f1b62370e746702432
   specs:
@@ -72,9 +80,6 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
-    devise_token_auth (0.1.30)
-      devise (~> 3.3)
-      rails (~> 4.1)
     diff-lcs (1.2.5)
     dotenv (1.0.2)
     elasticsearch (1.0.6)
@@ -318,7 +323,7 @@ DEPENDENCIES
   coffee-rails (= 4.0.1)
   database_cleaner!
   delayed_job_active_record
-  devise_token_auth
+  devise_token_auth!
   elasticsearch-model
   elasticsearch-rails
   factory_girl_rails

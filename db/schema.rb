@@ -365,6 +365,7 @@ ActiveRecord::Schema.define(version: 20150413133936) do
     t.datetime "updated_at"
     t.boolean  "admin"
     t.string   "stripe_customer_id"
+    t.string   "password_reset_token"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree

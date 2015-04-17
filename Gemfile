@@ -44,7 +44,7 @@ gem 'scheduled_job'
 
 # Devise: https://github.com/plataformatec/devise
 gem 'omniauth'
-gem 'devise_token_auth'
+gem 'devise_token_auth', git: "https://github.com/ddmck/devise_token_auth.git"
 
 # Redcarpet: https://github.com/vmg/redcarpet
 gem 'redcarpet', '3.2.0'
