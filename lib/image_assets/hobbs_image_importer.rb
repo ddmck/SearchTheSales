@@ -1,16 +1,19 @@
 class HobbsImageImporter
-  def import
+  def import(import_all=false)
     s = Store.find(68)
 
-    prod = s.products.where(image_urls: nil)
-
+    if import_all
+      prod = s.products
+    else
+      prod = s.products.where(image_urls: nil)
+    end
+    
     prod.each do |p|
-      image_urls = generate_image_urls(p)
-      p.image_urls = image_urls
+      p.image_urls = generate_image_urls(p)
       p.save
     end
   end
-  handle_asynchronously :import, :queue => 'data_feeds'
+  # handle_asynchronously :import, :queue => 'data_feeds'
 
   def generate_image_urls(p)
     image_urls = []
@@ -19,6 +22,7 @@ class HobbsImageImporter
     (1..3).each do |i|
       image_urls << extract_images(base_url, i)
     end
+    image_urls
   end
 
   def extract_images(url, count)
