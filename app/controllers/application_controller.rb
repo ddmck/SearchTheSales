@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
   # Devise permitted params
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << :name
+    devise_parameter_sanitizer.for(:sign_up) << :search_the_sales
+    devise_parameter_sanitizer.for(:sign_up) << :fetch_my_fashion
     devise_parameter_sanitizer.for(:account_update) << :name
   end
 

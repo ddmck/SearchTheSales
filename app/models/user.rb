@@ -5,7 +5,6 @@ class User < ActiveRecord::Base
   has_many :orders
   has_one :basket
   before_create -> do 
-    puts "YO!"
     self.uid = SecureRandom.uuid 
     skip_confirmation! 
   end
@@ -43,6 +42,6 @@ class User < ActiveRecord::Base
   end
 
   def send_welcome_email
-    UserMailer.welcome_email(self)
+    NewUserMailer.new(self).deliver
   end
 end
