@@ -11,9 +11,9 @@ RSpec.describe Product, type: :model do
     expect(product).to_not be_valid
   end
 
-  it 'should not be valid without a brand_id' do
+  it 'should be valid without a brand_id' do
     product.brand_id = nil
-    expect(product).to_not be_valid
+    expect(product).to be_valid
   end
 
   it 'should not be valid without a store_id' do
@@ -36,26 +36,6 @@ RSpec.describe Product, type: :model do
 
   it 'should know who has wished for it' do
     expect(product.wished_for_by).to be_empty
-  end
-
-  it 'should be able to return its colors' do
-    expect(product).to respond_to(:colors)
-  end
-
-  it 'should accept a color' do
-    color = build(:color)
-    product.colors << color
-    expect(product.colors).to include(color)
-  end
-
-  it 'should accept many colors' do
-    color = build(:color)
-    product.colors << color
-    expect(product.colors).to include(color)
-
-    color2 = build(:color, name: 'Black')
-    product.colors << color2
-    expect(product.colors).to include(color2)
   end
 
   it 'should be able to find its sub_category' do
