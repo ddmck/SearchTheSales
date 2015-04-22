@@ -56,7 +56,7 @@ class DataFeedXml < ActiveRecord::Base
 
   def build_xml_array
     # Skip product urls being included
-    get_doc.css("product:nth-child(even)")
+    get_doc.css("product[name]")
   end
 
   def process_file
@@ -88,7 +88,6 @@ class DataFeedXml < ActiveRecord::Base
       assets.import
     end
   end
-
   handle_asynchronously :process_file, :queue => 'data_feeds'
 
   def process_line(item)
@@ -114,7 +113,6 @@ class DataFeedXml < ActiveRecord::Base
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.display_price = product.calc_display_price
-
     if product.size_tags.last && product.size_tags.last.updated_at > 15.minutes.ago
       product.sizes += set_sizes(sanitize_sizes(item[:size])) if item[:size]
     else
