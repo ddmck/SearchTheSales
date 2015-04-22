@@ -20,6 +20,96 @@ FactoryGirl.define do
 
   factory :category do
     sequence(:name) { |n| "category#{n}" }
+
+    trait :accessories do
+      name "accessories"
+    end
+
+    trait :bags do
+      name "bags"
+    end
+
+    trait :blouses do
+      name "blouses"
+    end
+
+    trait :dresses do
+      name "dresses"
+    end
+
+    trait :hoodies do
+      name "hoodies"
+    end
+
+    trait :jackets do
+      name "jackets"
+    end
+
+    trait :jeans do
+      name "jeans"
+    end
+
+    trait :knitwear do
+      name "knitwear"
+    end
+
+    trait :polos do
+      name "polos"
+    end
+
+    trait :shirts do
+      name "shirts"
+    end
+
+    trait :shoes do
+      name "shoes"
+    end
+
+    trait :shorts do
+      name "shorts"
+    end
+
+    trait :skirts do
+      name "skirts"
+    end
+
+    trait :suits do
+      name "suits"
+    end
+
+    trait :sweats do
+      name "sweats"
+    end
+
+    trait :swimwear do
+      name "swimwear"
+    end
+
+    trait :tees do
+      name "tees"
+    end
+
+    trait :tops do
+      name "tops"
+    end
+
+    trait :trousers do
+      name "trousers"
+    end
+
+    trait :underwear do
+      name "underwear"
+    end
+
+    trait :lingerie do
+      name "lingerie"
+      female_only true
+    end
+
+    trait :playsuits do
+      name "playsuits"
+      female_only true
+    end
   end
 
   factory :product do
