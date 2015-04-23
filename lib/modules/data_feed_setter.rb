@@ -15,27 +15,6 @@ module DataFeedSetter
     end
     brand_ref
   end
-    
-
-    # if cat == nil && product.description
-    #   categories.each do |category|
-    #     if product.description.downcase.remove(product.brand.name).include?(category.name) ||
-    #        product.description.downcase.remove(product.brand.name).include?(category.name.singularize)
-    #       cat = category
-    #     end
-    #   end
-    # end
-
-    # if cat == nil && product.description
-    #   sub_categories.each do |sub_category|
-    #     if product.description.downcase.remove(product.brand.name).include?(sub_category.name) ||
-    #        product.description.downcase.remove(product.brand.name).include?(sub_category.name.singularize)
-    #       cat = sub_category.category
-    #     end 
-    #   end
-    # end
-    cat
-  end
 
   def set_sub_category(product)
     sub_cat = nil
