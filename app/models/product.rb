@@ -129,23 +129,48 @@ class Product < ActiveRecord::Base
     categories = Category.all
     cat = nil
     sub_categories = SubCategory.all
-    
+    catArray = self.name.downcase.split(" ")
+    singularizeOptions = []
+    options = []
 
     categories.each do |category|
-      if self.name.downcase.split(" ").include?(category.name) || 
-         self.name.downcase.split(" ").include?(category.name.singularize)
-        cat = category
-      end 
-    end
-
-    if cat == nil 
-      sub_categories.each do |sub_category|
-        if self.name.downcase.split(" ").include?(sub_category.name) || 
-           self.name.downcase.split(" ").include?(sub_category.name.singularize)
-          cat = sub_category.category
+      catArray.each do |cat|
+        case
+        when cat.include?(category.name)
+          options << category
+        when cat.include?(category.name.singularize)
+          singularizeOptions << category
         end
       end
     end
+
+    catch :no_cat_found do
+      if options == []
+        if singularizeOptions == []
+          throw :no_cat_found
+        else
+          cat = singularizeOptions[0]
+        end
+      else
+        cat = options[0]
+      end
+    end
+
+    # categories.each do |category|
+    #   if self.name.downcase.split(" ").include?(category.name) || 
+    #      self.name.downcase.split(" ").include?(category.name.singularize)
+    #     cat = category
+    #   end 
+    # end
+
+    # if cat == nil 
+    #   sub_categories.each do |sub_category|
+    #     if self.name.downcase.split(" ").include?(sub_category.name) || 
+    #        self.name.downcase.split(" ").include?(sub_category.name.singularize)
+    #       cat = sub_category.category
+    #     end
+    #   end
+    # end
 
     if cat.nil? && item[:category]
       categories.each do |category|
