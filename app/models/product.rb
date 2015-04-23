@@ -2,6 +2,7 @@ require 'elasticsearch/model'
 
 class Product < ActiveRecord::Base
   include Elasticsearch::Model
+  include DataFeedSetter
   extend FriendlyId
   friendly_id :name, use: :slugged
 
@@ -122,6 +123,50 @@ class Product < ActiveRecord::Base
 
   def delete_document
     __elasticsearch__.delete_document
+  end
+
+  def set_category(item)
+    categories = Category.all
+    cat = nil
+    sub_categories = SubCategory.all
+    
+
+    categories.each do |category|
+      if self.name.downcase.split(" ").include?(category.name) || 
+         self.name.downcase.split(" ").include?(category.name.singularize)
+        cat = category
+      end 
+    end
+
+    if cat == nil 
+      sub_categories.each do |sub_category|
+        if self.name.downcase.split(" ").include?(sub_category.name) || 
+           self.name.downcase.split(" ").include?(sub_category.name.singularize)
+          cat = sub_category.category
+        end
+      end
+    end
+
+    if cat.nil? && item[:category]
+      categories.each do |category|
+        if sanitize_string(item[:category]).downcase.split(" ").include?(category.name) || 
+           sanitize_string(item[:category]).downcase.split(" ").include?(category.name.singularize)
+          cat = category
+        end 
+      end
+    end
+
+    if cat.nil? && item[:category]
+      sub_categories.each do |sub_category|
+        if sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name) || 
+           sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name.singularize)
+          cat = sub_category.category
+        end 
+      end
+    end
+
+    self.category = cat
+    self.save if self.category 
   end
 
   # handle_asynchronously :delete_document, :queue => 'indexes'
