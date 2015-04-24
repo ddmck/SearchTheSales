@@ -130,31 +130,111 @@ class Product < ActiveRecord::Base
     cat = nil
     sub_categories = SubCategory.all
     catArray = self.name.downcase.split(" ")
+    categorySplit = sanitize_string(item[:category]).downcase.split(" ") if item[:category]
     singularizeOptions = []
     options = []
 
-    categories.each do |category|
-      catArray.each do |cat|
-        case
-        when cat.include?(category.name)
-          options << category
-        when cat.include?(category.name.singularize)
-          singularizeOptions << category
+    if item[:category]
+      categories.each do |category|
+        # puts "Category being checked: #{category.name}"
+        # gets
+        categorySplit.each do |cat|
+          # puts "cat from catArray: #{cat}"
+          # gets
+          case
+          when cat.include?(category.name)
+            # puts "in cat.include?(category.name)"
+            options << category
+            # puts "Options Array: #{options}"
+            # gets
+          when cat.include?(category.name.singularize)
+            # puts "in cat.include?(category.name.singularize)"
+            singularizeOptions << category
+            # puts "singularizeOptions Array: #{singularizeOptions}"
+            # gets
+          end
         end
       end
     end
+
+    if (options == [] || singularizeOptions == []) && item[:category]
+      sub_categories.each do |sub_category|
+        # puts "Category being checked: #{category.name}"
+        # gets
+        categorySplit.each do |cat|
+          # puts "cat from catArray: #{cat}"
+          # gets
+          case
+          when cat.include?(sub_category.name)
+            # puts "in cat.include?(category.name)"
+            options << sub_category.category
+            # puts "Options Array: #{options}"
+            # gets
+          when cat.include?(sub_category.name.singularize)
+            # puts "in cat.include?(category.name.singularize)"
+            singularizeOptions << sub_category.category
+            # puts "singularizeOptions Array: #{singularizeOptions}"
+            # gets
+          end
+        end
+      end
+    end
+
+    if options == [] || singularizeOptions == []
+      categories.each do |category|
+        catArray.each do |cat|
+          case
+          when cat.include?(category.name)
+            options << category
+          when cat.include?(category.name.singularize)
+            singularizeOptions << category
+          end
+        end
+      end
+    end
+
+    if options == [] || singularizeOptions == []
+      sub_categories.each do |sub_category|
+        # puts "Category being checked: #{category.name}"
+        # gets
+        catArray.each do |cat|
+          # puts "cat from catArray: #{cat}"
+          # gets
+          case
+          when cat.include?(sub_category.name)
+            # puts "in cat.include?(category.name)"
+            options << sub_category.category
+            # puts "Options Array: #{options}"
+            # gets
+          when cat.include?(sub_category.name.singularize)
+            # puts "in cat.include?(category.name.singularize)"
+            singularizeOptions << sub_category.category
+            # puts "singularizeOptions Array: #{singularizeOptions}"
+            # gets
+          end
+        end
+      end
+    end
+
+    puts "Product ID: #{self.id}"
+    puts "Item Category: #{item[:category]}"
+    puts "Product: #{self.name}"
+    puts "Options: #{options}"
+    puts "singularizeOptions: #{singularizeOptions}"
+    gets
 
     catch :no_cat_found do
       if options == []
         if singularizeOptions == []
           throw :no_cat_found
         else
-          cat = singularizeOptions[0]
+          cat = singularizeOptions.first
         end
       else
-        cat = options[0]
+        cat = options.first
       end
     end
+
 
     # categories.each do |category|
     #   if self.name.downcase.split(" ").include?(category.name) || 
@@ -172,23 +252,23 @@ class Product < ActiveRecord::Base
     #   end
     # end
 
-    if cat.nil? && item[:category]
-      categories.each do |category|
-        if sanitize_string(item[:category]).downcase.split(" ").include?(category.name) || 
-           sanitize_string(item[:category]).downcase.split(" ").include?(category.name.singularize)
-          cat = category
-        end 
-      end
-    end
+    # if cat.nil? && item[:category]
+    #   categories.each do |category|
+    #     if sanitize_string(item[:category]).downcase.split(" ").include?(category.name) || 
+    #        sanitize_string(item[:category]).downcase.split(" ").include?(category.name.singularize)
+    #       cat = category
+    #     end 
+    #   end
+    # end
 
-    if cat.nil? && item[:category]
-      sub_categories.each do |sub_category|
-        if sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name) || 
-           sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name.singularize)
-          cat = sub_category.category
-        end 
-      end
-    end
+    # if cat.nil? && item[:category]
+    #   sub_categories.each do |sub_category|
+    #     if sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name) || 
+    #        sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name.singularize)
+    #       cat = sub_category.category
+    #     end 
+    #   end
+    # end
 
     self.category = cat
     self.save if self.category 
