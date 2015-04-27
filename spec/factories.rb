@@ -114,19 +114,31 @@ FactoryGirl.define do
 
   factory :product do
     sequence(:name) { |n| "product#{n}" }
-    description 'You will look awesome!'
-    sequence(:url, 9000) { |n| "http://www.url#{n}.com" }
-    image_url 'http://jeans.com/image.png'
-    gender
-    store
-    brand
 
-    trait :with_sub_categories do
-      after(:create) do |product|
-        FactoryGirl.create_list(:sub_category, 1, product: product)
-      end
+    trait :short_boots do
+      name "Classic Short Men's Mid Boots In Chestnut"
+    end
+
+    trait :shoes do
+      name "shoes"
     end
   end
+
+  # factory :product do
+  #   sequence(:name) { |n| "product#{n}" }
+  #   description 'You will look awesome!'
+  #   sequence(:url, 9000) { |n| "http://www.url#{n}.com" }
+  #   image_url 'http://jeans.com/image.png'
+  #   gender
+  #   store
+  #   brand
+
+  #   trait :with_sub_categories do
+  #     after(:create) do |product|
+  #       FactoryGirl.create_list(:sub_category, 1, product: product)
+  #     end
+  #   end
+  # end
 
   factory :color do
     sequence(:name) { |n| "color#{n}" }
@@ -135,6 +147,10 @@ FactoryGirl.define do
   factory :sub_category do
     sequence(:name) { |n| "subcat#{n}" }
     category
+      
+      trait :boots do
+        name "boots"
+      end
   end
 
   factory :trend do
