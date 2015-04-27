@@ -6,15 +6,30 @@ RSpec.describe Product, type: :model do
   let(:store) { product.store }
   let(:user) { build(:user) }
 
+  before(:example) do
+    cats = ["accessories","bags","blouses",
+            "shoes","dresses","hoodies",
+            "jackets","jeans","knitwear",
+            "polos","shirts","shorts",
+            "skirts","suits","sweats",
+            "swimwear","tees","tops",
+            "trousers","underwear","lingerie",
+            "playsuits"]
+
+    cats.each do |c|
+      create(:category, name: c)
+    end
+  end
+
   it 'should not be valid without a name' do
     product.name = nil
     expect(product).to_not be_valid
   end
 
-  it 'should be valid without a brand_id' do
-    product.brand_id = nil
-    expect(product).to be_valid
-  end
+  # it 'should be valid without a brand_id' do
+  #   product.brand_id = nil
+  #   expect(product).to be_valid
+  # end
 
   it 'should not be valid without a store_id' do
     product.store_id = nil
@@ -36,6 +51,20 @@ RSpec.describe Product, type: :model do
 
   it 'should know who has wished for it' do
     expect(product.wished_for_by).to be_empty
+  end
+
+  it 'should be able to find its category' do
+    expect(product).to respond_to(:category)
+  end
+
+  it 'should be able to calculate a category' do
+    sub_categories = build(:sub_category, :boots)
+    product = build(:product, :shoes)
+    
+    match_array = []
+    match_array << product.name
+    cat = product.calc_category(match_array)
+    expect(cat.name).to eq("shoes")
   end
 
   it 'should be able to find its sub_category' do
