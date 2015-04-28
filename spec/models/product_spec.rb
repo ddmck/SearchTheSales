@@ -16,8 +16,17 @@ RSpec.describe Product, type: :model do
             "trousers","underwear","lingerie",
             "playsuits"]
 
+    sub_shoes = ["trainers","heels","loafers",
+                 "espadrilles","wedges","flops",
+                 "sneakers","brogues","platforms",
+                 "plimsolls","slipons","boots"]
+
     cats.each do |c|
       create(:category, name: c)
+    end
+
+    sub_shoes.each do |c|
+      create(:sub_category, name: c, category: )
     end
   end
 
@@ -58,7 +67,6 @@ RSpec.describe Product, type: :model do
   end
 
   it 'should be able to calculate a category' do
-    sub_categories = build(:sub_category, :boots)
     product = build(:product, :shoes)
     
     match_array = []
