@@ -55,8 +55,44 @@ RSpec.describe Product, type: :model do
       product = build(:product, name: "Floral Flouncy Slip Dress, Assorted")
       match_array = []
       match_array << product.name
+      match_array << "dress" #item[:category] placeholder
       cat = product.calc_category(match_array)
       expect(cat.name).to eq("dresses")
+    end
+
+    it 'Should not think a Tee is a Jacket' do
+      product = build(:product, name: "Craft Print Box Tee, Pink")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("tees")
+    end
+
+    it 'Should not think a Knitwear Jumper is a Jacket' do
+      product = build(:product, name: "Brushed Turtle Neck Jumper, Turquoise")
+      match_array = []
+      match_array << product.name
+      match_array << "knitwear" #item[:category] placeholder
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("knitwear")
+    end
+
+    it 'Should not think a Skirt is a Jacket' do
+      product = build(:product, name: "Etch Patterned Culottes In Mono, Black")
+      match_array = []
+      match_array << product.name
+      match_array << "skirt" #item[:category] placeholder
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("skirts")
+    end
+
+    it 'Should not think a pair of Shoes is a Jacket' do
+      product = build(:product, name: "Blazer Mid 'Metric' Qs")
+      match_array = []
+      match_array << "shoes" #item[:category] placeholder
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("shoes")
     end
   end
 
