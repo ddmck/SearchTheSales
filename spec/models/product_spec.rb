@@ -50,6 +50,16 @@ RSpec.describe Product, type: :model do
     expect(cat.name).to eq("shoes")
   end
 
+  describe 'Category setter tests' do
+    it 'Should not think Dresses are Jackets' do
+      product = build(:product, name: "Floral Flouncy Slip Dress, Assorted")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("dresses")
+    end
+  end
+
   it 'should be able to find its sub_category' do
     expect(product).to respond_to(:sub_category)
   end
