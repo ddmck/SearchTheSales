@@ -218,12 +218,16 @@ class Product < ActiveRecord::Base
     points = []
     match_array.each do |matcher|
       categories.each do |cat|
-        if cat.name.include?(matcher)
+        if matcher.downcase.include?(cat.name)
+          points << cat
+        elsif matcher.downcase.include?(cat.name.singularize)
           points << cat
         end
       end
       sub_categories.each do |sub_cat|
-        if sub_cat.name.include?(matcher)
+        if matcher.downcase.include?(sub_cat.name)
+          points << sub_cat.category
+        elsif matcher.downcase.include?(sub_cat.name.singularize)
           points << sub_cat.category
         end
       end
