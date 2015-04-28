@@ -2,7 +2,13 @@
 
 
 Start elastic search with:
-elasticsearch --config=/usr/local/opt/elasticsearch/config/elasticsearch.yml
+`elasticsearch --config=/usr/local/opt/elasticsearch/config/elasticsearch.yml`
+
+Seed Test Database with:
+`rake db:setup RAILS_ENV=test --trace`
+
+Enter rails console for test database:
+`rails c test`
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
