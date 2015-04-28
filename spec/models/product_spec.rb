@@ -6,30 +6,6 @@ RSpec.describe Product, type: :model do
   let(:store) { product.store }
   let(:user) { build(:user) }
 
-  before(:example) do
-    cats = ["accessories","bags","blouses",
-            "shoes","dresses","hoodies",
-            "jackets","jeans","knitwear",
-            "polos","shirts","shorts",
-            "skirts","suits","sweats",
-            "swimwear","tees","tops",
-            "trousers","underwear","lingerie",
-            "playsuits"]
-
-    sub_shoes = ["trainers","heels","loafers",
-                 "espadrilles","wedges","flops",
-                 "sneakers","brogues","platforms",
-                 "plimsolls","slipons","boots"]
-
-    cats.each do |c|
-      create(:category, name: c)
-    end
-
-    sub_shoes.each do |c|
-      create(:sub_category, name: c, category: )
-    end
-  end
-
   it 'should not be valid without a name' do
     product.name = nil
     expect(product).to_not be_valid
@@ -68,7 +44,6 @@ RSpec.describe Product, type: :model do
 
   it 'should be able to calculate a category' do
     product = build(:product, :shoes)
-    
     match_array = []
     match_array << product.name
     cat = product.calc_category(match_array)
