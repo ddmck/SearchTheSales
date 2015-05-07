@@ -106,9 +106,62 @@ RSpec.describe Product, type: :model do
     it 'Should not think Tracksuit Bottoms are Trousers' do
       product = build(:product, name: "Aw77 Tracksuit Bottoms Dark Grey Heather")
       match_array = []
+      match_array << "shorts"
       match_array << product.name
       cat = product.calc_category(match_array)
       expect(cat.name).to eq("shorts")
+    end
+
+    it 'Should not think a Sweatshirt is a Hoodie' do
+      product = build(:product, name: "Men's Keldy Long Sleeve Jersey Sweat, Teal")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("sweats")
+    end
+
+    it 'Should not think a Tee is a Hoodie' do
+      product = build(:product, name: "Hador M Vador Graphic Print Cotton Vest, Purplel")
+      match_array = []
+      match_array << "tees"
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("tees")
+    end
+
+    it 'Should not think a Tie is a pair of Jeans' do
+      product = build(:product, name: "Marciano Tie Dark Jeans Blue")
+      match_array = []
+      match_array << "accessories"
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("accessories")
+    end
+
+    it 'Should not think a Pyjama top is a pair of Jeans' do
+      product = build(:product, name: "Mix Program Pyjama Top Jeans")
+      match_array = []
+      match_array << "accessories"
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("accessories")
+    end
+
+    it 'Should not think a Beanie is a pair of shorts' do
+      product = build(:product, name: "Short Watch Beanie")
+      match_array = []
+      match_array << "accessories"
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("accessories")
+    end
+
+    it 'Should not think a pair of boots is a pair of shorts' do
+      product = build(:product, name: "Mens Original Biker Short Black Boots, Black")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("shoes")
     end
   end
 
