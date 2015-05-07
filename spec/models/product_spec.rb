@@ -163,6 +163,30 @@ RSpec.describe Product, type: :model do
       cat = product.calc_category(match_array)
       expect(cat.name).to eq("shoes")
     end
+
+    it 'Should not think a tee is a pair of shorts' do
+      product = build(:product, name: "Hockney Short Sleeved Knit")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("tees")
+    end
+
+    it 'Should not think a Sweatshirt is a pair of shorts' do
+      product = build(:product, name: "Flecked Short Sleeved Sweatshirt")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("sweats")
+    end
+
+    it 'Should not think a Jacket is a pair of shorts' do
+      product = build(:product, name: "Short Coat Khaki")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("jackets")
+    end
   end
 
   it 'should be able to find its sub_category' do
