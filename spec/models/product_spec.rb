@@ -204,6 +204,23 @@ RSpec.describe Product, type: :model do
       cat = product.calc_category(match_array)
       expect(cat.name).to eq("shorts")
     end
+
+    it 'Should not think a pair of Trunks are Swimming Trunks' do
+      product = build(:product, name: "Three Pack Logo Waistband Trunks")
+      match_array = []
+      match_array << "underwear"
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("underwear")
+    end
+
+    it 'Should not think a T-Shirt is Swimwear' do
+      product = build(:product, name: "Men's Logo Crew Neck Tshirt, Navy")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("tees")
+    end
   end
 
   it 'should be able to find its sub_category' do
