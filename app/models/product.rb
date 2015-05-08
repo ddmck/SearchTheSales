@@ -220,8 +220,6 @@ class Product < ActiveRecord::Base
       categories.each do |cat|
         if matcher.downcase.include?(cat.name)
           points << cat
-        elsif matcher.downcase.include?(cat.name.singularize)
-          points << cat
         end
       end
       sub_categories.each do |sub_cat|
