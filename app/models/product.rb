@@ -190,12 +190,6 @@ class Product < ActiveRecord::Base
       end
     end
 
-    # puts "Item Category: #{item[:category]}"
-    # puts "Product: #{self.name}"
-    # puts "Options: #{options}"
-    # puts "singularizeOptions: #{singularizeOptions}"
-    # gets
-
     catch :no_cat_found do
       if options == []
         if singularizeOptions == []
