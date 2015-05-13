@@ -247,6 +247,24 @@ RSpec.describe Product, type: :model do
     end
   end
 
+  describe 'Color Setter tests' do
+    it 'Should know the colour black' do
+      product = build(:product, name: "Flappa Intarsia Sweater, Black")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("black")
+    end
+
+    it 'Should know the colour purple' do
+      product = build(:product, name: "Hador M Vador Graphic Print Cotton Vest, Purple")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("purple")
+    end
+  end
+
   it 'should be able to find its sub_category' do
     expect(product).to respond_to(:sub_category)
   end
