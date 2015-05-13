@@ -226,4 +226,28 @@ class Product < ActiveRecord::Base
   end
 
   # handle_asynchronously :delete_document, :queue => 'indexes'
+
+  def calc_gender(match_array=[])
+    mens_matches = ["m", "men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
+    womens_matches = ["f", "women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
+    unisex_matches = ["unisex", "uni-sex"]
+    match_array.each do |matcher|
+      mens_matches.each do |mens|
+        if matcher.downcase.include?(mens)
+          points << "male"
+        end
+      end
+      womens_matches.each do |womens|
+        if matcher.downcase.include?(womens)
+          points << "female"
+        end
+      end
+      unisex_matches.each do |unisex|
+        if matcher.downcase.include?(unisex)
+          points << "unisex"
+        end
+      end
+    end
+    points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
+  end
 end
