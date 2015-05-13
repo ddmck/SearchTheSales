@@ -231,6 +231,7 @@ class Product < ActiveRecord::Base
     mens_matches = ["m", "men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
     womens_matches = ["f", "women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
     unisex_matches = ["unisex", "uni-sex"]
+    points = []
     match_array.each do |matcher|
       mens_matches.each do |mens|
         if matcher.downcase.include?(mens)
