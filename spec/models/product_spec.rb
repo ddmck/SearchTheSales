@@ -224,6 +224,16 @@ RSpec.describe Product, type: :model do
     end
   end
 
+  describe 'Gender Setter tests' do
+    it 'Should know the difference between male and female' do
+      product = build(:product, name: "Men's Logo Crew Neck Tshirt, Navy")
+      match_array = []
+      match_array << product.name
+      gender = product.calc_gender(match_array)
+      expect(gender).to eq("male")
+    end
+  end
+
   it 'should be able to find its sub_category' do
     expect(product).to respond_to(:sub_category)
   end
