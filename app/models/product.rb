@@ -233,14 +233,14 @@ class Product < ActiveRecord::Base
     unisex_matches = ["unisex", "uni-sex"]
     points = []
     match_array.each do |matcher|
-      mens_matches.each do |mens|
-        if matcher.downcase.include?(mens)
-          points << "male"
-        end
-      end
       womens_matches.each do |womens|
         if matcher.downcase.include?(womens)
           points << "female"
+        end
+      end
+      mens_matches.each do |mens|
+        if matcher.downcase.include?(mens)
+          points << "male"
         end
       end
       unisex_matches.each do |unisex|
