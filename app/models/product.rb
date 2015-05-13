@@ -251,4 +251,17 @@ class Product < ActiveRecord::Base
     end
     points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
   end
+
+  def calc_color(match_array=[])
+    colors = Color.all
+    points = []
+    match_array.each do |matcher|
+      colors.each do |color|
+        if matcher.downcase.include?(color.name)
+          points << color.name
+        end
+      end
+    end
+    points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
+  end
 end
