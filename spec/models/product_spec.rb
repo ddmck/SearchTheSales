@@ -263,6 +263,94 @@ RSpec.describe Product, type: :model do
       color = product.calc_color(match_array)
       expect(color).to eq("purple")
     end
+
+    it 'Should know the colour pink' do
+      product = build(:product, name: "Craft Print Box Tee, Pink")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("pink")
+    end
+
+    it 'Should know the colour grey' do
+      product = build(:product, name: "6651 Women's Shoes (Trainers) In Grey")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("grey")
+    end
+
+    it 'Should know the colour brown' do
+      product = build(:product, name: "Mes Women's Mid Boots In Brown")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("brown")
+    end
+
+    it 'Should know the colour beige' do
+      product = build(:product, name: "Baltok Men's Casual Shoes In Beige")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("beige")
+    end
+
+    it 'Should know the colour yellow' do
+      product = build(:product, name: "Tiger Corsair Vin Men's Shoes (Trainers) In Yellow / Blue")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("yellow")
+    end
+
+    it 'Should know the colour silver' do
+      product = build(:product, name: "Frava Women's Shoes (Trainers) In Silver")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("silver")
+    end
+
+    it 'Should know the colour red' do
+      product = build(:product, name: "Silvia Women's Shoes (High Top Trainers) In Red")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("red")
+    end
+
+    it 'Should know the colour orange' do
+      product = build(:product, name: "Runner Backpack In Orange, Orange")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("orange")
+    end
+
+    it 'Should know the colour green' do
+      product = build(:product, name: "Flashback Adjustable Boston Celtics Caps And Hats, Green")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("green")
+    end
+
+    it 'Should know the colour blue' do
+      product = build(:product, name: "Mettler Men's Shoes (High Top Trainers) In Blue")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("blue")
+    end
+
+    it 'Should know the colour white' do
+      product = build(:product, name: "Womens Major Elastic White Canvas Flats, White")
+      match_array = []
+      match_array << product.name
+      color = product.calc_color(match_array)
+      expect(color).to eq("white")
+    end
   end
 
   it 'should be able to find its sub_category' do
