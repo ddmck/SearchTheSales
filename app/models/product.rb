@@ -206,18 +206,28 @@ class Product < ActiveRecord::Base
     self.save if self.category 
   end
 
+  def category_setter(item)
+    match_array = []
+    match_array << item[:category]
+    match_array << item[:reference_name]
+    match_array << item[:description]
+
+    self.category = calc_category(match_array)
+    self.save if self.category
+  end
+
   def calc_category(match_array=[])
     categories = Category.all
     sub_categories = SubCategory.all
     points = []
     match_array.each do |matcher|
       categories.each do |cat|
-        if matcher.downcase.include?(cat.name)
+        if matcher.to_s.downcase.include?(cat.name)
           points << cat
         end
       end
       sub_categories.each do |sub_cat|
-        if matcher.downcase.include?(sub_cat.name)
+        if matcher.to_s.downcase.include?(sub_cat.name)
           points << sub_cat.category
         end
       end
