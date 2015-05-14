@@ -280,9 +280,9 @@ class Product < ActiveRecord::Base
 
   def color_setter(item)
     match_array = []
-    match_array << item[:category].downcase if item[:category]
-    match_array << item[:reference_name].downcase if item[:reference_name]
-    match_array << item[:description].downcase if item[:description]
+    match_array << item[:category].to_s.downcase if item[:category]
+    match_array << item[:reference_name].to_s.downcase if item[:reference_name]
+    match_array << item[:description].to_s.downcase if item[:description]
 
     self.color = calc_color(match_array)
     self.save if self.color
@@ -294,7 +294,7 @@ class Product < ActiveRecord::Base
     match_array.each do |matcher|
       colors.each do |color|
         if matcher.downcase.include?(color.name)
-          points << color.name
+          points << color
         end
       end
     end
