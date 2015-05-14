@@ -208,9 +208,9 @@ class Product < ActiveRecord::Base
 
   def category_setter(item)
     match_array = []
-    match_array << item[:category]
-    match_array << item[:reference_name]
-    match_array << item[:description]
+    match_array << item[:category].to_s.downcase if item[:category]
+    match_array << item[:reference_name].to_s.downcase if item[:reference_name]
+    match_array << item[:description].to_s.downcase if item[:description]
 
     self.category = calc_category(match_array)
     self.save if self.category
@@ -276,6 +276,16 @@ class Product < ActiveRecord::Base
       end
     end
     points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
+  end
+
+  def color_setter(item)
+    match_array = []
+    match_array << item[:category].downcase if item[:category]
+    match_array << item[:reference_name].downcase if item[:reference_name]
+    match_array << item[:description].downcase if item[:description]
+
+    self.color = calc_color(match_array)
+    self.save if self.color
   end
 
   def calc_color(match_array=[])
