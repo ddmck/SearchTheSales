@@ -226,6 +226,22 @@ class Product < ActiveRecord::Base
   end
 
   # handle_asynchronously :delete_document, :queue => 'indexes'
+  def gender_setter(item)
+    match_array = []
+    match_array << item[:gender] if item[:gender]
+    match_array << item[:category] if item[:category]
+    match_array << item[:reference_name] if item[:reference_name]
+    match_array << item[:description] if item[:description]
+
+    points = []
+    points = calc_gender(match_array)
+
+    if points
+      return Gender.find_by_name(points)
+    else
+      return nil
+    end
+  end
 
   def calc_gender(match_array=[])
     mens_matches = ["m", "men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
@@ -234,17 +250,17 @@ class Product < ActiveRecord::Base
     points = []
     match_array.each do |matcher|
       womens_matches.each do |womens|
-        if matcher.downcase.include?(womens)
+        if matcher.to_s.downcase.include?(womens)
           points << "female"
         end
       end
       mens_matches.each do |mens|
-        if matcher.downcase.include?(mens)
+        if matcher.to_s.downcase.include?(mens)
           points << "male"
         end
       end
       unisex_matches.each do |unisex|
-        if matcher.downcase.include?(unisex)
+        if matcher.to_s.downcase.include?(unisex)
           points << "unisex"
         end
       end
