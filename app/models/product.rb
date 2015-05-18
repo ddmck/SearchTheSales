@@ -246,11 +246,8 @@ class Product < ActiveRecord::Base
     points = []
     points = calc_gender(match_array)
 
-    if points
-      return Gender.find_by_name(points)
-    else
-      return nil
-    end
+    self.gender = Gender.find_by_name(points)
+    self.save if self.gender
   end
 
   def calc_gender(match_array=[])
@@ -258,23 +255,47 @@ class Product < ActiveRecord::Base
     womens_matches = ["f", "women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
     unisex_matches = ["unisex", "uni-sex"]
     points = []
+
     match_array.each do |matcher|
-      womens_matches.each do |womens|
-        if matcher.to_s.downcase.include?(womens)
-          points << "female"
+      match = matcher.split(/\W+/)
+      match.each do |m|
+        womens_matches.each do |womens|
+          if m.to_s.downcase == womens
+            points << "female"
+          end
         end
-      end
-      mens_matches.each do |mens|
-        if matcher.to_s.downcase.include?(mens)
-          points << "male"
+        mens_matches.each do |mens|
+          if m.to_s.downcase == mens
+            points << "male"
+          end
         end
-      end
-      unisex_matches.each do |unisex|
-        if matcher.to_s.downcase.include?(unisex)
-          points << "unisex"
+        unisex_matches.each do |unisex|
+          if m.to_s.downcase == unisex
+            points << "unisex"
+          end
         end
       end
     end
+
+
+    # match_array.each do |matcher|
+    #   womens_matches.each do |womens|
+    #     if matcher.to_s.downcase.include?(womens)
+    #       points << "female"
+    #     end
+    #   end
+    #   mens_matches.each do |mens|
+    #     if matcher.to_s.downcase.include?(mens)
+    #       points << "male"
+    #     end
+    #   end
+    #   unisex_matches.each do |unisex|
+    #     if matcher.to_s.downcase.include?(unisex)
+    #       points << "unisex"
+    #     end
+    #   end
+    # end
+
     points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
   end
 
