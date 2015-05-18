@@ -60,6 +60,14 @@ RSpec.describe Product, type: :model do
       expect(cat.name).to eq("dresses")
     end
 
+    it 'Should know some Shoes' do
+      product = build(:product, name: "Classic Slip On Women's Slip Ons (Shoes) In Dress Blue / White Checker")
+      match_array = []
+      match_array << product.name
+      cat = product.calc_category(match_array)
+      expect(cat.name).to eq("shoes")
+    end
+
     it 'Should not think a Top is a Jacket' do
       product = build(:product, name: "Craft Print Box Tee, Pink")
       match_array = []
@@ -245,7 +253,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("black")
+      expect(color.name).to eq("black")
     end
 
     it 'Should know the colour purple' do
@@ -253,7 +261,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("purple")
+      expect(color.name).to eq("purple")
     end
 
     it 'Should know the colour pink' do
@@ -261,7 +269,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("pink")
+      expect(color.name).to eq("pink")
     end
 
     it 'Should know the colour grey' do
@@ -269,7 +277,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("grey")
+      expect(color.name).to eq("grey")
     end
 
     it 'Should know the colour brown' do
@@ -277,7 +285,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("brown")
+      expect(color.name).to eq("brown")
     end
 
     it 'Should know the colour beige' do
@@ -285,7 +293,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("beige")
+      expect(color.name).to eq("beige")
     end
 
     it 'Should know the colour yellow' do
@@ -293,7 +301,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("yellow")
+      expect(color.name).to eq("yellow")
     end
 
     it 'Should know the colour silver' do
@@ -301,7 +309,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("silver")
+      expect(color.name).to eq("silver")
     end
 
     it 'Should know the colour red' do
@@ -309,7 +317,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("red")
+      expect(color.name).to eq("red")
     end
 
     it 'Should know the colour orange' do
@@ -317,7 +325,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("orange")
+      expect(color.name).to eq("orange")
     end
 
     it 'Should know the colour green' do
@@ -325,7 +333,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("green")
+      expect(color.name).to eq("green")
     end
 
     it 'Should know the colour blue' do
@@ -333,7 +341,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("blue")
+      expect(color.name).to eq("blue")
     end
 
     it 'Should know the colour white' do
@@ -341,7 +349,7 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       color = product.calc_color(match_array)
-      expect(color).to eq("white")
+      expect(color.name).to eq("white")
     end
   end
 
