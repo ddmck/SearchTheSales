@@ -257,7 +257,7 @@ class Product < ActiveRecord::Base
     points = []
 
     match_array.each do |matcher|
-      match = matcher.split(/\W+/)
+      match = matcher.to_s.split(/\W+/)
       match.each do |m|
         womens_matches.each do |womens|
           if m.to_s.downcase == womens
