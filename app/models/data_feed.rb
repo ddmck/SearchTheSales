@@ -93,9 +93,10 @@ class DataFeed < ActiveRecord::Base
       product.name = set_name(product)
       product.description = item[:description]
       product.url = item[:url]
-      product.color = set_color(item)
-      product.gender = set_gender(item)
-      product.set_category(item)
+      array_for_matching = create_array_for_matching(item)
+      product.color_setter(array_for_matching)
+      product.gender_setter(array_for_matching)
+      product.category_setter(array_for_matching)
       product.sub_category = set_sub_category(product) if product.category
     end
     product.material = set_material(product)
@@ -117,6 +118,14 @@ class DataFeed < ActiveRecord::Base
     product.save if product.changed?
   end
 
+  def create_array_for_matching(item)
+    array_for_matching = []
+    array_for_matching << item[:category].to_s.downcase if item[:category]
+    array_for_matching << item[:reference_name].to_s.downcase if item[:reference_name]
+    array_for_matching << item[:description].to_s.downcase if item[:description]
+
+    return array_for_matching
+  end
 
   def delete_expired_products
     key_hash = {}
