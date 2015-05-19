@@ -46,26 +46,26 @@ RSpec.describe Product, type: :model do
     product = build(:product, :shoes)
     match_array = []
     match_array << product.name
-    cat = product.calc_category(match_array)
-    expect(cat.name).to eq("shoes")
+    product.category_setter(match_array)
+    expect(product.category.name).to eq("shoes")
   end
 
-  describe 'Category setter tests' do
+  describe 'Category setter' do
     it 'Should not think Dresses are Jackets' do
       product = build(:product, name: "Floral Flouncy Slip Dress, Assorted")
       match_array = []
       match_array << product.name
       match_array << "Women's Dresses & Skirts".downcase #item[:category] placeholder
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("dresses")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("dresses")
     end
 
     it 'Should know some Shoes' do
       product = build(:product, name: "Classic Slip On Women's Slip Ons (Shoes) In Dress Blue / White Checker")
       match_array = []
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("shoes")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("shoes")
     end
 
     it 'Should not think a Top is a Jacket' do
@@ -73,8 +73,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       match_array << "Women's Tops".downcase
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("tops")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("tops")
     end
 
     it 'Should not think a Knitwear Jumper is a Jacket' do
@@ -82,8 +82,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       match_array << "knitwear" #not in datafeed anymore
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("knitwear")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("knitwear")
     end
 
     it 'Should not think a Skirt is a Jacket' do
@@ -91,8 +91,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       match_array << "Women's Dresses & Skirts" #item[:category] placeholder
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("skirts")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("skirts")
     end
 
     it 'Should not think a pair of Shoes is a Jacket' do
@@ -100,8 +100,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "Footwear>Footwear".downcase #item[:category] placeholder
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("shoes")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("shoes")
     end
 
     it 'Should not think a top is a Jacket' do
@@ -109,25 +109,25 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       match_array << "Women's Tops".downcase
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("tops")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("tops")
     end
 
-    it 'Should not think Tracksuit Bottoms are Trousers' do
+    it 'Should think Tracksuit Bottoms are Trousers' do
       product = build(:product, name: "Aw77 Tracksuit Bottoms Dark Grey Heather")
       match_array = []
       match_array << "Men > Clothing > Trousers & Chinos > Joggers & Sweats".downcase
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("shorts")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("trousers")
     end
 
     it 'Should not think a Sweatshirt is a Hoodie' do
       product = build(:product, name: "Men's Keldy Long Sleeve Jersey Sweat, Teal")
       match_array = []
       match_array << product.name # No longer exists in data feed
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("sweats")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("sweats")
     end
 
     it 'Should not think a Tee is a Hoodie' do
@@ -135,8 +135,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "tees" # no longer exists in data feed
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("tees")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("tees")
     end
 
     it 'Should not think a Tie is a pair of Jeans' do
@@ -144,8 +144,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "Men > Premium > Accessories > Ties & Accessories".downcase
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("accessories")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("accessories")
     end
 
     it 'Should not think a Pyjama top is a pair of Jeans' do
@@ -153,8 +153,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "accessories" #Gone from data feed
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("accessories")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("accessories")
     end
 
     it 'Should not think a Beanie is a pair of shorts' do
@@ -162,16 +162,16 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "Accessories>Knitted Hats".downcase
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("accessories")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("accessories")
     end
 
     it 'Should not think a pair of boots is a pair of shorts' do
       product = build(:product, name: "Mens Original Biker Short Black Boots, Black")
       match_array = []
       match_array << product.name # no longer in data feed
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("shoes")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("shoes")
     end
 
     it 'Should not think a tee is a pair of shorts' do
@@ -179,16 +179,16 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "tees" # not in data feed anymore
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("tees")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("tees")
     end
 
     it 'Should not think a Sweatshirt is a pair of shorts' do
       product = build(:product, name: "Flecked Short Sleeved Sweatshirt")
       match_array = []
       match_array << product.name # product not in feed
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("sweats")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("sweats")
     end
 
     it 'Should not think a Jacket is a pair of shorts' do
@@ -196,8 +196,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "Men > Clothing > Coats > Short Coats"
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("jackets")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("jackets")
     end
 
     it 'Should not think a Top is a Jacket' do
@@ -205,8 +205,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << product.name
       match_array << "Women's Tops".downcase
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("tops")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("tops")
     end
 
     it 'Should not think a pair of Shorts is a Suit' do
@@ -214,8 +214,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "shorts" # no longer in data feed
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("shorts")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("shorts")
     end
 
     it 'Should not think a pair of Trunks are Swimming Trunks' do
@@ -223,8 +223,8 @@ RSpec.describe Product, type: :model do
       match_array = []
       match_array << "Mens > Fashion / Leisure > Underwear".downcase
       match_array << product.name
-      cat = product.calc_category(match_array)
-      expect(cat.name).to eq("underwear")
+      product.category_setter(match_array)
+      expect(product.category.name).to eq("underwear")
     end
   end
 
