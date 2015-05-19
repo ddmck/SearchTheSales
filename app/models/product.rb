@@ -206,17 +206,9 @@ class Product < ActiveRecord::Base
     self.save if self.category 
   end
 
-  def category_setter(item)
-    match_array = []
-    match_array << item[:category].to_s.downcase if item[:category]
-    match_array << item[:reference_name].to_s.downcase if item[:reference_name]
-    match_array << item[:description].to_s.downcase if item[:description]
+  def category_setter(match_array=[])
+    match_array = [self.name, self.description] if match_array == []
 
-    self.category = calc_category(match_array)
-    self.save if self.category
-  end
-
-  def calc_category(match_array=[])
     categories = Category.all
     sub_categories = SubCategory.all
     points = []
@@ -232,25 +224,12 @@ class Product < ActiveRecord::Base
         end
       end
     end
-    points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
+    self.category = group_by_occurance(points)
   end
 
-  # handle_asynchronously :delete_document, :queue => 'indexes'
-  def gender_setter(item)
-    match_array = []
-    match_array << item[:gender] if item[:gender]
-    match_array << item[:category] if item[:category]
-    match_array << item[:reference_name] if item[:reference_name]
-    match_array << item[:description] if item[:description]
+  def gender_setter(match_array=[])
+    match_array = [self.name, self.description] if match_array == []
 
-    points = []
-    points = calc_gender(match_array)
-
-    self.gender = Gender.find_by_name(points)
-    self.save if self.gender
-  end
-
-  def calc_gender(match_array=[])
     mens_matches = ["m", "men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
     womens_matches = ["f", "women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
     unisex_matches = ["unisex", "uni-sex"]
@@ -276,40 +255,12 @@ class Product < ActiveRecord::Base
         end
       end
     end
-
-
-    # match_array.each do |matcher|
-    #   womens_matches.each do |womens|
-    #     if matcher.to_s.downcase.include?(womens)
-    #       points << "female"
-    #     end
-    #   end
-    #   mens_matches.each do |mens|
-    #     if matcher.to_s.downcase.include?(mens)
-    #       points << "male"
-    #     end
-    #   end
-    #   unisex_matches.each do |unisex|
-    #     if matcher.to_s.downcase.include?(unisex)
-    #       points << "unisex"
-    #     end
-    #   end
-    # end
-
-    points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
+    self.gender = Gender.find_by_name(group_by_occurance(points))
   end
 
-  def color_setter(item)
-    match_array = []
-    match_array << item[:category].to_s.downcase if item[:category]
-    match_array << item[:reference_name].to_s.downcase if item[:reference_name]
-    match_array << item[:description].to_s.downcase if item[:description]
+  def color_setter(match_array=[])
+    match_array = [self.name, self.description] if match_array == []
 
-    self.color = calc_color(match_array)
-    self.save if self.color
-  end
-
-  def calc_color(match_array=[])
     colors = Color.all
     points = []
     match_array.each do |matcher|
@@ -319,6 +270,10 @@ class Product < ActiveRecord::Base
         end
       end
     end
-    points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
+    self.color = group_by_occurance(points)
+  end
+
+  def group_by_occurance(points)
+    return points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
   end
 end
