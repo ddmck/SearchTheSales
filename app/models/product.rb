@@ -133,17 +133,35 @@ class Product < ActiveRecord::Base
     points = []
     match_array.each do |matcher|
       categories.each do |cat|
-        if matcher.to_s.downcase.include?(cat.name)
+        if matcher.include?(cat.name)
           points << cat
         end
       end
       sub_categories.each do |sub_cat|
-        if matcher.to_s.downcase.include?(sub_cat.name)
+        if matcher.include?(sub_cat.name)
           points << sub_cat.category
         end
       end
     end
-    self.category = group_by_occurance(points)
+    self.category = order_by_occurance(points)
+  end
+
+  def style_setter(match_array=[])
+    match_array = [self.name, self.description] if match_array == []
+
+    styles = self.category.styles
+    sub_categories = SubCategory.all
+    points = []
+    match_array.each do |matcher|
+      styles.each do |style|
+        style.pseudonyms.each do |pseudo|
+          if matcher.include?(pseudo)
+            points << style
+          end
+        end
+      end
+    end
+    self.style = order_by_occurance(points)
   end
 
   def gender_setter(match_array=[])
@@ -155,8 +173,7 @@ class Product < ActiveRecord::Base
     points = []
 
     match_array.each do |matcher|
-      match = matcher.to_s.split(/\W+/)
-      match.each do |m|
+      matcher.each do |m|
         womens_matches.each do |womens|
           if m.to_s.downcase == womens
             points << "female"
@@ -174,7 +191,7 @@ class Product < ActiveRecord::Base
         end
       end
     end
-    self.gender = Gender.find_by_name(group_by_occurance(points))
+    self.gender = Gender.find_by_name(order_by_occurance(points))
   end
 
   def color_setter(match_array=[])
@@ -184,15 +201,30 @@ class Product < ActiveRecord::Base
     points = []
     match_array.each do |matcher|
       colors.each do |color|
-        if matcher.downcase.include?(color.name)
+        if matcher.include?(color.name)
           points << color
         end
       end
     end
-    self.color = group_by_occurance(points)
+    self.color = order_by_occurance(points)
   end
 
-  def group_by_occurance(points)
+  def material_setter(match_array=[])
+    match_array = [self.name, self.description] if match_array == []
+
+    materials = Material.all
+    points = []
+    match_array.each do |matcher|
+      materials.each do |material|
+        if matcher.include?(material.name)
+          points << material
+        end
+      end
+    end
+    self.material = order_by_occurance(points)
+  end
+
+  def order_by_occurance(points)
     return points.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0] if points != []
   end
 end
