@@ -64,6 +64,7 @@ RSpec.describe Product, type: :model do
       product = build(:product, name: "Classic Slip On Women's Slip Ons (Shoes) In Dress Blue / White Checker")
       match_array = []
       match_array << product.name
+      match_array << "Vans CLASSIC SLIP-ON women's Slip-ons (Shoes) in Dress Blue / White Checker Textile, Available in women's sizes. 11,12,5,6,7,9,11,12,5,6,7,9. Free Next Day Delivery and Free Returns on all orders!"
       product.category_setter(match_array)
       expect(product.category.name).to eq("shoes")
     end
@@ -389,5 +390,4 @@ RSpec.describe Product, type: :model do
     }
     expect(result).to eq(desired)
   end
-
 end
