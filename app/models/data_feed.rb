@@ -98,9 +98,9 @@ class DataFeed < ActiveRecord::Base
       product.gender_setter(array_for_matching)
       product.category_setter(array_for_matching)
       product.sub_category = set_sub_category(product) if product.category
+      product.material_setter(array_for_matching)
+      product.style_setter(array_for_matching) if product.category 
     end
-    product.material = set_material(product)
-    product.style = set_style(product) if product.category
     product.image_url = item[:image_url] || item[:large_image_url]
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
     product.deeplink = item[:deeplink] || item[:deeplink]
@@ -120,9 +120,9 @@ class DataFeed < ActiveRecord::Base
 
   def create_array_for_matching(item)
     array_for_matching = []
-    array_for_matching << item[:category].to_s.downcase if item[:category]
-    array_for_matching << item[:reference_name].to_s.downcase if item[:reference_name]
-    array_for_matching << item[:description].to_s.downcase if item[:description]
+    array_for_matching << item[:category].to_s.downcase.split(" ") if item[:category]
+    array_for_matching << item[:reference_name].to_s.downcase.split(" ") if item[:reference_name]
+    array_for_matching << item[:description].to_s.downcase.split(" ") if item[:description]
 
     return array_for_matching
   end
