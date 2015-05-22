@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Style, :type => :model do
   subject(:style) { build(:style) }
 
-  it "should it should know if it contains a space" do
+  it "should know if it contains a space" do
     expect(style.contains_space?).to eq(false)
     style.name = "waist coat"
     expect(style.contains_space?).to eq(true)

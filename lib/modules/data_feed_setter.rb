@@ -16,68 +16,6 @@ module DataFeedSetter
     brand_ref
   end
 
-  def set_category(item, product)
-    categories = Category.all
-    cat = nil
-    sub_categories = SubCategory.all
-    
-
-    categories.each do |category|
-      if product.name.downcase.split(" ").include?(category.name) || 
-         product.name.downcase.split(" ").include?(category.name.singularize)
-        cat = category
-      end 
-    end
-
-    if cat == nil 
-      sub_categories.each do |sub_category|
-        if product.name.downcase.split(" ").include?(sub_category.name) || 
-           product.name.downcase.split(" ").include?(sub_category.name.singularize)
-          cat = sub_category.category
-        end
-      end
-    end
-
-    if cat.nil? && item[:category]
-      categories.each do |category|
-        if sanitize_string(item[:category]).downcase.split(" ").include?(category.name) || 
-           sanitize_string(item[:category]).downcase.split(" ").include?(category.name.singularize)
-          cat = category
-        end 
-      end
-    end
-
-    if cat.nil? && item[:category]
-      sub_categories.each do |sub_category|
-        if sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name) || 
-           sanitize_string(item[:category]).downcase.split(" ").include?(sub_category.name.singularize)
-          cat = sub_category.category
-        end 
-      end
-    end
-    
-    
-
-    # if cat == nil && product.description
-    #   categories.each do |category|
-    #     if product.description.downcase.remove(product.brand.name).include?(category.name) ||
-    #        product.description.downcase.remove(product.brand.name).include?(category.name.singularize)
-    #       cat = category
-    #     end
-    #   end
-    # end
-
-    # if cat == nil && product.description
-    #   sub_categories.each do |sub_category|
-    #     if product.description.downcase.remove(product.brand.name).include?(sub_category.name) ||
-    #        product.description.downcase.remove(product.brand.name).include?(sub_category.name.singularize)
-    #       cat = sub_category.category
-    #     end 
-    #   end
-    # end
-    cat
-  end
-
   def set_sub_category(product)
     sub_cat = nil
     name = sanitize_string(product.name).downcase.split(" ")
