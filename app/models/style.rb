@@ -16,5 +16,6 @@ class Style < ActiveRecord::Base
     list = [self.name]
     list << self.name.gsub(" ", "-")
     list << self.name.gsub(" ", "")
+    list.uniq
   end
 end

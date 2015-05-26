@@ -21,7 +21,6 @@ class ProductsController < ApplicationController
       hash[:query] = {match_all: {}}
 
       where_opts = JSON.parse(params[:filters])
-      where_opts[:out_of_stock] = false
       where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
       hash[:filter] = { and: where_opts}
 
@@ -126,7 +125,6 @@ class ProductsController < ApplicationController
     if !filters.empty?
       string = build_filters(string, filters)
     end
-    string += " AND out_of_stock: false"
     string
   end
 
