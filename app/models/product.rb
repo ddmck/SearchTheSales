@@ -58,6 +58,7 @@ class Product < ActiveRecord::Base
       image_url: image_url,
       first_letter: name.try(:ord) || 0,
       out_of_stock: out_of_stock,
+      has_sizes: has_sizes?,
       on_sale: on_sale?
     }
   end
@@ -68,6 +69,10 @@ class Product < ActiveRecord::Base
     else 
       false
     end
+  end
+
+  def has_sizes?
+    !sizes.empty? || !!deeplink
   end
 
   def build_where_hash(filters)
