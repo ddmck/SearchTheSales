@@ -119,7 +119,7 @@ class DataFeedXml < ActiveRecord::Base
       product.sizes = []
       product.sizes = set_sizes(sanitize_sizes(item[:size])) if item[:size]
     end
-    product.out_of_stock = product.sizes.empty?
+    product.out_of_stock = false
     product.save if product.changed?
   end
 
