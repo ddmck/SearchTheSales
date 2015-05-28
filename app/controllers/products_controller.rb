@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy, :wish]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy, :wish, :more_like_this]
   before_action :get_collections, only: [:new, :edit]
   respond_to :html, :json
 
@@ -60,6 +60,18 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     respond_with(@product)
+  end
+
+  def more_like_this
+    hash = {query: {
+              more_like_this: {
+                fields: ["reference_name"],
+                like_text: @product.reference_name
+                }
+              }, size: 13
+            }
+      @products = Product.__elasticsearch__.search(hash).records
+      respond_with(@products)
   end
 
   def destroy_by_url

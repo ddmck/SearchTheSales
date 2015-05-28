@@ -48,6 +48,8 @@ Searchthesales::Application.routes.draw do
       end
   end
 
+  post '/more_like_this', to: 'products#more_like_this', as: 'more_like_this'
+
   resources :brands
 
   resources :stores
