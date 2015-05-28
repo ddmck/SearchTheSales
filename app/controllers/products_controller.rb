@@ -17,18 +17,7 @@ class ProductsController < ApplicationController
       end
       @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     else
-      hash = {}
-      hash[:query] = {match_all: {}}
-
-      where_opts = JSON.parse(params[:filters])
-      where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
-      hash[:filter] = { and: where_opts}
-
-      if params[:sort]
-        args = params[:sort].split(", ")
-        hash[:sort] = [{args[0] => args[1]}]
-      end
-      puts where_opts.class
+      hash = build_match_all
       @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     end
     respond_with(@products)
@@ -63,6 +52,13 @@ class ProductsController < ApplicationController
   end
 
   def more_like_this
+    hash = build_large_match_all
+    puts hash
+    @products = Product.__elasticsearch__.search(hash).records
+    respond_with(@products)
+  end
+
+  def more_like_this1
     hash = {query: {
               more_like_this: {
                 fields: ["reference_name"],
@@ -72,6 +68,51 @@ class ProductsController < ApplicationController
             }
       @products = Product.__elasticsearch__.search(hash).records
       respond_with(@products)
+  end
+  # {:query=>{:match_all=>{}}, :filter=>{:and=>[{:term=>{:brand_id=>118}}, {:term=>{:out_of_stock=>false}}, {:term=>{:has_sizes=>true}}]}}
+  def build_match_all
+    hash = {}
+    hash[:query] = {match_all: {}}
+
+    if params[:filters]
+      where_opts = JSON.parse(params[:filters])
+    else
+      where_opts = {"brand_id" => @product.brand_id, "category_id" => @product.category_id, "gender_id" => @product.gender_id}
+    end
+    where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
+    hash[:filter] = { and: where_opts}
+
+    if params[:sort]
+      args = params[:sort].split(", ")
+      hash[:sort] = [{args[0] => args[1]}]
+    end
+    puts hash
+    hash
+  end
+
+  def build_match_must
+    hash = {}
+    where_opts = {"gender_id" => @product.gender_id, "category_id" => @product.category_id}
+    where_opts = where_opts.map {|key, v| {match: {key.to_sym => v}}}
+    hash = where_opts
+    hash
+  end
+
+  def build_match_should
+    hash = {}
+    where_opts = {"color_id" => @product.color_id, "brand_id" => @product.brand_id}
+    where_opts = where_opts.map {|key, v| {match: {key.to_sym => v}}}
+    hash = where_opts
+    hash
+  end
+
+  def build_large_match_all
+    hash = {}
+    hash = {query: {bool: {
+              must: build_match_must,
+              should: build_match_should
+              }}}
+    hash
   end
 
   def destroy_by_url
