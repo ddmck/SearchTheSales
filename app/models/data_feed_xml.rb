@@ -101,18 +101,21 @@ class DataFeedXml < ActiveRecord::Base
       product.name = set_name(product)
       product.description = item[:description]
       product.url = item[:url]
-      product.color = set_color(item)
-      product.gender = set_gender(item)
-      product.category = set_category(item, product)
+      array_for_matching = create_array_for_matching(item)
+      product.color_setter(array_for_matching)
+      product.gender_setter(array_for_matching)
+      product.category_setter(array_for_matching)
       product.sub_category = set_sub_category(product) if product.category
+      product.material_setter(array_for_matching)
+      product.style_setter(array_for_matching) if product.category 
     end
-    product.material = set_material(product)
-    product.style = set_style(product) if product.category
     product.image_url = item[:image_url] || item[:large_image_url]
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
+    product.deeplink = item[:deeplink] || item[:deeplink]
     product.rrp = sanitize_price(item[:rrp]) if item[:rrp]
     product.sale_price = sanitize_price(item[:sale_price]) if item[:sale_price]
     product.display_price = product.calc_display_price
+
     if product.size_tags.last && product.size_tags.last.updated_at > 15.minutes.ago
       product.sizes += set_sizes(sanitize_sizes(item[:size])) if item[:size]
     else
@@ -121,6 +124,15 @@ class DataFeedXml < ActiveRecord::Base
     end
     product.out_of_stock = false
     product.save if product.changed?
+  end
+
+   def create_array_for_matching(item)
+    array_for_matching = []
+    array_for_matching << item[:category].to_s.downcase.split(" ") if item[:category]
+    array_for_matching << item[:reference_name].to_s.downcase.split(" ") if item[:reference_name]
+    array_for_matching << item[:description].to_s.downcase.split(" ") if item[:description]
+
+    return array_for_matching
   end
 
   def delete_expired_products
