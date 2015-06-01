@@ -52,24 +52,12 @@ class ProductsController < ApplicationController
   end
 
   def more_like_this
-    hash = build_large_match_all
+    hash = build_more_like_this
     puts hash
     @products = Product.__elasticsearch__.search(hash).records
     respond_with(@products)
   end
 
-  def more_like_this1
-    hash = {query: {
-              more_like_this: {
-                fields: ["reference_name"],
-                like_text: @product.reference_name
-                }
-              }, size: 13
-            }
-      @products = Product.__elasticsearch__.search(hash).records
-      respond_with(@products)
-  end
-  # {:query=>{:match_all=>{}}, :filter=>{:and=>[{:term=>{:brand_id=>118}}, {:term=>{:out_of_stock=>false}}, {:term=>{:has_sizes=>true}}]}}
   def build_match_all
     hash = {}
     hash[:query] = {match_all: {}}
@@ -92,7 +80,15 @@ class ProductsController < ApplicationController
 
   def build_match_must
     hash = {}
-    where_opts = {"gender_id" => @product.gender_id, "category_id" => @product.category_id}
+    
+    if @product.gender_id && @product.category_id
+      where_opts = {"gender_id" => @product.gender_id, "category_id" => @product.category_id}
+    elsif @product.gender_id
+      where_opts = {"gender_id" => @product.gender_id}
+    elsif @product.category_id
+      where_opts = {"category_id" => @product.category_id}
+    end
+    
     where_opts = where_opts.map {|key, v| {match: {key.to_sym => v}}}
     hash = where_opts
     hash
@@ -100,18 +96,26 @@ class ProductsController < ApplicationController
 
   def build_match_should
     hash = {}
-    where_opts = {"color_id" => @product.color_id, "brand_id" => @product.brand_id}
+
+    if @product.color_id && @product.brand_id
+      where_opts = {"color_id" => @product.color_id, "brand_id" => @product.brand_id}
+    elsif @product.color_id
+      where_opts = {"color_id" => @product.color_id}
+    elsif @product.brand_id
+      where_opts = {"brand_id" => @product.brand_id}
+    end
+
     where_opts = where_opts.map {|key, v| {match: {key.to_sym => v}}}
     hash = where_opts
     hash
   end
 
-  def build_large_match_all
+  def build_more_like_this
     hash = {}
     hash = {query: {bool: {
               must: build_match_must,
               should: build_match_should
-              }}}
+              }}, size: 25}
     hash
   end
 
