@@ -175,12 +175,12 @@ module DataFeedSetter
   end
 
   def set_reference_name(reference_name, brand)
-    if brand.try(:name).try(:downcase) && reference_name.downcase.include?(brand.try(:name).try(:downcase))
+    if brand.try(:name).try(:to_s).try(:downcase) && reference_name.downcase.include?(brand.try(:name).try(:to_s).try(:downcase))
       reference_name.downcase.gsub("`", "'")
-    elsif brand.try(:name).try(:downcase)
-      brand.try(:name).try(:downcase) + " " + reference_name.downcase.gsub("`", "'")
+    elsif brand.try(:name).try(:to_s).try(:downcase)
+      brand.try(:name).try(:to_s).try(:downcase) + " " + reference_name.try(:to_s).downcase.gsub("`", "'")
     else
-      reference_name.downcase.gsub("`", "'")
+      reference_name.try(:to_s).downcase.gsub("`", "'")
     end
   end
 
