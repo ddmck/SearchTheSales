@@ -132,3 +132,4 @@ class Product < ActiveRecord::Base
     __elasticsearch__.delete_document
   end
 end
+

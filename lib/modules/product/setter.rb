@@ -7,12 +7,12 @@ module Product::Setter
     points = []
     match_array.each do |matcher|
       categories.each do |cat|
-        if matcher.include?(cat.name)
+        if matcher.to_s.downcase.include?(cat.name)
           points << cat
         end
       end
       sub_categories.each do |sub_cat|
-        if matcher.include?(sub_cat.name)
+        if matcher.to_s.downcase.include?(sub_cat.name)
           points << sub_cat.category
         end
       end
@@ -29,7 +29,7 @@ module Product::Setter
     match_array.each do |matcher|
       styles.each do |style|
         style.pseudonyms.each do |pseudo|
-          if matcher.include?(pseudo)
+          if matcher.to_s.downcase.include?(pseudo)
             points << style
           end
         end
@@ -47,7 +47,7 @@ module Product::Setter
     points = []
 
     match_array.each do |matcher|
-      matcher.each do |m|
+      matcher.split.each do |m|
         womens_matches.each do |womens|
           if m.to_s.downcase == womens
             points << "female"
@@ -75,7 +75,7 @@ module Product::Setter
     points = []
     match_array.each do |matcher|
       colors.each do |color|
-        if matcher.include?(color.name)
+        if matcher.to_s.downcase.include?(color.name)
           points << color
         end
       end
@@ -90,7 +90,7 @@ module Product::Setter
     points = []
     match_array.each do |matcher|
       materials.each do |material|
-        if matcher.include?(material.name)
+        if matcher.to_s.downcase.include?(material.name)
           points << material
         end
       end
