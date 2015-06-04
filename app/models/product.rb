@@ -96,11 +96,11 @@ class Product < ActiveRecord::Base
   end
 
   def brand_name
-    brand.name
+    brand.name if brand
   end 
 
   def pretty_brand_name
-    brand_name.titleize
+    brand_name.titleize if brand
   end
 
   def calc_display_price
