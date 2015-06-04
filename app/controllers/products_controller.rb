@@ -130,7 +130,7 @@ class ProductsController < ApplicationController
 
   def build_filters(string, filters)
     filters.each do |key, val|
-      string += ' AND ' + key + ': ' + val.to_s
+      string += ' AND ' + key + ': ' + val.try(:to_s)
     end
     puts string
     string
