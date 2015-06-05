@@ -64,7 +64,7 @@ RSpec.describe Product, type: :model do
       product = build(:product, name: "Classic Slip On Women's Slip Ons (Shoes) In Dress Blue / White Checker")
       match_array = []
       match_array << product.name
-      match_array << "Vans CLASSIC SLIP-ON women's Slip-ons (Shoes) in Dress Blue / White Checker Textile, Available in women's sizes. 11,12,5,6,7,9,11,12,5,6,7,9. Free Next Day Delivery and Free Returns on all orders!"
+      match_array << "Vans CLASSIC SLIP-ON women's Slip-ons (Shoes) in Dress Blue / White Checker Textile, Available in women's sizes. 11,12,5,6,7,9,11,12,5,6,7,9. Free Next Day Delivery and Free Returns on all orders!".downcase
       product.category_setter(match_array)
       expect(product.category.name).to eq("shoes")
     end
@@ -123,12 +123,12 @@ RSpec.describe Product, type: :model do
       expect(product.category.name).to eq("trousers")
     end
 
-    it 'Should not think a Sweatshirt is a Hoodie' do
+    it 'Should not think a Jersey is a Hoodie' do
       product = build(:product, name: "Men's Keldy Long Sleeve Jersey Sweat, Teal")
       match_array = []
       match_array << product.name # No longer exists in data feed
       product.category_setter(match_array)
-      expect(product.category.name).to eq("sweats")
+      expect(product.category.name).to eq("polos")
     end
 
     it 'Should not think a Tee is a Hoodie' do
@@ -150,7 +150,7 @@ RSpec.describe Product, type: :model do
     end
 
     it 'Should not think a Pyjama top is a pair of Jeans' do
-      product = build(:product, name: "Mix Program Pyjama Top Jeans")
+      product = build(:product, name: "Mix Program Pyjama Top")
       match_array = []
       match_array << "accessories" #Gone from data feed
       match_array << product.name

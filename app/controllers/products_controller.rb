@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy, :wish]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :buy, :wish, :more_like_this]
   before_action :get_collections, only: [:new, :edit]
   respond_to :html, :json
 
@@ -17,18 +17,7 @@ class ProductsController < ApplicationController
       end
       @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     else
-      hash = {}
-      hash[:query] = {match_all: {}}
-
-      where_opts = JSON.parse(params[:filters])
-      where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
-      hash[:filter] = { and: where_opts}
-
-      if params[:sort]
-        args = params[:sort].split(", ")
-        hash[:sort] = [{args[0] => args[1]}]
-      end
-      puts where_opts.class
+      hash = build_match_all
       @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     end
     respond_with(@products)
@@ -60,6 +49,74 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     respond_with(@product)
+  end
+
+  def more_like_this
+    hash = build_more_like_this
+    puts hash
+    @products = Product.__elasticsearch__.search(hash).records
+    respond_with(@products)
+  end
+
+  def build_match_all
+    hash = {}
+    hash[:query] = {match_all: {}}
+
+    if params[:filters]
+      where_opts = JSON.parse(params[:filters])
+    else
+      where_opts = {"brand_id" => @product.brand_id, "category_id" => @product.category_id, "gender_id" => @product.gender_id}
+    end
+    where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
+    hash[:filter] = { and: where_opts}
+
+    if params[:sort]
+      args = params[:sort].split(", ")
+      hash[:sort] = [{args[0] => args[1]}]
+    end
+    puts hash
+    hash
+  end
+
+  def build_match_must
+    hash = {}
+    
+    if @product.gender_id && @product.category_id
+      where_opts = {"gender_id" => @product.gender_id, "category_id" => @product.category_id}
+    elsif @product.gender_id
+      where_opts = {"gender_id" => @product.gender_id}
+    elsif @product.category_id
+      where_opts = {"category_id" => @product.category_id}
+    end
+    
+    where_opts = where_opts.map {|key, v| {match: {key.to_sym => v}}}
+    hash = where_opts
+    hash
+  end
+
+  def build_match_should
+    hash = {}
+
+    if @product.color_id && @product.brand_id
+      where_opts = {"color_id" => @product.color_id, "brand_id" => @product.brand_id}
+    elsif @product.color_id
+      where_opts = {"color_id" => @product.color_id}
+    elsif @product.brand_id
+      where_opts = {"brand_id" => @product.brand_id}
+    end
+
+    where_opts = where_opts.map {|key, v| {match: {key.to_sym => v}}}
+    hash = where_opts
+    hash
+  end
+
+  def build_more_like_this
+    hash = {}
+    hash = {query: {bool: {
+              must: build_match_must,
+              should: build_match_should
+              }}, size: 25}
+    hash
   end
 
   def destroy_by_url
