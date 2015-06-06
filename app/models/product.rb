@@ -179,17 +179,17 @@ class Product < ActiveRecord::Base
 
     match_array.each do |m|
       womens_matches.each do |womens|
-        if m.to_s.downcase == womens
+        if m.include?(womens)
           points << "female"
         end
       end
       mens_matches.each do |mens|
-        if m.to_s.downcase == mens
+        if m.include?(mens)
           points << "male"
         end
       end
       unisex_matches.each do |unisex|
-        if m.to_s.downcase == unisex
+        if m.include?(unisex)
           points << "unisex"
         end
       end

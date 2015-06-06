@@ -103,12 +103,13 @@ class DataFeedXml < ActiveRecord::Base
       product.url = item[:url]
       array_for_matching = create_array_for_matching(item)
       product.color_setter(array_for_matching)
-      product.gender_setter(array_for_matching.unshift(item[:gender].to_s.downcase.gsub(/[\,\.]/, "").split(" ")))
       product.category_setter(array_for_matching)
       product.sub_category = set_sub_category(product) if product.category
       product.material_setter(array_for_matching)
       product.style_setter(array_for_matching) if product.category 
     end
+    array_for_matching = create_array_for_matching(item)
+    product.gender_setter(array_for_matching.unshift(item[:gender].to_s.downcase.gsub(/[\,\.]/, "").split(" ")))
     product.image_url = item[:image_url] || item[:large_image_url]
     product.large_image_url = item[:large_image_url] if item[:large_image_url]
     product.deeplink = item[:deeplink] || item[:deeplink]
