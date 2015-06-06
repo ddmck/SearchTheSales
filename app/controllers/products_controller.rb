@@ -24,7 +24,11 @@ class ProductsController < ApplicationController
   end
 
   def show
-    respond_with(@product)
+    if @product
+      respond_with(@product)
+    else
+      respond_with(status: 404)
+    end
   end
 
   def new
@@ -42,13 +46,21 @@ class ProductsController < ApplicationController
   end
 
   def update
-    @product.update(product_params)
-    respond_with(@product)
+    if @product
+      @product.update(product_params)
+      respond_with(@product)
+    else
+      respond_with(status: 404)
+    end
   end
 
   def destroy
-    @product.destroy
-    respond_with(@product)
+    if @product
+      @product.destroy
+      respond_with(@product)
+    else
+      respond_with(status: 404)
+    end
   end
 
   def more_like_this
@@ -129,18 +141,26 @@ class ProductsController < ApplicationController
   end
 
   def buy
-    redirect_to(@product.url)
+    if @product
+      redirect_to(@product.url)
+    else
+      respond_with(status: 404)
+    end
   end
 
   def wish
-    @product.add_to_wishlist(get_current_user)
-    respond_with(@product, status: 200)
+    if @product
+      @product.add_to_wishlist(get_current_user)
+      respond_with(@product, status: 200)
+    else
+      respond_with(status: 404)
+    end
   end
 
   private
 
   def set_product
-    @product = Product.find(params[:id])
+    @product = Product.find_by_id(params[:id])
   end
 
   def get_collections
@@ -187,7 +207,7 @@ class ProductsController < ApplicationController
 
   def build_filters(string, filters)
     filters.each do |key, val|
-      string += ' AND ' + key + ': ' + val.to_s
+      string += ' AND ' + key + ': ' + val.try(:to_s) if val
     end
     puts string
     string
