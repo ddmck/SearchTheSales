@@ -121,9 +121,9 @@ class DataFeed < ActiveRecord::Base
 
   def create_array_for_matching(item)
     array_for_matching = []
-    array_for_matching << item[:category].to_s.downcase.split(/[\,\.]/, "") if item[:category]
-    array_for_matching << item[:reference_name].to_s.downcase.split(/[\,\.]/, "") if item[:reference_name]
-    array_for_matching << item[:description].to_s.downcase.split(/[\,\.]/, "") if item[:description]
+    array_for_matching << item[:category].to_s.downcase.gsub(/[\,\.]/, "").split(" ") if item[:category]
+    array_for_matching << item[:reference_name].to_s.downcase.gsub(/[\,\.]/, "").split(" ") if item[:reference_name]
+    array_for_matching << item[:description].to_s.downcase.gsub(/[\,\.]/, "").split(" ") if item[:description]
 
     return array_for_matching
   end
