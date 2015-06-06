@@ -131,7 +131,7 @@ class Product < ActiveRecord::Base
   end
 
   def category_setter(match_array=[])
-    match_array = [self.name, self.description] if match_array == []
+    match_array = [self.name.to_s.downcase.gsub(/[\,\.]/, "").split(" "), self.description.to_s.downcase.gsub(/[\,\.]/, "").split(" ")] if match_array == []
 
     categories = Category.all
     sub_categories = SubCategory.all
@@ -152,7 +152,7 @@ class Product < ActiveRecord::Base
   end
 
   def style_setter(match_array=[])
-    match_array = [self.name, self.description] if match_array == []
+    match_array = [self.name.to_s.downcase.gsub(/[\,\.]/, "").split(" "), self.description.to_s.downcase.gsub(/[\,\.]/, "").split(" ")] if match_array == []
 
     styles = self.category.styles
     sub_categories = SubCategory.all
@@ -170,29 +170,27 @@ class Product < ActiveRecord::Base
   end
 
   def gender_setter(match_array=[])
-    match_array = [self.name, self.description] if match_array == []
+    match_array = [self.name.to_s.downcase.gsub(/[\,\.]/, "").split(" "), self.description.to_s.downcase.gsub(/[\,\.]/, "").split(" ")] if match_array == []
 
     mens_matches = ["m", "men", "mens", "men's", "male", "males", "male's", "boys", "boy's"]
     womens_matches = ["f", "women", "womens", "women's", "female", "females", "female's", "girls", "girl's", "ladies"]
     unisex_matches = ["unisex", "uni-sex"]
     points = []
 
-    match_array.each do |matcher|
-      matcher.split.each do |m|
-        womens_matches.each do |womens|
-          if m.to_s.downcase == womens
-            points << "female"
-          end
+    match_array.each do |m|
+      womens_matches.each do |womens|
+        if m.to_s.downcase == womens
+          points << "female"
         end
-        mens_matches.each do |mens|
-          if m.to_s.downcase == mens
-            points << "male"
-          end
+      end
+      mens_matches.each do |mens|
+        if m.to_s.downcase == mens
+          points << "male"
         end
-        unisex_matches.each do |unisex|
-          if m.to_s.downcase == unisex
-            points << "unisex"
-          end
+      end
+      unisex_matches.each do |unisex|
+        if m.to_s.downcase == unisex
+          points << "unisex"
         end
       end
     end
@@ -200,7 +198,7 @@ class Product < ActiveRecord::Base
   end
 
   def color_setter(match_array=[])
-    match_array = [self.name, self.description] if match_array == []
+    match_array = [self.name.to_s.downcase.gsub(/[\,\.]/, "").split(" "), self.description.to_s.downcase.gsub(/[\,\.]/, "").split(" ")] if match_array == []
 
     colors = Color.all
     points = []
@@ -215,7 +213,7 @@ class Product < ActiveRecord::Base
   end
 
   def material_setter(match_array=[])
-    match_array = [self.name, self.description] if match_array == []
+    match_array = [self.name.to_s.downcase.gsub(/[\,\.]/, "").split(" "), self.description.to_s.downcase.gsub(/[\,\.]/, "").split(" ")] if match_array == []
 
     materials = Material.all
     points = []

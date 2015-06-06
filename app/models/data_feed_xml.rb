@@ -103,7 +103,7 @@ class DataFeedXml < ActiveRecord::Base
       product.url = item[:url]
       array_for_matching = create_array_for_matching(item)
       product.color_setter(array_for_matching)
-      product.gender_setter(array_for_matching)
+      product.gender_setter(array_for_matching.unshift(item[:gender].to_s.downcase.gsub(/[\,\.]/, "").split(" ")))
       product.category_setter(array_for_matching)
       product.sub_category = set_sub_category(product) if product.category
       product.material_setter(array_for_matching)
@@ -128,9 +128,9 @@ class DataFeedXml < ActiveRecord::Base
 
    def create_array_for_matching(item)
     array_for_matching = []
-    array_for_matching << item[:category].to_s.downcase.split(" ") if item[:category]
-    array_for_matching << item[:reference_name].to_s.downcase.split(" ") if item[:reference_name]
-    array_for_matching << item[:description].to_s.downcase.split(" ") if item[:description]
+    array_for_matching << item[:category].to_s.downcase.gsub(/[\,\.]/, "").split(" ") if item[:category]
+    array_for_matching << item[:reference_name].to_s.downcase.gsub(/[\,\.]/, "").split(" ") if item[:reference_name]
+    array_for_matching << item[:description].to_s.downcase.gsub(/[\,\.]/, "").split(" ") if item[:description]
 
     return array_for_matching
   end
