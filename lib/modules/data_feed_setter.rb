@@ -178,9 +178,9 @@ module DataFeedSetter
     if brand.try(:name).try(:to_s).try(:downcase) && reference_name.to_s.downcase.include?(brand.try(:name).try(:to_s).try(:downcase))
       reference_name.downcase.gsub("`", "'")
     elsif brand.try(:name).try(:to_s).try(:downcase)
-      brand.try(:name).try(:to_s).try(:downcase) + " " + reference_name.try(:to_s).downcase.gsub("`", "'")
+      brand.try(:name).try(:to_s).try(:downcase) + " " + reference_name.try(:to_s).try(:downcase).gsub("`", "'")
     else
-      reference_name.try(:to_s).downcase.gsub("`", "'")
+      reference_name.try(:to_s).try(:downcase).gsub("`", "'")
     end
   end
 

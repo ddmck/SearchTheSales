@@ -100,6 +100,7 @@ gem 'newrelic_rpm'
 
 # For XML importer
 gem 'nokogiri'
+gem 'saxerator'
 
 # For Stripe
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
