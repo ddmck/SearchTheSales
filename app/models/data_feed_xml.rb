@@ -92,28 +92,9 @@ class DataFeedXml < ActiveRecord::Base
   def process_file
     ftp_client
     uncompress_gz
-
+    delete_expired_products
     init_saxerator
-    # delete_expired_products
-
-    # products = build_xml_array
-
-    # products.each do |product|
-    #   result = {}
-    #   result[:reference_name] = extract_xml_attr(name_column, product)
-    #   result[:url] = extract_xml_url(link_column, product)
-    #   result[:brand] = extract_xml(brand_column, product)
-    #   result[:image_url] = extract_xml_url(image_url_column, product)
-    #   result[:large_image_url] = extract_xml_url(image_url_column, product)
-    #   result[:sale_price] = extract_xml(sale_price_column, product)
-    #   result[:rrp] = extract_xml(rrp_column, product)
-    #   result[:description] = extract_xml(description_column, product)
-    #   result[:gender] = extract_xml(gender_column, product)
-    #   result[:category] = extract_xml(category_column, product)
-    #   result[:size] = extract_xml(size_column, product) if !size_column.empty?
-    #   result[:color] = extract_xml(color_column, product) if !color_column.empty?
-    #   process_line(result)
-    # end
+    
     if image_assets
       assets = Object.const_get(image_assets).new
       assets.import
