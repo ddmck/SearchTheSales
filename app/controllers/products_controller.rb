@@ -66,7 +66,7 @@ class ProductsController < ApplicationController
   def more_like_this
     hash = build_more_like_this
     puts hash
-    @products = Product.__elasticsearch__.search(hash).records
+    @products = Product.__elasticsearch__.search(hash).page(1).records
     respond_with(@products)
   end
 
