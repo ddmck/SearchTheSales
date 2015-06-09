@@ -4,25 +4,7 @@ class ProductsController < ApplicationController
   respond_to :html, :json
 
   def index
-    puts params
-    if params["search_string"] 
-      hash = {query: {
-                      query_string: {
-                        default_field: "reference_name",
-                        query: build_search_string(params)
-                        }
-                      }, size: 200}
-      if params[:sort]
-        args = params[:sort].split(", ")
-        hash[:sort] = [{args[0] => args[1]}]
-      end
-      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
-    else
-
-      hash = build_match_all
-
-      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
-    end
+    @products = search_products
     respond_with(@products)
   end
 
@@ -67,9 +49,85 @@ class ProductsController < ApplicationController
     end
   end
 
+  def search_products
+    if params["search_string"]
+      hash = basic_query
+      hash[:sort] = build_sort if params[:sort]
+      hash[:aggs] = build_aggs if params[:page] == "1"
+      response = Product.__elasticsearch__.search(hash)
+      result = build_aggs_result(response.aggregations)
+      puts result
+      @products = response.page(params[:page]).records
+    else
+      hash = build_match_all
+      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
+    end
+    @products
+  end
+
+  def build_aggs_result(hash)
+    brands = build_from_aggs(hash[:brands][:buckets], Brand)
+    categories = build_from_aggs(hash[:categories][:buckets], Category)
+    styles = build_from_aggs(hash[:styles][:buckets], Style)
+    result = ["brands" => brands, "categories" => categories, "styles" => styles]
+    result
+  end
+
+  def build_from_aggs(items, klass)
+    array = []
+    items.each do |item|
+      b = klass.find(item[:key])
+      array << ["id" => b.id, "count" => item[:doc_count], "name" => b.name] 
+    end
+    array
+  end
+
+  def build_categories_from_aggs()
+    
+  end
+
+  def basic_query
+    hash = {query: {
+                    query_string: {
+                      default_field: "reference_name",
+                      query: build_search_string(params)
+                      }
+                    }, size: 200
+                  }
+    hash 
+  end
+
+  def build_aggs
+      {brands: {
+        terms: { field: "brand_id" }
+      },
+      colors: {
+        terms: { field: "color_id" }
+      },
+      categories: {
+        terms: { field: "category_id" }
+      },
+      subCategories: {
+        terms: { field: "sub_category_id" }
+      },
+      genders: {
+        terms: { field: "gender_id" }
+      },
+      styles: {
+        terms: { field: "style_id" }
+      },
+      material: {
+        terms: { field: "material_id" }
+      }}
+  end
+
+  def build_sort
+    args = params[:sort].split(", ")
+    [{args[0] => args[1]}]
+  end
+
   def more_like_this
     hash = build_more_like_this
-    puts hash
     @products = Product.__elasticsearch__.search(hash).page(1).records
     respond_with(@products)
   end
@@ -88,9 +146,6 @@ class ProductsController < ApplicationController
       args = params[:sort].split(", ")
       hash[:sort] = [{args[0] => args[1]}]
     end
-    puts hash
-    puts where_opts.class
-
     hash
   end
 
@@ -228,7 +283,6 @@ class ProductsController < ApplicationController
     filters.each do |key, val|
       string += ' AND ' + key + ': ' + val.try(:to_s) if val
     end
-    puts string
     string
   end
 end
