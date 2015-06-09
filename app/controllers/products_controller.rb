@@ -1,4 +1,7 @@
 class ProductsController < ApplicationController
+  include Aggregations
+  include SearchBuilder
+  include MoreLikeThis
   before_action :set_product, only: [:show, :edit, :update, :destroy, :buy, :wish, :more_like_this]
   before_action :get_collections, only: [:new, :edit]
   respond_to :html, :json
@@ -47,147 +50,6 @@ class ProductsController < ApplicationController
     else
       respond_with(@product, status: :not_found)
     end
-  end
-
-  def search_products
-    if params["search_string"]
-      hash = basic_query
-      hash[:sort] = build_sort if params[:sort]
-      hash[:aggs] = build_aggs if params[:page] == "1"
-      response = Product.__elasticsearch__.search(hash)
-      result = build_aggs_result(response.aggregations)
-      puts result
-      @products = response.page(params[:page]).records
-    else
-      hash = build_match_all
-      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
-    end
-    @products
-  end
-
-  def build_aggs_result(hash)
-    brands = build_from_aggs(hash[:brands][:buckets], Brand)
-    categories = build_from_aggs(hash[:categories][:buckets], Category)
-    styles = build_from_aggs(hash[:styles][:buckets], Style)
-    result = ["brands" => brands, "categories" => categories, "styles" => styles]
-    result
-  end
-
-  def build_from_aggs(items, klass)
-    array = []
-    items.each do |item|
-      b = klass.find(item[:key])
-      array << ["id" => b.id, "count" => item[:doc_count], "name" => b.name] 
-    end
-    array
-  end
-
-  def build_categories_from_aggs()
-    
-  end
-
-  def basic_query
-    hash = {query: {
-                    query_string: {
-                      default_field: "reference_name",
-                      query: build_search_string(params)
-                      }
-                    }, size: 200
-                  }
-    hash 
-  end
-
-  def build_aggs
-      {brands: {
-        terms: { field: "brand_id" }
-      },
-      colors: {
-        terms: { field: "color_id" }
-      },
-      categories: {
-        terms: { field: "category_id" }
-      },
-      subCategories: {
-        terms: { field: "sub_category_id" }
-      },
-      genders: {
-        terms: { field: "gender_id" }
-      },
-      styles: {
-        terms: { field: "style_id" }
-      },
-      material: {
-        terms: { field: "material_id" }
-      }}
-  end
-
-  def build_sort
-    args = params[:sort].split(", ")
-    [{args[0] => args[1]}]
-  end
-
-  def more_like_this
-    hash = build_more_like_this
-    @products = Product.__elasticsearch__.search(hash).page(1).records
-    respond_with(@products)
-  end
-
-  def build_match_all
-
-    hash = {}
-    hash[:query] = {match_all: {}}
-    where_opts = convert_filters_to_hash(params[:filters])
-    puts where_opts
-    # where_opts = JSON.parse(params[:filters]) if params[:filters].is_a?(String)
-    where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
-    hash[:filter] = { and: where_opts}
-
-    if params[:sort]
-      args = params[:sort].split(", ")
-      hash[:sort] = [{args[0] => args[1]}]
-    end
-    hash
-  end
-
-  def build_match_must
-    hash = {}
-    
-    if @product.gender_id && @product.category_id
-      where_opts = {"gender_id" => @product.gender_id, "category_id" => @product.category_id}
-    elsif @product.gender_id
-      where_opts = {"gender_id" => @product.gender_id}
-    elsif @product.category_id
-      where_opts = {"category_id" => @product.category_id}
-    end
-    
-    where_opts = where_opts.map {|key, v| {match: {key.to_sym => v}}}
-    hash = where_opts
-    hash
-  end
-
-  def build_match_should
-    hash = {}
-
-    if @product.color_id && @product.brand_id
-      where_opts = {"color_id" => @product.color_id, "brand_id" => @product.brand_id}
-    elsif @product.color_id
-      where_opts = {"color_id" => @product.color_id}
-    elsif @product.brand_id
-      where_opts = {"brand_id" => @product.brand_id}
-    end
-
-    where_opts = where_opts.map {|key, v| {match: {key.to_sym => v}}}
-    hash = where_opts
-    hash
-  end
-
-  def build_more_like_this
-    hash = {}
-    hash = {query: {bool: {
-              must: build_match_must,
-              should: build_match_should
-              }}, size: 25}
-    hash
   end
 
   def destroy_by_url
@@ -258,31 +120,5 @@ class ProductsController < ApplicationController
       filters = {}
     end
     return filters
-  end
-
-  def build_search_string(params)
-    puts params[:filters]
-    puts params[:filters].class
-    filters = convert_filters_to_hash(params[:filters])
-    string = params[:search_string].try(:downcase).try(:strip) || '*'
-    if filters["category_id"]
-      curr_category = Category.find(filters["category_id"])
-      string = string.remove(curr_category.name).remove(curr_category.name.singularize).strip 
-    end
-    if string.strip == ""
-      string = params[:search_string].downcase.strip
-    end
-    string = string.downcase.split(" ").join("^2 ") + '^2' + ' OR ' + string.downcase.split(" ").join("~1 ") + '~1' 
-    if !filters.empty?
-      string = build_filters(string, filters)
-    end
-    string
-  end
-
-  def build_filters(string, filters)
-    filters.each do |key, val|
-      string += ' AND ' + key + ': ' + val.try(:to_s) if val
-    end
-    string
   end
 end
