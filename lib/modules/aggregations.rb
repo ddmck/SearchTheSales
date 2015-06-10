@@ -1,9 +1,12 @@
 module Aggregations
 	def build_aggs_result(hash)
     brands = build_from_aggs(hash[:brands][:buckets], Brand)
+    colors = build_from_aggs(hash[:colors][:buckets], Color)
     categories = build_from_aggs(hash[:categories][:buckets], Category)
+    sub_categories = build_from_aggs(hash[:subCategories][:buckets], SubCategory)
     styles = build_from_aggs(hash[:styles][:buckets], Style)
-    {"brands" => brands, "categories" => categories, "styles" => styles}
+    materials = build_from_aggs(hash[:materials][:buckets], Material)
+    {"brands" => brands, "colors" => colors, "categories" => categories, "sub_categories" => sub_categories, "styles" => styles, "materials" => materials}
   end
 
   def build_from_aggs(items, klass)
@@ -28,13 +31,10 @@ module Aggregations
 	  subCategories: {
 	    terms: { field: "sub_category_id" }
 	  },
-	  genders: {
-	    terms: { field: "gender_id" }
-	  },
 	  styles: {
 	    terms: { field: "style_id" }
 	  },
-	  material: {
+	  materials: {
 	    terms: { field: "material_id" }
 	  }}
   end
