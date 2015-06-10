@@ -7,8 +7,10 @@ class ProductsController < ApplicationController
   respond_to :html, :json
 
   def index
-    @products = search_products
-    respond_with(@products)
+    result = search_products
+    @products = result[0]
+    @aggs = result[1]
+    respond_with(@products, @aggs)
   end
 
   def show
