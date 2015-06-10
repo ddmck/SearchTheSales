@@ -1,5 +1,7 @@
 Searchthesales::Application.routes.draw do
 
+  resources :recommendations
+
   resources :messages
 
   resources :orders
