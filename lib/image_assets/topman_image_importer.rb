@@ -1,6 +1,6 @@
 class TopmanImageImporter
   def import(import_all=false)
-    s = Store.find(48)
+    s = Store.find(45)
 
     if import_all
       prod = s.products

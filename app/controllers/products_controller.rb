@@ -4,6 +4,7 @@ class ProductsController < ApplicationController
   respond_to :html, :json
 
   def index
+    puts params
     if params["search_string"] 
       hash = {query: {
                       query_string: {
@@ -17,7 +18,9 @@ class ProductsController < ApplicationController
       end
       @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     else
+
       hash = build_match_all
+
       @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     end
     respond_with(@products)
@@ -71,14 +74,12 @@ class ProductsController < ApplicationController
   end
 
   def build_match_all
+
     hash = {}
     hash[:query] = {match_all: {}}
-
-    if params[:filters]
-      where_opts = JSON.parse(params[:filters])
-    else
-      where_opts = {"brand_id" => @product.brand_id, "category_id" => @product.category_id, "gender_id" => @product.gender_id}
-    end
+    where_opts = convert_filters_to_hash(params[:filters])
+    puts where_opts
+    # where_opts = JSON.parse(params[:filters]) if params[:filters].is_a?(String)
     where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
     hash[:filter] = { and: where_opts}
 
@@ -87,6 +88,8 @@ class ProductsController < ApplicationController
       hash[:sort] = [{args[0] => args[1]}]
     end
     puts hash
+    puts where_opts.class
+
     hash
   end
 
@@ -185,11 +188,26 @@ class ProductsController < ApplicationController
                                     :url, 
                                     :image_url, 
                                     :description, 
-                                    :gender)
+                                    :gender_id)
+  end
+
+  def convert_filters_to_hash(param_filters)
+    puts param_filters.class
+    if param_filters.class == ActionController::Parameters
+      filters = param_filters
+    elsif param_filters.class == Array || param_filters.class == String
+
+      filters = JSON.parse(param_filters)
+    else
+      filters = {}
+    end
+    return filters
   end
 
   def build_search_string(params)
-    filters = params[:filters] ? JSON.parse(params[:filters]) : {}
+    puts params[:filters]
+    puts params[:filters].class
+    filters = convert_filters_to_hash(params[:filters])
     string = params[:search_string].try(:downcase).try(:strip) || '*'
     if filters["category_id"]
       curr_category = Category.find(filters["category_id"])
