@@ -3,15 +3,14 @@ module Aggregations
     brands = build_from_aggs(hash[:brands][:buckets], Brand)
     categories = build_from_aggs(hash[:categories][:buckets], Category)
     styles = build_from_aggs(hash[:styles][:buckets], Style)
-    result = ["brands" => brands, "categories" => categories, "styles" => styles]
-    result
+    {"brands" => brands, "categories" => categories, "styles" => styles}
   end
 
   def build_from_aggs(items, klass)
     array = []
     items.each do |item|
       b = klass.find(item[:key])
-      array << ["id" => b.id, "count" => item[:doc_count], "name" => b.name] 
+      array << {"id" => b.id, "count" => item[:doc_count], "name" => b.name}
     end
     array
   end
