@@ -9,7 +9,9 @@ module SearchBuilder
       @products = response.page(params[:page]).records
     else
       hash = build_match_all
-      @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
+      response = Product.__elasticsearch__.search(hash)
+      @aggs = build_aggs_result(response.aggregations) if hash[:aggs]
+      @products = response.page(params[:page]).records
     end
     [@products, @aggs]
   end
@@ -41,6 +43,8 @@ module SearchBuilder
     end
     where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
     hash[:filter] = { and: where_opts}
+
+    hash[:aggs] = build_aggs if params[:page] == "1"
 
     if params[:sort]
       args = params[:sort].split(", ")
