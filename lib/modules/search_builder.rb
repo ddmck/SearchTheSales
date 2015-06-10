@@ -11,7 +11,7 @@ module SearchBuilder
       hash = build_match_all
       @products = Product.__elasticsearch__.search(hash).page(params[:page]).records
     end
-    @products
+    [@products, @aggs]
   end
 
   def basic_query
