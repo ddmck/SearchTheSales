@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :wishlist_items
   has_many :products, through: :wishlist_items
   has_many :orders
+  has_many :messages
   has_one :basket
   before_create -> do 
     self.uid = SecureRandom.uuid 

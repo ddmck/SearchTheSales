@@ -1,3 +1,4 @@
+
 # Generated with RailsBricks
 # Initial seed file to use with Devise User Model
 
@@ -140,5 +141,5 @@ DataFeed.create("feed_url"=>"http://datafeed.api.productserve.com/datafeed/downl
   "category_column"=>"merchant_category", 
   "large_image_url_column"=>"merchant_image_url", 
   "active"=>nil, 
-  "image_assets"=>"UrbanOutfittersImageImporter", 
+  "image_assets"=>"UrbanOutfittersImageImporter",
   "deeplink_column"=>nil)

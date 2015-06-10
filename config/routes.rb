@@ -1,5 +1,9 @@
 Searchthesales::Application.routes.draw do
 
+  resources :recommendations
+
+  resources :messages
+
   resources :orders
 
   resources :sizes
@@ -9,6 +13,7 @@ Searchthesales::Application.routes.draw do
     post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token"
     resources :orders
     resources :wishlist_items
+    resources :messages
   end
 
   

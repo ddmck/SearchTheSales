@@ -14,8 +14,10 @@ class WishlistItemsController < ApplicationController
   end
 
   def create
+    puts "param " + item_params["product_id"]
     @wishlist_item = current_user.wishlist_items.build(item_params)
-    puts @wishlist_item_params
+    puts @wishlist_item
+    # puts @wishlist_item_params
     if @wishlist_item.save
       respond_with(@wishlist_item, status: 200)
     else
