@@ -30,7 +30,8 @@ class ProductsController < ApplicationController
     if @product
       respond_with(@product)
     else
-      respond_with(status: 404)
+      render :json => {:response => "The Product you're looking for is no longer available"}, status: 404
+      #respond_with(@product, response: "Test", status: :not_found)
     end
   end
 
@@ -53,7 +54,7 @@ class ProductsController < ApplicationController
       @product.update(product_params)
       respond_with(@product)
     else
-      respond_with(status: 404)
+      respond_with(@product, status: :not_found)
     end
   end
 
@@ -62,7 +63,7 @@ class ProductsController < ApplicationController
       @product.destroy
       respond_with(@product)
     else
-      respond_with(status: 404)
+      respond_with(@product, status: :not_found)
     end
   end
 
@@ -147,7 +148,7 @@ class ProductsController < ApplicationController
     if @product
       redirect_to(@product.url)
     else
-      respond_with(status: 404)
+      respond_with(@product, status: :not_found)
     end
   end
 
@@ -156,7 +157,7 @@ class ProductsController < ApplicationController
       @product.add_to_wishlist(get_current_user)
       respond_with(@product, status: 200)
     else
-      respond_with(status: 404)
+      respond_with(@product, status: :not_found)
     end
   end
 
