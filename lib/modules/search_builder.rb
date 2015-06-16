@@ -42,14 +42,10 @@ module SearchBuilder
       where_opts = {"brand_id" => @product.brand_id, "category_id" => @product.category_id, "gender_id" => @product.gender_id}
     end
     where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
-    
-    
+
     hash[:filter] = { and: where_opts}
-
-
     hash[:aggs] = build_aggs if params[:page] == "1"
 
-    puts hash
     if params[:sort]
       args = params[:sort].split(", ")
       hash[:sort] = [{args[0] => args[1]}]
