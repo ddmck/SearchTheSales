@@ -45,11 +45,11 @@ module SearchBuilder
     
     if params[:page] == "1"
       hash = no_search_aggs(where_opts)
-      puts "in if"
     else
       hash[:filter] = { and: where_opts}
     end
 
+    puts hash
     if params[:sort]
       args = params[:sort].split(", ")
       hash[:sort] = [{args[0] => args[1]}]
