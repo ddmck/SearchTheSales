@@ -43,9 +43,7 @@ module SearchBuilder
     end
     where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
     
-    # if params[:page] == "1"
-    #   hash = no_search_aggs(where_opts)
-    # else
+    
     hash[:filter] = { and: where_opts}
 
 
