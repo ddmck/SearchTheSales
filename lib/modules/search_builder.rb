@@ -10,7 +10,7 @@ module SearchBuilder
     else
       hash = build_match_all
       response = Product.__elasticsearch__.search(hash)
-      @aggs = build_aggs_result(response.aggregations) if hash[:aggs]
+      @aggs = build_aggs_result(response.aggregations) if hash[:aggs] && response
       @products = response.page(params[:page]).records
     end
     [@products, @aggs]
