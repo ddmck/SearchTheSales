@@ -22,22 +22,22 @@ module Aggregations
 
   def build_aggs
 	  {brands: {
-	    terms: { field: "brand_id" }
+	    terms: { field: "brand_id", size: 23 }
 	  },
 	  colors: {
-	    terms: { field: "color_id" }
+	    terms: { field: "color_id", size: 23 }
 	  },
 	  categories: {
-	    terms: { field: "category_id" }
+	    terms: { field: "category_id", size: 23 }
 	  },
 	  subCategories: {
 	    terms: { field: "sub_category_id" }
 	  },
 	  styles: {
-	    terms: { field: "style_id" }
+	    terms: { field: "style_id", size: 23 }
 	  },
 	  materials: {
-	    terms: { field: "material_id" }
+	    terms: { field: "material_id", size: 23 }
 	  }}
   end
 
@@ -50,22 +50,22 @@ module Aggregations
 	  },
 	  aggs: {
 	    brands: {
-	      terms: { field: "brand_id" }
+	      terms: { field: "brand_id", size: 23 }
 	    },
 	    colors: {
-	      terms: { field: "color_id" }
+	      terms: { field: "color_id", size: 23 }
 	    },
 	    categories: {
-	      terms: { field: "category_id" }
+	      terms: { field: "category_id", size: 23 }
 	    },
 	    subCategories: {
 	      terms: { field: "sub_category_id" }
 	    },
 	    styles: {
-	      terms: { field: "style_id" }
+	      terms: { field: "style_id", size: 23 }
 	    },
 	    materials: {
-	      terms: { field: "material_id" }
+	      terms: { field: "material_id", size: 23 }
 	    }
 	  }
 	}
