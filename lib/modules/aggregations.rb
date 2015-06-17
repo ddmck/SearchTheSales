@@ -42,32 +42,30 @@ module Aggregations
   end
 
   def no_search_aggs(where_opts)
-  {
+	{
+	  query: {
+		    filtered: {
+		        filter: { and: where_opts }
+		    }
+	  },
 	  aggs: {
-	    products: {
-	      filters: {
-	        filters: where_opts
-	      },
-	      aggs: {
-	        brands: {
-				    terms: { field: "brand_id" }
-				  },
-				  colors: {
-				    terms: { field: "color_id" }
-				  },
-				  categories: {
-				    terms: { field: "category_id" }
-				  },
-				  subCategories: {
-				    terms: { field: "sub_category_id" }
-				  },
-				  styles: {
-				    terms: { field: "style_id" }
-				  },
-				  materials: {
-				    terms: { field: "material_id" }
-				  }
-	      }
+	    brands: {
+	      terms: { field: "brand_id" }
+	    },
+	    colors: {
+	      terms: { field: "color_id" }
+	    },
+	    categories: {
+	      terms: { field: "category_id" }
+	    },
+	    subCategories: {
+	      terms: { field: "sub_category_id" }
+	    },
+	    styles: {
+	      terms: { field: "style_id" }
+	    },
+	    materials: {
+	      terms: { field: "material_id" }
 	    }
 	  }
 	}
