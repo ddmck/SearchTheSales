@@ -43,8 +43,12 @@ module SearchBuilder
     end
     where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
 
-    hash[:filter] = { and: where_opts}
-    hash[:aggs] = build_aggs if params[:page] == "1"
+    if params[:page] == "1"
+      hash = no_search_aggs(where_opts)
+    else
+      hash[:filter] = { and: where_opts}
+    end
+
 
     if params[:sort]
       args = params[:sort].split(", ")
