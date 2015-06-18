@@ -10,6 +10,11 @@ Searchthesales::Application.routes.draw do
 
   scope '/api' do 
     mount_devise_token_auth_for 'User', at: '/auth'
+
+    mount_devise_token_auth_for 'Admin', at: 'admin_auth'
+      as :admin do
+      # Define routes for Admin within this block.
+    end
     post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token"
     resources :orders
     resources :wishlist_items
