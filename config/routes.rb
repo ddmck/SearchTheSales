@@ -13,7 +13,7 @@ Searchthesales::Application.routes.draw do
 
     mount_devise_token_auth_for 'Admin', at: 'admin_auth'
       as :admin do
-      #resources :users
+
     end
     post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token"
     resources :orders
@@ -21,6 +21,7 @@ Searchthesales::Application.routes.draw do
     resources :messages
   end
 
+  get 'users', to: 'users#index', as: 'users_index'
   
   resources :features do
     resources :feature_links
@@ -75,7 +76,6 @@ Searchthesales::Application.routes.draw do
 
   namespace :admin do
     root 'base#index'
-    resources :users
     get 'posts/drafts', to: 'posts#drafts', as: 'posts_drafts'
     get 'posts/dashboard', to: 'posts#dashboard', as: 'posts_dashboard'
     resources :posts
