@@ -13,7 +13,7 @@ Searchthesales::Application.routes.draw do
 
     mount_devise_token_auth_for 'Admin', at: 'admin_auth'
       as :admin do
-      # Define routes for Admin within this block.
+      #resources :users
     end
     post "auth/validate_token", to: "devise_token_auth/token_validations#validate_token"
     resources :orders
