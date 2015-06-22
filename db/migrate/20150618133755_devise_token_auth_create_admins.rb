@@ -38,6 +38,7 @@ class DeviseTokenAuthCreateAdmins < ActiveRecord::Migration
       t.string :nickname
       t.string :image
       t.string :email
+      t.boolean :admin, :default => true
 
       ## Tokens
       t.text :tokens
