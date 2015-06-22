@@ -22,6 +22,7 @@ Searchthesales::Application.routes.draw do
   end
 
   get 'users', to: 'users#index', as: 'users_index'
+  get 'users/:id', to: 'users#show', as: 'users_show'
   
   resources :features do
     resources :feature_links
