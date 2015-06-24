@@ -19,10 +19,10 @@ Searchthesales::Application.routes.draw do
     resources :orders
     resources :wishlist_items
     resources :messages
+    get 'users', to: 'users#index', as: 'users_index'
+    get 'users/:id', to: 'users#show', as: 'users_show'
+    post 'messages/admin_message', to: 'messages#create_admin_message'
   end
-
-  get 'users', to: 'users#index', as: 'users_index'
-  get 'users/:id', to: 'users#show', as: 'users_show'
   
   resources :features do
     resources :feature_links
