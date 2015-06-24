@@ -5,7 +5,10 @@ class MessagesController < ApplicationController
 
 
   def index
-    if current_user
+    if current_admin
+      @message = User.find(params[:id]).messages.where(user_id: params[:adminId])
+      respond_with(@messages, status: 200)
+    elsif current_user
       @messages = current_user.messages
       respond_with(@messages, status: 200)
     else
@@ -27,9 +30,6 @@ class MessagesController < ApplicationController
   end
 
   def create
-    puts "In create"
-    puts current_user
-    puts params
     @message = Message.new(message_params)
     @message.sender_id = current_user.id
     puts @message.attributes
