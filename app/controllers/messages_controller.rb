@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
 
   def index
     if current_admin
-      @messages = Message.where(user_id: current_admin.id)
+      @messages = current_admin.messages.where(user_id: params[:id])
       respond_with(@messages, status: 200)
     elsif current_user
       @messages = current_user.messages
@@ -29,10 +29,19 @@ class MessagesController < ApplicationController
   def edit
   end
 
+  def create_admin_message
+    @message = Message.new(message_params)
+    @message.sender_id = current_admin.id
+    if @message.save
+      respond_with(@message, status: 200)
+    else
+      respond_with(@message, status: 500)
+    end
+  end
+
   def create
     @message = Message.new(message_params)
     @message.sender_id = current_user.id
-    puts @message.attributes
     if @message.save
       respond_with(@message, status: 200)
     else
@@ -56,6 +65,6 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-      params.require(:message).permit(:text, :user_id, :seen)
+      params.require(:message).permit(:text, :user_id, :seen, :admin_id)
     end
 end
