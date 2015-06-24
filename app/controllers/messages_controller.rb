@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
 
   def index
     if current_admin
-      @message = User.find(params[:id]).messages.where(user_id: params[:adminId])
+      @message = current_admin.messages.where(sender_id: params[:senderId])
       respond_with(@messages, status: 200)
     elsif current_user
       @messages = current_user.messages
