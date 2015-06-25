@@ -12,6 +12,11 @@ class RecommendationsController < ApplicationController
     respond_with(@recommendation)
   end
 
+  def show_recommendations
+    @recommendations = User.find(params[:id]).recommendations
+    respond_with(@recommendations)
+  end
+
   def new
     @recommendation = Recommendation.new
     respond_with(@recommendation)
