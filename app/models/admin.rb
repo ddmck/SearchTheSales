@@ -4,5 +4,6 @@ class Admin < ActiveRecord::Base
          :omniauthable
          
   include DeviseTokenAuth::Concerns::User
-  has_many :messages
+  has_many :users
+  has_many :messages, through: :users
 end
