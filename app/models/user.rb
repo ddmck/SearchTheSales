@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :orders
   has_many :messages
   has_one :basket
+  has_many :recommendations
   before_create -> do 
     self.uid = SecureRandom.uuid 
     skip_confirmation! 
