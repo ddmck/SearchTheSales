@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
 
   def index
     if current_admin
-      @messages = current_admin.messages.where(user_id: params[:id])
+      @messages = current_admin.users.find(params[:id]).messages
       respond_with(@messages, status: 200)
     elsif current_user
       @messages = current_user.messages
@@ -65,6 +65,6 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-      params.require(:message).permit(:text, :user_id, :seen, :admin_id)
+      params.require(:message).permit(:text, :user_id, :seen)
     end
 end
