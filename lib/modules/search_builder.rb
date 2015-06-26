@@ -24,7 +24,7 @@ module SearchBuilder
                       }
                     }, size: 200
                   }
-    hash 
+    hash
   end
 
   def build_sort
@@ -36,11 +36,7 @@ module SearchBuilder
     hash = {}
     hash[:query] = {match_all: {}}
 
-    if params[:filters]
-      where_opts = JSON.parse(params[:filters])
-    else
-      where_opts = {"brand_id" => @product.brand_id, "category_id" => @product.category_id, "gender_id" => @product.gender_id}
-    end
+    where_opts = convert_filters_to_hash(params[:filters])
     where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
 
     if params[:page] == "1"
@@ -62,12 +58,12 @@ module SearchBuilder
     string = params[:search_string].try(:downcase).try(:strip) || '*'
     if filters["category_id"]
       curr_category = Category.find(filters["category_id"])
-      string = string.remove(curr_category.name).remove(curr_category.name.singularize).strip 
+      string = string.remove(curr_category.name).remove(curr_category.name.singularize).strip
     end
     if string.strip == ""
       string = params[:search_string].downcase.strip
     end
-    string = string.downcase.split(" ").join("^2 ") + '^2' + ' OR ' + string.downcase.split(" ").join("~1 ") + '~1' 
+    string = string.downcase.split(" ").join("^2 ") + '^2' + ' OR ' + string.downcase.split(" ").join("~1 ") + '~1'
     if !filters.empty?
       string = build_filters(string, filters)
     end
