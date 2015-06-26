@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   has_many :messages
   has_one :basket
   before_create -> do 
-    self.uid = SecureRandom.uuid 
+    self.uid = SecureRandom.uuid if self.provider == 'email'
     skip_confirmation! 
   end
   after_create :create_basket
