@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 	respond_to :json
 
 	def index
-		@users = User.page(params[:page])
+		@users = current_admin.users.page(params[:page])
 		respond_with(@users)
 	end
 
