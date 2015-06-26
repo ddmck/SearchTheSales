@@ -4,7 +4,7 @@ class WishlistItemsController < ApplicationController
 
   def index
     if current_user
-      
+
       @wishlist_items = current_user.wishlist_items.includes(:product)
       respond_with(@wishlist_items, status: 200)
     else
@@ -14,7 +14,6 @@ class WishlistItemsController < ApplicationController
   end
 
   def create
-    puts "param " + item_params["product_id"]
     @wishlist_item = current_user.wishlist_items.build(item_params)
     puts @wishlist_item
     # puts @wishlist_item_params
