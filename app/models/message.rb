@@ -9,7 +9,11 @@ class Message < ActiveRecord::Base
   end
 
   def sender
-    User.find(sender_id)
+  	if user_id == sender_id
+    	User.find(sender_id)
+    else
+    	Admin.find(sender_id)
+    end
   end
 
   def update_ui

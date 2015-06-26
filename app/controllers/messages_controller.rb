@@ -1,11 +1,15 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_admin!, only: [:create_admin_message]
 
   respond_to :html, :json
 
 
   def index
-    if current_user
+    if current_admin
+      @messages = current_admin.users.find(params[:id]).messages
+      respond_with(@messages, status: 200)
+    elsif current_user
       @messages = current_user.messages
       respond_with(@messages, status: 200)
     else
@@ -26,13 +30,19 @@ class MessagesController < ApplicationController
   def edit
   end
 
+  def create_admin_message
+    @message = Message.new(message_params)
+    @message.sender_id = current_admin.id
+    if @message.save
+      respond_with(@message, status: 200)
+    else
+      respond_with(@message, status: 500)
+    end
+  end
+
   def create
-    puts "In create"
-    puts current_user
-    puts params
     @message = Message.new(message_params)
     @message.sender_id = current_user.id
-    puts @message.attributes
     if @message.save
       respond_with(@message, status: 200)
     else
