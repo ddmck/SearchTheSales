@@ -1,5 +1,6 @@
 class MessagesController < ApplicationController
   before_action :set_message, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_admin!, only: [:create_admin_message]
 
   respond_to :html, :json
 
