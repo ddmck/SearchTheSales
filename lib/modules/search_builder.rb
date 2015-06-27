@@ -54,7 +54,7 @@ module SearchBuilder
   end
 
   def build_search_string(params)
-    filters = params[:filters] ? JSON.parse(params[:filters]) : {}
+    filters = params[:filters] ? convert_filters_to_hash(params[:filters]) : {}
     string = params[:search_string].try(:downcase).try(:strip) || '*'
     if filters["category_id"]
       curr_category = Category.find(filters["category_id"])
