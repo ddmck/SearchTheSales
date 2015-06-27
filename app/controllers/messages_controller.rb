@@ -7,10 +7,10 @@ class MessagesController < ApplicationController
 
   def index
     if current_admin
-      @messages = current_admin.users.find(params[:id]).messages
+      @messages = current_admin.users.find(params[:id]).messages.sort_by(&:created_at)
       respond_with(@messages, status: 200)
     elsif current_user
-      @messages = current_user.messages
+      @messages = current_user.messages.sort_by(&:created_at)
       respond_with(@messages, status: 200)
     else
       @messages = []
