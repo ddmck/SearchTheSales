@@ -1,11 +1,15 @@
 class RecommendationsController < ApplicationController
   before_action :set_recommendation, only: [:show, :edit, :update, :destroy]
 
-  respond_to :html
+  respond_to :html, :json
 
   def index
-    @recommendations = Recommendation.all
-    respond_with(@recommendations)
+    if current_user
+      @recommendations = current_user.recommendations
+      respond_with(@recommendations, status: 200)
+    else
+      respond_with([], status: 401)
+    end
   end
 
   def show
