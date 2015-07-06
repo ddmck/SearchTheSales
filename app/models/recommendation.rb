@@ -1,4 +1,8 @@
 class Recommendation < ActiveRecord::Base
   belongs_to :user
-  belongs_to :product
+  has_many :recommendation_items
+
+  def sender_name
+    Admin.find(sender_id).name
+  end
 end

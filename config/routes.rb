@@ -1,5 +1,7 @@
 Searchthesales::Application.routes.draw do
 
+  resources :recommendation_items
+
   resources :recommendations
 
   resources :messages

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @recommendation_item.product %>
+</p>
+
+<p>
+  <strong>Recommendation:</strong>
+  <%= @recommendation_item.recommendation %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @recommendation_item.description %>
+</p>
+
+<p>
+  <strong>Index:</strong>
+  <%= @recommendation_item.index %>
+</p>
+
+<p>
+  <strong>Liked:</strong>
+  <%= @recommendation_item.liked %>
+</p>
+
+<%= link_to 'Edit', edit_recommendation_item_path(@recommendation_item) %> |
+<%= link_to 'Back', recommendation_items_path %>

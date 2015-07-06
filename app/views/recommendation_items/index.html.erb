@@ -1,0 +1,33 @@
+<h1>Listing recommendation_items</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Recommendation</th>
+      <th>Description</th>
+      <th>Index</th>
+      <th>Liked</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @recommendation_items.each do |recommendation_item| %>
+      <tr>
+        <td><%= recommendation_item.product %></td>
+        <td><%= recommendation_item.recommendation %></td>
+        <td><%= recommendation_item.description %></td>
+        <td><%= recommendation_item.index %></td>
+        <td><%= recommendation_item.liked %></td>
+        <td><%= link_to 'Show', recommendation_item %></td>
+        <td><%= link_to 'Edit', edit_recommendation_item_path(recommendation_item) %></td>
+        <td><%= link_to 'Destroy', recommendation_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Recommendation item', new_recommendation_item_path %>
