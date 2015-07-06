@@ -10,7 +10,7 @@ Searchthesales::Application.routes.draw do
 
   resources :sizes
 
-  scope '/api' do 
+  scope '/api' do
     mount_devise_token_auth_for 'User', at: '/auth'
 
     mount_devise_token_auth_for 'Admin', at: 'admin_auth'
@@ -24,19 +24,19 @@ Searchthesales::Application.routes.draw do
     get 'users', to: 'users#index', as: 'users_index'
     get 'users/:id', to: 'users#show', as: 'users_show'
     post 'messages/admin_message', to: 'messages#create_admin_message'
-    get 'recommendations', to: 'recommendations#show_recommendations'
+    resources :recommendations
   end
-  
+
   resources :features do
     resources :feature_links
   end
 
   resources :wishlist_items
-  
+
   resources :data_feeds
   get '/get_data_feeds', to: 'data_feeds#get_feed_url', as: 'feed_url'
   resources :data_feed_xmls
-  
+
   resources :genders
 
   resources :trends
