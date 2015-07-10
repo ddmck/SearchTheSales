@@ -1,7 +1,7 @@
 class RecommendationItemsController < ApplicationController
   before_action :set_recommendation_item, only: [:show, :edit, :update, :destroy]
 
-  respond_to :html
+  respond_to :html, :json
 
   def index
     @recommendation_items = RecommendationItem.all
@@ -21,9 +21,11 @@ class RecommendationItemsController < ApplicationController
   end
 
   def create
-    @recommendation_item = RecommendationItem.new(recommendation_item_params)
+    puts params
+    @recommendation_item = Recommendation.find(params[:recommendation_id]).recommendation_items.build(recommendation_item_params)
+    puts @recommendation_item.attributes
     @recommendation_item.save
-    respond_with(@recommendation_item)
+    respond_with(@recommendation_item, status: 201)
   end
 
   def update

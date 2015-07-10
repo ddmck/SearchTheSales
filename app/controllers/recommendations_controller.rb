@@ -4,7 +4,10 @@ class RecommendationsController < ApplicationController
   respond_to :html, :json
 
   def index
-    if current_user
+    if current_admin
+      @recommendations = User.find(params[:user_id]).recommendations
+      respond_with(@recommendations, status: 200)
+    elsif current_user
       @recommendations = current_user.recommendations
       respond_with(@recommendations, status: 200)
     else

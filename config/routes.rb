@@ -24,7 +24,9 @@ Searchthesales::Application.routes.draw do
     get 'users', to: 'users#index', as: 'users_index'
     get 'users/:id', to: 'users#show', as: 'users_show'
     post 'messages/admin_message', to: 'messages#create_admin_message'
-    resources :recommendations
+    resources :recommendations do
+      resources :recommendation_items
+    end
   end
 
   resources :features do
