@@ -12,9 +12,7 @@ class User < ActiveRecord::Base
   end
   after_create :create_basket
   after_create :send_welcome_email
-
-
-
+  after_create :send_welcome_message
 
   # Relations
   has_many :posts
@@ -63,5 +61,11 @@ class User < ActiveRecord::Base
 
   def self.most_recent
     self.all.sort_by {|user| user.last_message_time}.reverse
+  end
+
+  def send_welcome_message
+    self.messages.build(sender_id: Admin.last.id, text: "Hey #{self.name.split(' ')[0]}! Welcome to HowAbout. I'm here to help you find fashion items you love").save
+    self.messages.build(sender_id: Admin.last.id, text: "To begin with I'd just like to learn a bit more about your style").save
+    self.messages.build(sender_id: Admin.last.id, text: "Do you prefer to shop on the high street or invest in designer brands?").save
   end
 end
