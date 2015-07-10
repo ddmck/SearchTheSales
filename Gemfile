@@ -106,5 +106,8 @@ gem 'saxerator'
 # For Stripe
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
-# For Email 
+# For Email
 gem 'mailgunner'
+
+#for YO
+gem 'yo4r'

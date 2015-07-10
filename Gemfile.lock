@@ -331,6 +331,8 @@ GEM
     warden (1.2.3)
       rack (>= 1.0)
     will_paginate (3.0.7)
+    yo4r (0.1.0)
+      faraday (~> 0.9.0)
 
 PLATFORMS
   ruby
@@ -384,3 +386,4 @@ DEPENDENCIES
   textacular (~> 3.0)
   uglifier (= 2.5.3)
   will_paginate (~> 3.0)
+  yo4r
