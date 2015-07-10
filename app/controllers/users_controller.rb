@@ -1,3 +1,5 @@
+require 'will_paginate/array'
+
 class UsersController < ApplicationController
 	before_action :authenticate_admin!
 	before_action :set_user, only: [:show]
@@ -5,7 +7,7 @@ class UsersController < ApplicationController
 	respond_to :json
 
 	def index
-		@users = current_admin.users.page(params[:page])
+		@users = User.most_recent.paginate(page: params[:page], per_page: 25)
 		respond_with(@users)
 	end
 

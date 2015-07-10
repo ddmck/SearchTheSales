@@ -6,14 +6,14 @@ class User < ActiveRecord::Base
   has_many :messages
   has_one :basket
   has_many :recommendations
-  before_create -> do 
+  before_create -> do
     self.uid = SecureRandom.uuid if self.provider == 'email'
-    skip_confirmation! 
+    skip_confirmation!
   end
   after_create :create_basket
   after_create :send_welcome_email
 
-  
+
 
 
   # Relations
@@ -45,5 +45,23 @@ class User < ActiveRecord::Base
 
   def send_welcome_email
     NewUserMailer.new(self).deliver
+  end
+
+  def replied_to
+    if self.messages.last
+      self.messages.last.sender_id != self.id
+    end
+  end
+
+  def last_message_time
+    self.last_sent_message.try(:created_at) || Time.zone.at(0)
+  end
+
+  def last_sent_message
+    self.messages.where(sender_id: self.id).last
+  end
+
+  def self.most_recent
+    self.all.sort_by {|user| user.last_message_time}.reverse
   end
 end
