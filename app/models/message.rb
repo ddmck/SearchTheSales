@@ -20,12 +20,19 @@ class Message < ActiveRecord::Base
 
   def update_ui
     if sender_id != user_id
-      send_webhook
+      send_user_webhook
+    else
+      send_admin_webhook
     end
+
   end
 
-  def send_webhook
+  def send_user_webhook
     HTTParty.post(ENV["SOCKET_URL"] + "/news", {query: {text: self.text, senderID: self.sender_id, toUser: self.user_id}})
+  end
+
+  def send_admin_webhook
+    HTTParty.post(ENV["SOCKET_URL"] + "/admin_news", {query: {text: self.text, senderID: self.sender_id, toUser: self.user_id}})
   end
 
   def yo_team
