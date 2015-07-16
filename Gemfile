@@ -40,7 +40,7 @@ gem 'pg'
 
 # Delayed_Jobs for Rails 3.0.0+
 gem 'delayed_job_active_record'
-gem 'scheduled_job'
+gem 'scheduled_job', '0.1.3'
 
 # Devise: https://github.com/plataformatec/devise
 gem 'omniauth'
