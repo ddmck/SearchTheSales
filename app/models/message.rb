@@ -21,6 +21,9 @@ class Message < ActiveRecord::Base
   def update_ui
     if sender_id != user_id
       send_user_webhook
+      if user.push_token?
+        user.send_push_notification("New message from your stylist!")
+      end
     else
       send_admin_webhook
     end

@@ -68,4 +68,19 @@ class User < ActiveRecord::Base
     self.messages.build(sender_id: Admin.last.id, text: "To begin with I'd just like to learn a bit more about your style").save
     self.messages.build(sender_id: Admin.last.id, text: "Do you prefer to shop on the high street or invest in designer brands?").save
   end
+
+  def send_push_notification(text)
+    notification = Houston::Notification.new(device: self.push_token)
+    notification.alert = text
+
+    # Notifications can also change the badge count, have a custom sound, have a category identifier, indicate available Newsstand content, or pass along arbitrary data.
+    notification.badge = 57
+    notification.sound = "sosumi.aiff"
+    notification.category = "INVITE_CATEGORY"
+    notification.content_available = true
+    notification.custom_data = {type: "chat"}
+
+    # And... sent! That's all it takes.
+    APN.push(notification)
+  end
 end
