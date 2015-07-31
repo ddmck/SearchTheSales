@@ -64,9 +64,9 @@ class User < ActiveRecord::Base
   end
 
   def send_welcome_message
-    self.messages.build(sender_id: Admin.last.id, text: "Hey #{self.name.split(' ')[0]}! Welcome to HowAbout. I'm here to help you find fashion items you love").save
-    self.messages.build(sender_id: Admin.last.id, text: "To begin with I'd just like to learn a bit more about your style").save
-    self.messages.build(sender_id: Admin.last.id, text: "Do you prefer to shop on the high street or invest in designer brands?").save
+    self.messages.build(sender_id: Admin.last.id, text: "Hey #{self.name.split(' ')[0]}!").save
+    self.messages.build(sender_id: Admin.last.id, text: "Welcome to HowAbout. I'm here to help you find fashion items you love").save
+    self.messages.build(sender_id: Admin.last.id, text: "Are you looking for any items in particular at the moment or just general inspiration?").save
   end
 
   def send_push_notification(text)
