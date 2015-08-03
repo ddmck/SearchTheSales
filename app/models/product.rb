@@ -59,14 +59,15 @@ class Product < ActiveRecord::Base
       first_letter: name.try(:ord) || 0,
       out_of_stock: out_of_stock,
       has_sizes: has_sizes?,
-      on_sale: on_sale?
+      on_sale: on_sale?,
+      ub: store.ub
     }
   end
 
   def on_sale?
     if sale_price && rrp
       sale_price < rrp
-    else 
+    else
       false
     end
   end
@@ -97,7 +98,7 @@ class Product < ActiveRecord::Base
 
   def brand_name
     brand.name if brand
-  end 
+  end
 
   def pretty_brand_name
     brand_name.titleize if brand

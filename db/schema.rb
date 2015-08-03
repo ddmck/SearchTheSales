@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150722175903) do
+ActiveRecord::Schema.define(version: 20150803153618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -368,6 +368,7 @@ ActiveRecord::Schema.define(version: 20150722175903) do
     t.text     "delivery_copy"
     t.integer  "days_to_return"
     t.text     "returns_copy"
+    t.boolean  "ub",                      default: false
   end
 
   create_table "styles", force: true do |t|

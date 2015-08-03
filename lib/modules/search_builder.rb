@@ -35,10 +35,11 @@ module SearchBuilder
   def build_match_all
     hash = {}
     hash[:query] = {match_all: {}}
-
+    if params[:origin] == "app"
+      params[:filters][:ub] = true
+    end
     where_opts = convert_filters_to_hash(params[:filters])
     where_opts = where_opts.map {|key, v| {term: {key.to_sym => v}}}
-
     if params[:page] == "1"
       hash = no_search_aggs(where_opts)
     else
@@ -54,6 +55,9 @@ module SearchBuilder
   end
 
   def build_search_string(params)
+    if params[:origin] == "app"
+      params[:filters][:ub] = true
+    end
     filters = params[:filters] ? convert_filters_to_hash(params[:filters]) : {}
     string = params[:search_string].try(:downcase).try(:strip) || '*'
     if filters["category_id"]
