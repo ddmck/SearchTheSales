@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803153618) do
+ActiveRecord::Schema.define(version: 20150811205554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -317,7 +317,7 @@ ActiveRecord::Schema.define(version: 20150803153618) do
   create_table "recommendation_items", force: true do |t|
     t.integer  "product_id"
     t.integer  "recommendation_id"
-    t.text     "description"
+    t.text     "description",       default: ""
     t.integer  "index"
     t.boolean  "liked"
     t.datetime "created_at"
