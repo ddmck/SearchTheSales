@@ -29,6 +29,15 @@ class User < ActiveRecord::Base
   # :email
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
+  def gender
+    detector = GenderDetector.new
+    detector.get_gender(first_name, :great_britain).to_s
+  end
+
+  def first_name
+    name.split().first
+  end
+
   def wishlist
     products.to_a
   end

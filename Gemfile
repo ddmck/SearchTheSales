@@ -114,3 +114,6 @@ gem 'yo4r'
 
 #for push
 gem 'houston'
+
+#for detecting gender
+gem 'gender_detector'
