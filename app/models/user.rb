@@ -6,10 +6,12 @@ class User < ActiveRecord::Base
   has_many :messages
   has_one :basket
   has_many :recommendations
+  belongs_to :gender
   before_create -> do
     self.uid = SecureRandom.uuid if self.provider == 'email'
     skip_confirmation!
   end
+  before_create :set_gender
   after_create :create_basket
   after_create :send_welcome_email
   after_create :send_welcome_message
@@ -29,9 +31,22 @@ class User < ActiveRecord::Base
   # :email
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
-  def gender
+  def set_gender
     detector = GenderDetector.new
-    detector.get_gender(first_name, :great_britain).to_s
+    gndr =  detector.get_gender(first_name, :great_britain).to_s
+    if gndr == "male"
+      self.gender_id = Gender.find_by_name("male").id
+    elsif gndr == "female"
+      self.gender_id = Gender.find_by_name("female").id
+    end
+  end
+
+  def gender_string
+    if gender
+      gender.name
+    else
+      ""
+    end
   end
 
   def first_name
