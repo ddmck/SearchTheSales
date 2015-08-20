@@ -35,9 +35,9 @@ class User < ActiveRecord::Base
     detector = GenderDetector.new
     gndr =  detector.get_gender(first_name, :great_britain).to_s
     if gndr == "male"
-      self.gender_id = Gender.find_by_name("male").id
+      self.gender = Gender.find_by_name("male")
     elsif gndr == "female"
-      self.gender_id = Gender.find_by_name("female").id
+      self.gender = Gender.find_by_name("female")
     end
   end
 
