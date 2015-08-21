@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
   def set_gender
+	  puts first_name
     detector = GenderDetector.new
     gndr =  detector.get_gender(first_name, :great_britain).to_s
     if gndr == "male"
