@@ -1,6 +1,6 @@
 class DataFeedsController < ApplicationController
   before_action :set_data_feed, only: [:show, :edit, :update, :destroy]
-
+  before_action :authenticate_admin!, only: [:run_feeds]
   respond_to :html, :json
 
   def index
@@ -41,6 +41,15 @@ class DataFeedsController < ApplicationController
   def get_feed_url
     @data_feeds = DataFeed.all
     respond_with(@data_feeds.pluck(:feed_url))
+  end
+
+  def run_feeds
+   DataFeed.each do |df|
+     df.process_file if df.store.ub
+   end
+   DataFeedXML.each do |df|
+     df.process_file if df.store.ub
+   end
   end
 
   private
