@@ -27,6 +27,7 @@ Searchthesales::Application.routes.draw do
     resources :recommendations do
       resources :recommendation_items
     end
+    post '/run_feeds', to: 'data_feeds#run_feeds'
   end
 
   resources :features do

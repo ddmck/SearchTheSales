@@ -44,11 +44,14 @@ class DataFeedsController < ApplicationController
   end
 
   def run_feeds
-   DataFeed.each do |df|
+   DataFeed.all.each do |df|
      df.process_file if df.store.ub
    end
-   DataFeedXML.each do |df|
+   DataFeedXml.all.each do |df|
      df.process_file if df.store.ub
+   end
+   respond_to do |format|
+     format.json {render json: {task: "ok"}.to_json}
    end
   end
 
