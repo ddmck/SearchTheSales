@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
     self.uid = SecureRandom.uuid if self.provider == 'email'
     skip_confirmation!
   end
-  before_create :set_gender
   after_create :create_basket
   after_create :send_welcome_email
   after_create :send_welcome_message
