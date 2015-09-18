@@ -44,15 +44,11 @@ class DataFeedsController < ApplicationController
   end
 
   def run_feeds
-   DataFeed.all.each do |df|
-     df.process_file if df.store.ub
-   end
-   DataFeedXml.all.each do |df|
-     df.process_file if df.store.ub
-   end
-   respond_to do |format|
-     format.json {render json: {task: "ok"}.to_json}
-   end
+	  Delayed::Job.delete_all
+		DataFeedImport.schedule_job
+    respond_to do |format|
+      format.json {render json: {task: "ok"}.to_json}
+    end
   end
 
   private

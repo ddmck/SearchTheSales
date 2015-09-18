@@ -11,7 +11,7 @@ class DataFeedImport
   end
 
   def self.time_to_recur(run_at)
-    run_at.end_of_day + 7.hours
+    run_at.end_of_day + 55.hours
   end
 
 end
